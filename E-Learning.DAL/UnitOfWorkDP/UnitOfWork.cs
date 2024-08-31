@@ -29,31 +29,19 @@ namespace E_Learning.DAL.UnitOfWorkDP
         public IUserRepository UserRepository { get; }
         /*------------------------------------------------------------------------*/
         public UnitOfWork
-             (
-                 IAnswerRepository answerRepository,
-                 ICartRepository cartRepository,
-                 ICategoryRepository categoryRepository,
-                 ICourseRepository courseRepository,
-                 IEnrollmentRepository enrollmentRepository,
-                 ILessonRepository lessonRepository,
-                 IQuestionRepository questionRepository,
-                 IQuizRepository quizRepository,
-                 ISectionRepository sectionRepository,
-                 IUserRepository userRepository,
-                 AppDbContext context
-             )
+             (AppDbContext context)
         {
-            AnswerRepository = answerRepository;
-            CartRepository = cartRepository;
-            CategoryRepository = categoryRepository;
-            CourseRepository = courseRepository;
-            EnrollmentRepository = enrollmentRepository;
-            LessonRepository = lessonRepository;
-            QuestionRepository = questionRepository;
-            QuizRepository = quizRepository;
-            SectionRepository = sectionRepository;
-            UserRepository = userRepository;
             _context = context;
+            AnswerRepository = new AnswerRepository(_context);
+            CartRepository = new CartRepository(_context);
+            CategoryRepository = new CategoryRepository(_context);
+            CourseRepository = new CourseRepository(_context);
+            EnrollmentRepository = new EnrollmentRepository(_context);
+            LessonRepository = new LessonRepository(_context);
+            QuestionRepository = new QuestionRepository(_context);
+            QuizRepository = new QuizRepository(_context);
+            SectionRepository = new SectionRepository(_context);
+            UserRepository = new UserRepository(_context);
         }
         /*------------------------------------------------------------------------*/
         public void SaveChanges()
