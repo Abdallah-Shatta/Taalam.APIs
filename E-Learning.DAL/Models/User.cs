@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace E_Learning.DAL.Models
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<int>
     {
         //public string? FName { get; set; }
         //public string? LName { get; set; }
