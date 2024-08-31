@@ -1,6 +1,8 @@
 using E_Learning.BL.ServicesExtention;
+using E_Learning.DAL.Data.Context;
 using E_Learning.DAL.ServicesExtension;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Learning.APIs
 {
@@ -34,6 +36,26 @@ namespace E_Learning.APIs
             //        }
             //    }
             //}
+            /*------------------------------------------------------------------------*/
+
+            //// Another way to update database automatically after migration
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var _context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            //    var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+
+            //    try
+            //    {
+            //        await _context.Database.MigrateAsync();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var logger = loggerFactory.CreateLogger<Program>();
+            //        logger.LogError(ex, "Error during migration");
+            //    }
+            //}
+
             /*------------------------------------------------------------------------*/
 
             // Configure the HTTP request pipeline.
