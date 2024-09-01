@@ -1,5 +1,6 @@
 ﻿using E_Learning.BL.DTO.User;
 using E_Learning.DAL.Models;
+using E_Learning.DAL.UnitOfWorkDP;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,18 +14,20 @@ namespace E_Learning.APIs.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly IUnitOfWork _unitOfWork;
 
 
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
-            RoleManager<Role> roleManager)
+            RoleManager<Role> roleManager , IUnitOfWork unitofwork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _unitOfWork = unitofwork;
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> AccountRegister(RegisterDTO registerDTO)
+        public async Task<ActionResult<User>> AccountRegister([FromBody] RegisterDTO registerDTO)
         {
 
             if (ModelState.IsValid ==false)
@@ -55,6 +58,13 @@ namespace E_Learning.APIs.Controllers
                 return Problem(errorMessage);
             }
 
+
+        }
+
+        [HttpGet]
+        public IEnumerable<User> GetUsers()
+        {
+            return _unitOfWork.UserRepository.GetAll();
 
         }
 
