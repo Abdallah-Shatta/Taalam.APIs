@@ -1,7 +1,8 @@
 ﻿namespace E_Learning.DAL.Models
 {
-    public class Category : BaseEntity
+    public class Category 
     {
+        public int Id { get; set; }
         public string? Name { get; set; }
         public List<Course> Courses { get; set; } = null!;
     }

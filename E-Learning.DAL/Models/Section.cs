@@ -1,7 +1,8 @@
 ﻿namespace E_Learning.DAL.Models
 {
-    public class Section : BaseEntity
+    public class Section 
     {
+        public int Id { get; set; }
         public string? Title { get; set; }
         public int LessonsNo { get; set; } //for display
         public int CourseId { get; set; }
