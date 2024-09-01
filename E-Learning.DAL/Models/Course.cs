@@ -17,7 +17,7 @@ namespace E_Learning.DAL.Models
         public DateTime? UpdatedDate { get; set; }
         public int LessonsNo { get; set; }
         public int SectionsNo { get; set; }
-        public string? Duration { get; set; } // check logic later
+        public string? Duration { get; set; } // check logic laterrr
         public List<Section> Sections { get; set; } = null!;
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
