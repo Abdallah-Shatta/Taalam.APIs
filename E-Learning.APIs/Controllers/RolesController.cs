@@ -10,9 +10,8 @@ using E_Learning.DAL.Models;
 
 namespace E_Learning.APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RolesController : ControllerBase
+
+    public class RolesController : APIBaseController
     {
         private readonly AppDbContext _context;
 

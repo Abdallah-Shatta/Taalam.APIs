@@ -7,14 +7,13 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 
 namespace E_Learning.APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoriesController : ControllerBase
+   
+    public class CategoryController :APIBaseController
     {
         /*------------------------------------------------------------------------*/
         private readonly ICategoryManager _categoryManager;
         /*------------------------------------------------------------------------*/
-        public CategoriesController(ICategoryManager categoryManager)
+        public CategoryController(ICategoryManager categoryManager)
         {
             _categoryManager = categoryManager;
         }

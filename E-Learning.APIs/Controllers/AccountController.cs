@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Learning.APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AccountController : ControllerBase
+  
+    public class AccountController : APIBaseController
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
