@@ -1,7 +1,8 @@
 ﻿namespace E_Learning.DAL.Models
 {
-    public class Quiz : BaseEntity
+    public class Quiz 
     {
+        public int Id { get; set; }
         public string? Title { get; set; }
         public int Grade { get; set; }
         public List<Question> Questions { get; set; } = null!;

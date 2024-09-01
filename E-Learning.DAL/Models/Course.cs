@@ -2,9 +2,10 @@
 
 namespace E_Learning.DAL.Models
 {
-    public class Course : BaseEntity
+    public class Course 
     {
-        public string UserId { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; } = null!;
         public string? Title { get; set; }
         public string? Description { get; set; }

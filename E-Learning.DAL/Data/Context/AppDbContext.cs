@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace E_Learning.DAL.Data.Context
 {
-    public class AppDbContext : IdentityDbContext<User>
+    public class AppDbContext : IdentityDbContext<User,Role , int>
     {
         //public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }

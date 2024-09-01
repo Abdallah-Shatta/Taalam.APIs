@@ -3,6 +3,7 @@ using E_Learning.DAL.Data.Context;
 using E_Learning.DAL.ServicesExtension;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using E_Learning.APIs.Controllers;
 
 namespace E_Learning.APIs
 {
