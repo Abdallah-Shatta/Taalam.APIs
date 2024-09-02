@@ -22,6 +22,16 @@ namespace E_Learning.APIs
             builder.Services.AddBLServices();
             builder.Services.AddDALServices(builder.Configuration);
             /*------------------------------------------------------------------------*/
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
+            /*------------------------------------------------------------------------*/
             var app = builder.Build();
             /*------------------------------------------------------------------------*/
             //using (var scope = app.Services.CreateScope())
@@ -64,7 +74,7 @@ namespace E_Learning.APIs
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCors("MyPolicy");
             app.UseAuthentication();
 
             app.UseAuthorization();
