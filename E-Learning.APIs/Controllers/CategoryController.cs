@@ -2,12 +2,13 @@
 using E_Learning.BL.Dtos.Category;
 using E_Learning.BL.Managers.CategoryManager;
 using E_Learning.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 namespace E_Learning.APIs.Controllers
 {
-   
+    [Authorize]
     public class CategoryController :APIBaseController
     {
         /*------------------------------------------------------------------------*/
