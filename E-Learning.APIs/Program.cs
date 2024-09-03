@@ -57,6 +57,9 @@ namespace E_Learning.APIs
       .AddUserStore<UserStore<User, Role, AppDbContext, int>>()
   .AddRoleStore<RoleStore<Role, AppDbContext, int>>();
 
+/*            builder.Services.AddIdentityApiEndpoints<User>()
+    .AddEntityFrameworkStores<AppDbContext>();*/
+
 
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
@@ -101,6 +104,8 @@ namespace E_Learning.APIs
 
 
           app.UseCors();
+        //    app.MapIdentityApi<User>();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
