@@ -9,6 +9,7 @@ namespace E_Learning.BL.ServicesExtention
         public static void AddBLServices(this IServiceCollection services)
         {
             services.AddScoped<ICategoryManager, CategoryManager>();
+            services.AddScoped<IUserManager, UserManager>();
             services.AddTransient<IJwtManager, JwtManager>();
         }
     }

@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240902172116_DataSeeding")]
+    partial class DataSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,7 +258,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1441),
+                            CreationDate = new DateTime(2024, 9, 2, 20, 21, 11, 373, DateTimeKind.Local).AddTicks(7386),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -266,7 +269,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1517),
+                            CreationDate = new DateTime(2024, 9, 2, 20, 21, 11, 373, DateTimeKind.Local).AddTicks(7438),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -277,7 +280,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 3,
                             CategoryId = 2,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1523),
+                            CreationDate = new DateTime(2024, 9, 2, 20, 21, 11, 373, DateTimeKind.Local).AddTicks(7441),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -288,7 +291,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 4,
                             CategoryId = 2,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1527),
+                            CreationDate = new DateTime(2024, 9, 2, 20, 21, 11, 373, DateTimeKind.Local).AddTicks(7445),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -325,13 +328,13 @@ namespace E_Learning.DAL.Migrations
                         {
                             UserId = 3,
                             CourseId = 1,
-                            EnrollmentDate = new DateTime(2024, 9, 2, 22, 47, 50, 933, DateTimeKind.Local).AddTicks(1867)
+                            EnrollmentDate = new DateTime(2024, 9, 2, 20, 21, 11, 374, DateTimeKind.Local).AddTicks(9138)
                         },
                         new
                         {
                             UserId = 4,
                             CourseId = 2,
-                            EnrollmentDate = new DateTime(2024, 9, 2, 23, 47, 50, 933, DateTimeKind.Local).AddTicks(1958)
+                            EnrollmentDate = new DateTime(2024, 9, 2, 21, 21, 11, 374, DateTimeKind.Local).AddTicks(9183)
                         });
                 });
 
@@ -690,9 +693,6 @@ namespace E_Learning.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -703,13 +703,7 @@ namespace E_Learning.DAL.Migrations
                     b.Property<string>("FName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Facebook")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("LName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Linkedin")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -741,18 +735,12 @@ namespace E_Learning.DAL.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Twitter")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Youtube")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -771,13 +759,11 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "78f4a6bc-f110-496c-9238-675210250dfa",
+                            ConcurrencyStamp = "16f9870b-7871-4af0-82c8-c9314dc492be",
                             Email = "AbdallahShatta@gmail.com",
                             EmailConfirmed = false,
                             FName = "Abdallah",
-                            Facebook = "https://www.facebook.com/abdalah.shatta",
                             LName = "Shatta",
-                            Linkedin = "https://www.linkedin.com/in/abdallah-shatta55/",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             ProfilePicture = "",
@@ -787,13 +773,11 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e6ab065c-6113-462e-b1aa-003a98cf6243",
+                            ConcurrencyStamp = "270ef7d7-a81d-4178-97cc-012d7789c47d",
                             Email = "MohamedErbahim@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohamed",
-                            Facebook = "https://www.facebook.com/mido.ebrahim.9699/",
                             LName = "Ebrahim",
-                            Linkedin = "https://www.linkedin.com/in/mohamed-abdelslam210/",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             ProfilePicture = "",
@@ -803,7 +787,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "24e2f6b1-0ac0-4b79-a275-101022c907df",
+                            ConcurrencyStamp = "045869af-88b2-4047-b3a3-8eaebd16c868",
                             Email = "MohsemTayseer@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohsen",
@@ -817,7 +801,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5e7a6ec-d236-44bc-873e-610f53d290cc",
+                            ConcurrencyStamp = "590ad4e1-5afc-4c4a-bb7e-7d3dd5550477",
                             Email = "MarwaElkasaby@gmail.com",
                             EmailConfirmed = false,
                             FName = "Marwa",
