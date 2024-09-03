@@ -1,11 +1,13 @@
 ﻿using E_Learning.BL.Dtos.Category;
 using E_Learning.BL.Managers.CategoryManager;
 using E_Learning.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Learning.APIs.Controllers
 {
 
+    [Authorize]
     public class CategoryController :APIBaseController
     {
         /*------------------------------------------------------------------------*/
