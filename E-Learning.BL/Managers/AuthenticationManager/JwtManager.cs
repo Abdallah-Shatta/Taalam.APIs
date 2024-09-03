@@ -63,7 +63,8 @@ namespace E_Learning.BL.Managers.AuthenticationManager
                 Email = user.Email,
                 FName = user.FName,
                 Expiration = expiration,
-                RefreshToken = GenerateRefreshToken()
+                RefreshToken = GenerateRefreshToken(),
+                RefreshTokenExpirationDateTime = DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["RefreshToken:EXPIRATION_MINUTES"]))
             };
         }
 
