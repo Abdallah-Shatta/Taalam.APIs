@@ -1,0 +1,25 @@
+﻿using E_Learning.BL.DTO.User;
+using E_Learning.DAL.Models;
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace E_Learning.BL.Managers.AccountManager
+{
+    public interface IAccountManager
+    {
+        Task<IdentityResult> RegisterUserAsync(RegisterDTO registerDTO);
+        Task<User> FindUserByEmailAsync(string email);
+        Task<SignInResult> LoginUserAsync(LoginDTO loginDTO);
+        Task SignOutUserAsync();
+        Task<AuthenticationResponseDTO> GenerateNewJwtTokenAsync(User user, TokenModel tokenModel);
+        IEnumerable<User> GetAllUsers();
+        Task<bool> IsEmailAlreadyRegisteredAsync(string email);
+        Task<AuthenticationResponseDTO> LoginAsync(LoginDTO loginDTO);
+        Task<AuthenticationResponseDTO> GenerateNewJwtTokenAsync(TokenModel tokenModel);
+
+    }
+}

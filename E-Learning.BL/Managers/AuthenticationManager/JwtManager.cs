@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,7 +57,53 @@ namespace E_Learning.BL.Managers.AuthenticationManager
             string token = tokenHandler.WriteToken(tokenGenerator);
 
             // Create and return an AuthenticationResponse object containing the token, user email, user name, and token expiration time.
-            return new AuthenticationResponseDTO() { Token = token, Email = user.Email, FName = user.FName, Expiration = expiration };
+            return new AuthenticationResponseDTO()
+            {
+                Token = token,
+                Email = user.Email,
+                FName = user.FName,
+                Expiration = expiration,
+                RefreshToken = GenerateRefreshToken()
+            };
+        }
+
+        public ClaimsPrincipal GetClaimsPrinciplFromJwtToken(string? token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateAudience = true,
+                ValidAudience = _configuration["Jwt:Audience"],
+                ValidateIssuer = true,
+                ValidIssuer = _configuration["Jwt:Issuer"],
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])),
+
+                ValidateLifetime = false //should be false
+            };
+
+            JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+
+            ClaimsPrincipal principal = jwtSecurityTokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
+
+            return principal;
+        }
+
+        private string GenerateRefreshToken()
+        {
+            byte[] bytes = new byte[64];
+            var randomNumberGenerator = RandomNumberGenerator.Create();
+            randomNumberGenerator.GetBytes(bytes);
+            return Convert.ToBase64String(bytes);
         }
     }
+
+
 }
+
+
