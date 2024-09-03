@@ -13,10 +13,10 @@ namespace E_Learning.DAL.Data.Configurations
             builder.HasOne(e => e.Course).WithMany(u => u.Enrollments).HasForeignKey(e => e.CourseId).OnDelete(DeleteBehavior.Restrict);
 
             //Data Seeding
-            //builder.HasData(
-            //    new Enrollment { CourseId = 1, UserId = 3, EnrollmentDate = DateTime.Now },
-            //    new Enrollment { CourseId = 2, UserId = 4, EnrollmentDate = DateTime.Now.AddHours(1) }
-            //    );
+            builder.HasData(
+                new Enrollment { CourseId = 1, UserId = 3, EnrollmentDate = DateTime.Now },
+                new Enrollment { CourseId = 2, UserId = 4, EnrollmentDate = DateTime.Now.AddHours(1) }
+                );
         }
     }
 }

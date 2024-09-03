@@ -24,7 +24,7 @@ namespace E_Learning.DAL.ServicesExtension
         public static void AddDALServices(this IServiceCollection services, IConfiguration configuration)
         {
             /*------------------------------------------------------------------------*/
-            var connectionString = configuration.GetConnectionString("Yasser");
+            var connectionString = configuration.GetConnectionString("ConStr");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             /*------------------------------------------------------------------------*/
             services.AddScoped<IAnswerRepository, AnswerRepository>();

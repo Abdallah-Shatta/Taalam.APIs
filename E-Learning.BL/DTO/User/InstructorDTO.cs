@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace E_Learning.DAL.Models
+﻿namespace E_Learning.BL.DTO.User
 {
-    public class User : IdentityUser<int>
+    public class InstructorDTO
     {
         public string? FName { get; set; }
         public string? LName { get; set; }
@@ -11,13 +9,9 @@ namespace E_Learning.DAL.Models
         public string? Linkedin { get; set; }
         public string? Youtube { get; set; }
         public string? Twitter { get; set; }
-        //public string? TotalStudent { get; set; }
-
-
-        //[DefaultValue("../../aa.jpeg")]
         public string? ProfilePicture { get; set; }
-        public List<Course>? OwnedCourses { get; set; }
-        public List<Cart>? CartItems { get; set; }
-        public List<Enrollment>? UserEnrollments { get; set; }
+
+        public int TotalStudents { get; set; }
+        public List<CourseDTO>? OwnedCourses { get; set; }
     }
 }

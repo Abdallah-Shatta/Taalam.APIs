@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240902194646_SocialMediaLinks")]
+    partial class SocialMediaLinks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,7 +258,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1441),
+                            CreationDate = new DateTime(2024, 9, 2, 22, 46, 45, 402, DateTimeKind.Local).AddTicks(9178),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -266,7 +269,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1517),
+                            CreationDate = new DateTime(2024, 9, 2, 22, 46, 45, 402, DateTimeKind.Local).AddTicks(9222),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -277,7 +280,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 3,
                             CategoryId = 2,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1523),
+                            CreationDate = new DateTime(2024, 9, 2, 22, 46, 45, 402, DateTimeKind.Local).AddTicks(9226),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -288,7 +291,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 4,
                             CategoryId = 2,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1527),
+                            CreationDate = new DateTime(2024, 9, 2, 22, 46, 45, 402, DateTimeKind.Local).AddTicks(9229),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -325,13 +328,13 @@ namespace E_Learning.DAL.Migrations
                         {
                             UserId = 3,
                             CourseId = 1,
-                            EnrollmentDate = new DateTime(2024, 9, 2, 22, 47, 50, 933, DateTimeKind.Local).AddTicks(1867)
+                            EnrollmentDate = new DateTime(2024, 9, 2, 22, 46, 45, 403, DateTimeKind.Local).AddTicks(8598)
                         },
                         new
                         {
                             UserId = 4,
                             CourseId = 2,
-                            EnrollmentDate = new DateTime(2024, 9, 2, 23, 47, 50, 933, DateTimeKind.Local).AddTicks(1958)
+                            EnrollmentDate = new DateTime(2024, 9, 2, 23, 46, 45, 403, DateTimeKind.Local).AddTicks(8632)
                         });
                 });
 
@@ -771,13 +774,11 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "78f4a6bc-f110-496c-9238-675210250dfa",
+                            ConcurrencyStamp = "1c97fc6a-689b-4b80-8a97-95b389c6c29b",
                             Email = "AbdallahShatta@gmail.com",
                             EmailConfirmed = false,
                             FName = "Abdallah",
-                            Facebook = "https://www.facebook.com/abdalah.shatta",
                             LName = "Shatta",
-                            Linkedin = "https://www.linkedin.com/in/abdallah-shatta55/",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             ProfilePicture = "",
@@ -787,13 +788,11 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e6ab065c-6113-462e-b1aa-003a98cf6243",
+                            ConcurrencyStamp = "83e7895b-ab41-4faa-bdc6-9f5f3646b30c",
                             Email = "MohamedErbahim@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohamed",
-                            Facebook = "https://www.facebook.com/mido.ebrahim.9699/",
                             LName = "Ebrahim",
-                            Linkedin = "https://www.linkedin.com/in/mohamed-abdelslam210/",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             ProfilePicture = "",
@@ -803,7 +802,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "24e2f6b1-0ac0-4b79-a275-101022c907df",
+                            ConcurrencyStamp = "83a5caca-f99a-487c-a38d-0e0b448ddc91",
                             Email = "MohsemTayseer@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohsen",
@@ -817,7 +816,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5e7a6ec-d236-44bc-873e-610f53d290cc",
+                            ConcurrencyStamp = "476447f3-1982-49b7-8919-8fdf389556e0",
                             Email = "MarwaElkasaby@gmail.com",
                             EmailConfirmed = false,
                             FName = "Marwa",
