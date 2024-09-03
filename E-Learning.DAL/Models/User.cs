@@ -19,5 +19,11 @@ namespace E_Learning.DAL.Models
         public List<Course>? OwnedCourses { get; set; }
         public List<Cart>? CartItems { get; set; }
         public List<Enrollment>? UserEnrollments { get; set; }
+
+        public string? RefreshToken { get; set; }
+
+        public DateTime RefreshTokenExpirationDateTime { get; set; }
+
+
     }
 }

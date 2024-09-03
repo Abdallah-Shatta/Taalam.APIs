@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240903161135_adding refresh token")]
+    partial class addingrefreshtoken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,98 +45,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Body = "option1",
-                            QuestionId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Body = "option2",
-                            QuestionId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Body = "option3",
-                            QuestionId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Body = "option1",
-                            QuestionId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Body = "option2",
-                            QuestionId = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Body = "option3",
-                            QuestionId = 2
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Body = "option1",
-                            QuestionId = 3
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Body = "option2",
-                            QuestionId = 3
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Body = "option3",
-                            QuestionId = 3
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Body = "option1",
-                            QuestionId = 4
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Body = "option2",
-                            QuestionId = 4
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Body = "option3",
-                            QuestionId = 4
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Body = "option1",
-                            QuestionId = 5
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Body = "option2",
-                            QuestionId = 5
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Body = "option3",
-                            QuestionId = 5
-                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Cart", b =>
@@ -152,20 +63,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Cart");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 3,
-                            CourseId = 3,
-                            Id = 0
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            CourseId = 4,
-                            Id = 0
-                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Category", b =>
@@ -249,52 +146,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Courses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1441),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "C# From Zero To SuperHero",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 1,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1517),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "Data Strcutre",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 2,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1523),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "Diet",
-                            UserId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 2,
-                            CreationDate = new DateTime(2024, 9, 2, 22, 47, 50, 931, DateTimeKind.Local).AddTicks(1527),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "GYM",
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Enrollment", b =>
@@ -319,20 +170,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Enrollments");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 3,
-                            CourseId = 1,
-                            EnrollmentDate = new DateTime(2024, 9, 2, 22, 47, 50, 933, DateTimeKind.Local).AddTicks(1867)
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            CourseId = 2,
-                            EnrollmentDate = new DateTime(2024, 9, 2, 23, 47, 50, 933, DateTimeKind.Local).AddTicks(1958)
-                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Lesson", b =>
@@ -363,99 +200,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("SectionId");
 
                     b.ToTable("Lessons");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Content = "https://",
-                            SectionId = 1,
-                            Title = "orientation"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Content = "https://",
-                            SectionId = 1,
-                            Title = "introduction"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Content = "https://",
-                            SectionId = 2,
-                            Title = "Encpsulation"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Content = "https://",
-                            SectionId = 2,
-                            Title = "inheritance"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Content = "https://",
-                            SectionId = 2,
-                            Title = "abstraction"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Content = "https://",
-                            SectionId = 2,
-                            Title = "polymorphism"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Content = "https://",
-                            SectionId = 3,
-                            Title = "intoduction"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Content = "https://",
-                            SectionId = 3,
-                            Title = "Binary tree"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Content = "https://",
-                            SectionId = 4,
-                            Title = "introduction"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Content = "https://",
-                            SectionId = 4,
-                            Title = "hum ya gamal"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Content = "https://",
-                            SectionId = 4,
-                            Title = "calories"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Content = "https://",
-                            SectionId = 5,
-                            Title = "3ash ya wa7sh"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Content = "https://",
-                            SectionId = 5,
-                            Title = "el3ab sa7"
-                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Question", b =>
@@ -481,43 +225,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("QuizId");
 
                     b.ToTable("Questions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Body = "Question1",
-                            ModelAnswer = 1,
-                            QuizId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Body = "Question2",
-                            ModelAnswer = 2,
-                            QuizId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Body = "Question3",
-                            ModelAnswer = 3,
-                            QuizId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Body = "Question4",
-                            ModelAnswer = 2,
-                            QuizId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Body = "Question5",
-                            ModelAnswer = 1,
-                            QuizId = 5
-                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Quiz", b =>
@@ -543,43 +250,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("SectionId");
 
                     b.ToTable("Quizzes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Grade = 0,
-                            SectionId = 1,
-                            Title = "Quiz1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Grade = 0,
-                            SectionId = 2,
-                            Title = "Quiz2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Grade = 0,
-                            SectionId = 3,
-                            Title = "Quiz3"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Grade = 0,
-                            SectionId = 4,
-                            Title = "Quiz4"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Grade = 0,
-                            SectionId = 5,
-                            Title = "Quiz5"
-                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Role", b =>
@@ -636,43 +306,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Sections");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CourseId = 1,
-                            LessonsNo = 3,
-                            Title = "intro"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CourseId = 1,
-                            LessonsNo = 5,
-                            Title = "OOP"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CourseId = 2,
-                            LessonsNo = 3,
-                            Title = "Binary search"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CourseId = 3,
-                            LessonsNo = 4,
-                            Title = "Nutrition"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CourseId = 4,
-                            LessonsNo = 3,
-                            Title = "General"
-                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.User", b =>
@@ -690,9 +323,6 @@ namespace E_Learning.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -703,13 +333,7 @@ namespace E_Learning.DAL.Migrations
                     b.Property<string>("FName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Facebook")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("LName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Linkedin")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -747,18 +371,12 @@ namespace E_Learning.DAL.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Twitter")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Youtube")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -771,68 +389,6 @@ namespace E_Learning.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "78f4a6bc-f110-496c-9238-675210250dfa",
-                            Email = "AbdallahShatta@gmail.com",
-                            EmailConfirmed = false,
-                            FName = "Abdallah",
-                            Facebook = "https://www.facebook.com/abdalah.shatta",
-                            LName = "Shatta",
-                            Linkedin = "https://www.linkedin.com/in/abdallah-shatta55/",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            ProfilePicture = "",
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "e6ab065c-6113-462e-b1aa-003a98cf6243",
-                            Email = "MohamedErbahim@gmail.com",
-                            EmailConfirmed = false,
-                            FName = "Mohamed",
-                            Facebook = "https://www.facebook.com/mido.ebrahim.9699/",
-                            LName = "Ebrahim",
-                            Linkedin = "https://www.linkedin.com/in/mohamed-abdelslam210/",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            ProfilePicture = "",
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "24e2f6b1-0ac0-4b79-a275-101022c907df",
-                            Email = "MohsemTayseer@gmail.com",
-                            EmailConfirmed = false,
-                            FName = "Mohsen",
-                            LName = "Tayseer",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            ProfilePicture = "",
-                            TwoFactorEnabled = false
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5e7a6ec-d236-44bc-873e-610f53d290cc",
-                            Email = "MarwaElkasaby@gmail.com",
-                            EmailConfirmed = false,
-                            FName = "Marwa",
-                            LName = "Elkasaby",
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            ProfilePicture = "",
-                            TwoFactorEnabled = false
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
