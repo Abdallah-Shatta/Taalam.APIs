@@ -40,7 +40,7 @@ namespace E_Learning.APIs
                 options.AddDefaultPolicy(policyBuilder =>
                 {
                     policyBuilder
-                    .WithOrigins("*")
+                    .WithOrigins("http://localhost:4200")
                     .WithHeaders("Authorization", "origin", "accept", "content-type")
                     .WithMethods("GET", "POST", "PUT", "DELETE")
                     ;

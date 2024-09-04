@@ -12,12 +12,12 @@ namespace E_Learning.DAL.Data.Configurations
             builder.HasOne(s => s.Course).WithMany(c => c.Sections).HasForeignKey(s => s.CourseId);
 
             ////Data Seeding
-            //builder.HasData(new Section { Id = 1, CourseId = 1, Title = "intro", LessonsNo = 3 },
-            //                new Section { Id = 2, CourseId = 1, Title = "OOP", LessonsNo = 5 },
-            //                new Section { Id = 3, CourseId = 2, Title = "Binary search", LessonsNo = 3 },
-            //                new Section { Id = 4, CourseId = 3, Title = "Nutrition", LessonsNo = 4 },
-            //                new Section { Id = 5, CourseId = 4, Title = "General", LessonsNo = 3 }
-            //    );
+            builder.HasData(new Section { Id = 1, CourseId = 1, Title = "intro", LessonsNo = 3 },
+                            new Section { Id = 2, CourseId = 1, Title = "OOP", LessonsNo = 5 },
+                            new Section { Id = 3, CourseId = 2, Title = "Binary search", LessonsNo = 3 },
+                            new Section { Id = 4, CourseId = 3, Title = "Nutrition", LessonsNo = 4 },
+                            new Section { Id = 5, CourseId = 4, Title = "General", LessonsNo = 3 }
+                );
 
         }
     }

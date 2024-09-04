@@ -13,12 +13,12 @@ namespace E_Learning.DAL.Data.Configurations
             //builder.Property(u => u.Email).IsRequired().HasMaxLength(50);
 
             ////Data Seeding
-            //builder.HasData(
-            //    new User { Id = 1, FName = "Abdallah", LName = "Shatta", Email = "AbdallahShatta@gmail.com", ProfilePicture = ""},
-            //    new User { Id = 2, FName = "Mohamed", LName = "Ebrahim", Email = "MohamedErbahim@gmail.com", ProfilePicture = "" },
-            //    new User { Id = 3, FName = "Mohsen", LName = "Tayseer", Email = "MohsemTayseer@gmail.com", ProfilePicture = ""},
-            //    new User { Id = 4, FName = "Marwa", LName = "Elkasaby", Email = "MarwaElkasaby@gmail.com", ProfilePicture = "" }
-            //    );
+            builder.HasData(
+                new User { Id = 1, FName = "Abdallah", LName = "Shatta", Email = "AbdallahShatta@gmail.com", ProfilePicture = "", Facebook = "https://www.facebook.com/abdalah.shatta", Linkedin = "https://www.linkedin.com/in/abdallah-shatta55/" },
+                new User { Id = 2, FName = "Mohamed", LName = "Ebrahim", Email = "MohamedErbahim@gmail.com", ProfilePicture = "" , Facebook = "https://www.facebook.com/mido.ebrahim.9699/", Linkedin = "https://www.linkedin.com/in/mohamed-abdelslam210/" },
+                new User { Id = 3, FName = "Mohsen", LName = "Tayseer", Email = "MohsemTayseer@gmail.com", ProfilePicture = ""},
+                new User { Id = 4, FName = "Marwa", LName = "Elkasaby", Email = "MarwaElkasaby@gmail.com", ProfilePicture = "" }
+                );
         }
     }
 }

@@ -1,12 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel;
 
 namespace E_Learning.DAL.Models
 {
     public class User : IdentityUser<int>
     {
         public string? FName { get; set; }
-       public string? LName { get; set; }
+        public string? LName { get; set; }
+        public string? Description { get; set; }
+        public string? Facebook { get; set; }
+        public string? Linkedin { get; set; }
+        public string? Youtube { get; set; }
+        public string? Twitter { get; set; }
+        //public string? TotalStudent { get; set; }
+
+
         //[DefaultValue("../../aa.jpeg")]
         public string? ProfilePicture { get; set; }
         public List<Course>? OwnedCourses { get; set; }
