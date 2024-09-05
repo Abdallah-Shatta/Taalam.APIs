@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240905035031_DataSeedingCoverPictures")]
+    partial class DataSeedingCoverPictures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -726,9 +729,6 @@ namespace E_Learning.DAL.Migrations
                     b.Property<int>("LessonsNo")
                         .HasColumnType("int");
 
-                    b.Property<int>("SectionNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -746,7 +746,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 1,
                             CourseId = 1,
                             LessonsNo = 3,
-                            SectionNumber = 1,
                             Title = "intro"
                         },
                         new
@@ -754,7 +753,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 2,
                             CourseId = 1,
                             LessonsNo = 5,
-                            SectionNumber = 2,
                             Title = "OOP"
                         },
                         new
@@ -762,7 +760,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 3,
                             CourseId = 2,
                             LessonsNo = 3,
-                            SectionNumber = 1,
                             Title = "Binary search"
                         },
                         new
@@ -770,7 +767,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 4,
                             CourseId = 3,
                             LessonsNo = 4,
-                            SectionNumber = 1,
                             Title = "Nutrition"
                         },
                         new
@@ -778,7 +774,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 5,
                             CourseId = 4,
                             LessonsNo = 3,
-                            SectionNumber = 1,
                             Title = "General"
                         });
                 });
@@ -845,12 +840,6 @@ namespace E_Learning.DAL.Migrations
 
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpirationDateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -925,7 +914,6 @@ namespace E_Learning.DAL.Migrations
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             ProfilePicture = "",
-                            RefreshTokenExpirationDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TwoFactorEnabled = false
                         },
                         new
@@ -940,7 +928,6 @@ namespace E_Learning.DAL.Migrations
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             ProfilePicture = "",
-                            RefreshTokenExpirationDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TwoFactorEnabled = false
                         });
                 });
