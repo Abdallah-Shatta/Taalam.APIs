@@ -47,6 +47,7 @@ namespace E_Learning.DAL.ServicesExtension
             //services.AddScoped<IQuizRepository, QuizRepository>();
             //services.AddScoped<ISectionRepository, SectionRepository>();
             //services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<IWishListRepository, WishListRepository>();
             /*------------------------------------------------------------------------*/
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             /*------------------------------------------------------------------------*/
