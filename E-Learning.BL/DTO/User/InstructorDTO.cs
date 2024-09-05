@@ -10,7 +10,6 @@
         public string? Youtube { get; set; }
         public string? Twitter { get; set; }
         public string? ProfilePicture { get; set; }
-
         public int TotalStudents { get; set; }
         public List<CourseDTO>? OwnedCourses { get; set; }
     }
