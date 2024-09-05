@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Learning.APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class UserController : APIBaseController
     {
         private readonly IUserManager _userManager;
@@ -15,7 +13,7 @@ namespace E_Learning.APIs.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet("Get-Instructor-Info")]
+        [HttpGet("Get-Instructor-Info/{id}")]
         public ActionResult<IEnumerable<InstructorDTO>> GetInstructorInfo(int id)
         {
             var instructorInfo = _userManager.GetInstructorInfo(id);
