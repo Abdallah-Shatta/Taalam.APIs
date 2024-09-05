@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using E_Learning.BL.Configuration;
 
 namespace E_Learning.APIs
 {
@@ -20,7 +22,6 @@ namespace E_Learning.APIs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
             builder.Services.AddControllers(options =>
             {
                 //Authorization policy
@@ -28,11 +29,19 @@ namespace E_Learning.APIs
                 //options.Filters.Add(new AuthorizeFilter(policy));
 
             });
+
+
+            //for configiring the mail
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+
+            //adding the mail service
             builder.Services.AddSwaggerGen();
-            /*------------------------------------------------------------------------*/
-            builder.Services.AddBLServices();
+        
+        /*------------------------------------------------------------------------*/
+        builder.Services.AddBLServices();
             builder.Services.AddDALServices(builder.Configuration);
 
 

@@ -11,6 +11,7 @@ namespace E_Learning.DAL.Models
         public string? Linkedin { get; set; }
         public string? Youtube { get; set; }
         public string? Twitter { get; set; }
+        public string? GitHub { get; set; }
         //public string? TotalStudent { get; set; }
 
 

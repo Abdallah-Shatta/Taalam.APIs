@@ -21,5 +21,16 @@ namespace E_Learning.APIs.Controllers
                 return NotFound();
             return Ok(instructorInfo);
         }
+
+        [HttpPut("Edit-User-Profile")]
+        public ActionResult EditUserProfile(EditUserProfileDTO editUserProfileDTO)
+        {
+            var result = _userManager.EditUserProfile(editUserProfileDTO);//EditUserProfile Calling
+            if (result)
+                return Ok("Your profile has updated successfully");
+            return BadRequest();
+        }
+
+
     }
 }
