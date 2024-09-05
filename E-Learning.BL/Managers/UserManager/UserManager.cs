@@ -49,5 +49,23 @@ namespace E_Learning.BL.Managers.CategoryManager
             };
             return InstructorInfo;
         }
+        public bool EditUserProfile(EditUserProfileDTO editUserProfileDTO)
+        {
+            var userFromDb = _unitOfWork.UserRepository.GetInstructorInfo(editUserProfileDTO.Id);
+            if (userFromDb == null)
+                return false;
+
+            userFromDb.FName = editUserProfileDTO.FName;
+            userFromDb.LName = editUserProfileDTO.LName;
+            userFromDb.Description = editUserProfileDTO.Description;
+            userFromDb.GitHub = editUserProfileDTO.GitHub;
+            userFromDb.Twitter = editUserProfileDTO.Twitter;
+            userFromDb.Facebook = editUserProfileDTO.Facebook;
+            userFromDb.Linkedin = editUserProfileDTO.LinkedIn;
+            userFromDb.Youtube = editUserProfileDTO.Youtube;
+            userFromDb.ProfilePicture = editUserProfileDTO.ProfilePicture;
+            _unitOfWork.SaveChanges();
+            return true;
+        }
     }
 }

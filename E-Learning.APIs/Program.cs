@@ -20,12 +20,11 @@ namespace E_Learning.APIs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
             builder.Services.AddControllers(options =>
             {
                 //Authorization policy
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
+/*                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));*/
             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

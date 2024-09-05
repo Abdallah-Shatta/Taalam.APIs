@@ -16,12 +16,23 @@ namespace E_Learning.APIs.Controllers
         }
 
         [HttpGet("Get-Instructor-Info")]
-        public ActionResult<IEnumerable<InstructorDTO>> GetInstructorInfo(int id)
+        public ActionResult<InstructorDTO> GetInstructorInfo(int id)
         {
             var instructorInfo = _userManager.GetInstructorInfo(id);
             if (instructorInfo == null)
                 return NotFound();
             return Ok(instructorInfo);
         }
+
+        [HttpPut("Edit-User-Profile")]
+        public ActionResult EditUserProfile(EditUserProfileDTO editUserProfileDTO)
+        {
+            var result = _userManager.EditUserProfile(editUserProfileDTO);//EditUserProfile Calling
+            if (result)
+                return Ok("Your profile has updated successfully");
+            return BadRequest();
+        }
+
+
     }
 }
