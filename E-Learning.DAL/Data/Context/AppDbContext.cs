@@ -17,6 +17,10 @@ namespace E_Learning.DAL.Data.Context
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
+
+        public DbSet<Cart> Carts { get; set; }
+
+        public DbSet<WishList> WishList { get; set; }   
         /*------------------------------------------------------------------------*/
         // Ctor
         public AppDbContext(DbContextOptions options) : base(options) { }

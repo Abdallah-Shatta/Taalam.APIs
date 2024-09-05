@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240905124759_wishlist add")]
+    partial class wishlistadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,11 +258,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-
-
-                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvJBvVedFjpONzC1ZOR-YSWauBp9ZKK6ydA&s",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5432),
-
+                            CreationDate = new DateTime(2024, 9, 5, 15, 47, 55, 839, DateTimeKind.Local).AddTicks(364),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -270,11 +269,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-
-
-                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2o9_OmdunGnBKDIiSGo3uLYvA8vySqQ-M9fyVT_nys9HMMbZJv8cU8YtPkPbexgrf3J8&usqp=CAU",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5480),
-
+                            CreationDate = new DateTime(2024, 9, 5, 15, 47, 55, 839, DateTimeKind.Local).AddTicks(418),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -285,11 +280,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 3,
                             CategoryId = 2,
-
-
-                            CoverPicture = "https://dynamic.brandcrowd.com/template/preview/design/90728fda-b283-4797-973e-9a0775dec439?v=4&designTemplateVersion=5&size=design-preview-standalone-1x",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5483),
-
+                            CreationDate = new DateTime(2024, 9, 5, 15, 47, 55, 839, DateTimeKind.Local).AddTicks(420),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -300,111 +291,11 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 4,
                             CategoryId = 2,
-
-
-                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo1cHnjZlK64h9Pc5OvWCYfYWYexByKhPpeg&s",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5486),
-
+                            CreationDate = new DateTime(2024, 9, 5, 15, 47, 55, 839, DateTimeKind.Local).AddTicks(422),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
                             Title = "GYM",
-                            UserId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CategoryId = 1,
-                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCmO_j4YW82XwWIM-_Fo6afxyuN2pSGoZMBQ&s",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5489),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "Alogrithms",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CategoryId = 1,
-                            CoverPicture = "https://d1jnx9ba8s6j9r.cloudfront.net/imgver.1551437392/img/co_img_1539_1633434090.png",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5492),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "Introduction to C++",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CategoryId = 1,
-                            CoverPicture = "https://static.gunnarpeipman.com/wp-content/uploads/2019/12/ef-core-featured.png",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5495),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "EF Core",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CategoryId = 1,
-                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKIa50KjBUhvtvuMbOaL_QtJrzstWIQA3YSg&s",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5497),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "Database Using SQL Server",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CategoryId = 1,
-                            CoverPicture = "https://www.construx.com/wp-content/uploads/2018/08/design-pattern-essentials-course-image.jpg",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5500),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "Design Pattern",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CategoryId = 1,
-                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-HJM_i7rOg2yY9OgpVPYRLL4fYjA9CTfEoQ&s",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5502),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "SOLID Principle",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CategoryId = 2,
-                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtx7PjCp_KBWQZtHauOWMG2WiRpXxjpbYf3w&s",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5505),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "How To Train",
-                            UserId = 2
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CategoryId = 2,
-                            CoverPicture = "https://static.vecteezy.com/system/resources/previews/024/700/836/non_2x/fitness-gym-training-social-media-timeline-cover-and-video-thumbnail-and-web-banner-design-free-vector.jpg",
-                            CreationDate = new DateTime(2024, 9, 5, 6, 50, 27, 175, DateTimeKind.Local).AddTicks(5508),
-                            LessonsNo = 0,
-                            Price = 0m,
-                            SectionsNo = 0,
-                            Title = "Life Coach",
                             UserId = 2
                         });
                 });
@@ -437,16 +328,13 @@ namespace E_Learning.DAL.Migrations
                         {
                             UserId = 3,
                             CourseId = 1,
-
-                            EnrollmentDate = new DateTime(2024, 9, 5, 6, 50, 27, 176, DateTimeKind.Local).AddTicks(5684)
-
+                            EnrollmentDate = new DateTime(2024, 9, 5, 15, 47, 55, 839, DateTimeKind.Local).AddTicks(8006)
                         },
                         new
                         {
                             UserId = 4,
                             CourseId = 2,
-
-                            EnrollmentDate = new DateTime(2024, 9, 5, 7, 50, 27, 176, DateTimeKind.Local).AddTicks(5725)
+                            EnrollmentDate = new DateTime(2024, 9, 5, 16, 47, 55, 839, DateTimeKind.Local).AddTicks(8028)
                         });
                 });
 
@@ -741,9 +629,6 @@ namespace E_Learning.DAL.Migrations
                     b.Property<int>("LessonsNo")
                         .HasColumnType("int");
 
-                    b.Property<int>("SectionNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -761,7 +646,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 1,
                             CourseId = 1,
                             LessonsNo = 3,
-                            SectionNumber = 1,
                             Title = "intro"
                         },
                         new
@@ -769,7 +653,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 2,
                             CourseId = 1,
                             LessonsNo = 5,
-                            SectionNumber = 2,
                             Title = "OOP"
                         },
                         new
@@ -777,7 +660,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 3,
                             CourseId = 2,
                             LessonsNo = 3,
-                            SectionNumber = 1,
                             Title = "Binary search"
                         },
                         new
@@ -785,7 +667,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 4,
                             CourseId = 3,
                             LessonsNo = 4,
-                            SectionNumber = 1,
                             Title = "Nutrition"
                         },
                         new
@@ -793,7 +674,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 5,
                             CourseId = 4,
                             LessonsNo = 3,
-                            SectionNumber = 1,
                             Title = "General"
                         });
                 });
@@ -900,10 +780,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-
-
-                            ConcurrencyStamp = "a42fd417-36f1-49cf-8801-1753b8ff40c7",
-
+                            ConcurrencyStamp = "0284a6fa-7dca-4c4e-a646-8bdde79ffbf8",
                             Email = "AbdallahShatta@gmail.com",
                             EmailConfirmed = false,
                             FName = "Abdallah",
@@ -912,20 +789,15 @@ namespace E_Learning.DAL.Migrations
                             Linkedin = "https://www.linkedin.com/in/abdallah-shatta55/",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-
+                            ProfilePicture = "",
                             RefreshTokenExpirationDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-
-                            ProfilePicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAM-SBzUfYOMhwc0o76MpvR7N4Yi43lcYt5g&s",
-
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-
-                            ConcurrencyStamp = "b4625f63-ad5f-4849-adb0-2be1498d2666",
-
+                            ConcurrencyStamp = "74994475-d6ea-412e-b377-b37a8e2b988b",
                             Email = "MohamedErbahim@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohamed",
@@ -934,20 +806,15 @@ namespace E_Learning.DAL.Migrations
                             Linkedin = "https://www.linkedin.com/in/mohamed-abdelslam210/",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-
+                            ProfilePicture = "",
                             RefreshTokenExpirationDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-
-                            ProfilePicture = "https://pbs.twimg.com/profile_images/1745781333400399872/MN7Wm4Ya_400x400.jpg",
-
                             TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-
-                            ConcurrencyStamp = "56873a5a-0f87-4aef-8505-e6c3310ca085",
-
+                            ConcurrencyStamp = "fa98f495-bcf7-48d2-aff7-48fb04aa6866",
                             Email = "MohsemTayseer@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohsen",
@@ -962,8 +829,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-
-                            ConcurrencyStamp = "66577466-f86b-48e8-af4c-1fc6c0ec43a7",
+                            ConcurrencyStamp = "259a9296-58d0-440f-ac62-294f17af1b21",
                             Email = "MarwaElkasaby@gmail.com",
                             EmailConfirmed = false,
                             FName = "Marwa",

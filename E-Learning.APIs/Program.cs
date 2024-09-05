@@ -57,8 +57,17 @@ namespace E_Learning.APIs
       .AddUserStore<UserStore<User, Role, AppDbContext, int>>()
   .AddRoleStore<RoleStore<Role, AppDbContext, int>>();
 
-/*            builder.Services.AddIdentityApiEndpoints<User>()
-    .AddEntityFrameworkStores<AppDbContext>();*/
+            /*            builder.Services.AddIdentityApiEndpoints<User>()
+                .AddEntityFrameworkStores<AppDbContext>();*/
+
+            //de 3ashan el forget password
+            builder.Services.Configure<IdentityOptions>(
+                opts => opts.SignIn.RequireConfirmedEmail = true
+                );
+
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(
+
+                opts => opts.TokenLifespan = TimeSpan.FromHours(10));
 
 
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
