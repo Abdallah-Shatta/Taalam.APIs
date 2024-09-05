@@ -36,6 +36,8 @@ namespace E_Learning.BL.DTO.User
 
         public string? FName { get; set; }
 
+        public string? LName { get; set; }
+
         public UserRoleOptions UserRole { get; set; } = UserRoleOptions.User;
     }
 }

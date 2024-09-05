@@ -40,7 +40,8 @@ namespace E_Learning.BL.Managers.AccountManager
                 Email = registerDTO.Email,
                 PhoneNumber = registerDTO.Phone,
                 UserName = registerDTO.Email,
-                FName = registerDTO.FName
+                FName = registerDTO.FName,
+                LName = registerDTO.LName,
             };
 
             // Create the user
