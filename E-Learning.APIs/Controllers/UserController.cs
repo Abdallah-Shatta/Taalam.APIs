@@ -13,13 +13,8 @@ namespace E_Learning.APIs.Controllers
             _userManager = userManager;
         }
 
-<<<<<<< HEAD
-        [HttpGet("Get-Instructor-Info")]
-        public ActionResult<InstructorDTO> GetInstructorInfo(int id)
-=======
         [HttpGet("Get-Instructor-Info/{id}")]
         public ActionResult<IEnumerable<InstructorDTO>> GetInstructorInfo(int id)
->>>>>>> b3c9344c3c26deacea22ae12d78a0d5cd57b4977
         {
             var instructorInfo = _userManager.GetInstructorInfo(id);
             if (instructorInfo == null)
