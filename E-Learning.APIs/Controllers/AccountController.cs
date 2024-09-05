@@ -113,17 +113,24 @@ public async Task<IActionResult> forgetPasswordview(string email , string token)
         }
 
         [HttpPost("forget-password")]
-        public async Task<string> forgetPassword(ForgetPasswordDTO forgetPasswordDTO)
+        public async Task<IActionResult> forgetPassword(ForgetPasswordDTO forgetPasswordDTO)
         {
-            if (await _mailManager.sendforgetemail(forgetPasswordDTO) == "sucess")
+            var user = await _userManager.FindByNameAsync(forgetPasswordDTO.Email);
+            if (user != null)
             {
-                return "sucess email sending";
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                string link = $"http://localhost:5062/api/Account/ForgetPassword?token={token}&email={user.Email}";
+
+                //send the email with this url
+
+                return Ok($"the forget password email is sent ,token={token.ToString()}");
+
             }
             else
             {
-                return "error";
+                return Problem("error");
             }
-
         }
 
         [HttpPost("reset-password")]
@@ -147,16 +154,17 @@ public async Task<IActionResult> forgetPasswordview(string email , string token)
                     }
                     return Ok(ModelState);
                 }
+                else
+                {
+                    return Ok("password has been reset suucessfully");
+                }
             }
             else{
 
-                return Ok(new
-                {
-                    message = "password has been succeded reset"
-                });
+                return Problem("user doesnt exist ");
             }
 
-            return BadRequest("error in reseting the password");
+
 
 
         }

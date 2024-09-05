@@ -32,12 +32,12 @@ namespace E_Learning.BL.Managers.Mailmanager
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var urlbuilder = new UriBuilder();
+              
                 string link = $"http://localhost:5062/api/Account/ForgetPassword?token={token}&email={user.Email}";
 
                 //send the email with this url
 
-                return "the forget password email is sent";
+                return $"the forget password email is sent ,token={token.ToString()}";
 
             }
             else

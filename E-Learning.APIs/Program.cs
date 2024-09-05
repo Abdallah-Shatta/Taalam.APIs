@@ -26,6 +26,7 @@ namespace E_Learning.APIs
                 //Authorization policy
                 //var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 //options.Filters.Add(new AuthorizeFilter(policy));
+
             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -61,9 +62,9 @@ namespace E_Learning.APIs
                 .AddEntityFrameworkStores<AppDbContext>();*/
 
             //de 3ashan el forget password
-            builder.Services.Configure<IdentityOptions>(
+    /*        builder.Services.Configure<IdentityOptions>(
                 opts => opts.SignIn.RequireConfirmedEmail = true
-                );
+                );*/
 
             builder.Services.Configure<DataProtectionTokenProviderOptions>(
 
