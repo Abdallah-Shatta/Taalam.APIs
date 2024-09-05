@@ -36,7 +36,7 @@ namespace E_Learning.DAL.ServicesExtension
                 loggingBuilder.AddDebug();
             });
             /*------------------------------------------------------------------------*/
-            var connectionString = configuration.GetConnectionString("Yasser");
+            var connectionString = configuration.GetConnectionString("ConStr");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             /*------------------------------------------------------------------------*/
             services.AddScoped<IAnswerRepository, AnswerRepository>();
@@ -49,6 +49,7 @@ namespace E_Learning.DAL.ServicesExtension
             services.AddScoped<IQuizRepository, QuizRepository>();
             services.AddScoped<ISectionRepository, SectionRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
 
             // services.AddTransient<I>();
             /*------------------------------------------------------------------------*/
