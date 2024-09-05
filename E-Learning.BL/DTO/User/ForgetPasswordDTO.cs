@@ -9,10 +9,10 @@ namespace E_Learning.BL.DTO.User
 {
     public class ForgetPasswordDTO
     {
-        [Required]
+
         public string? Password { get; set; } 
         [Compare("Password",ErrorMessage ="the password and the confirmation password doesnt match")]
-        public string? ConfirmPassword { get; set; }
+        public string? confirmPassword { get; set; }
 
         public string? Email { get; set; }
         public string? Token { get; set; }
