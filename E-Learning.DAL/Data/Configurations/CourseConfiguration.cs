@@ -11,10 +11,7 @@ namespace E_Learning.DAL.Data.Configurations
 
             builder.HasOne(c => c.User).WithMany(i => i.OwnedCourses).HasForeignKey(c => c.UserId);
             builder.Property(c => c.Title).IsRequired().HasMaxLength(50);
-            //builder.Property(c => c.Description).IsRequired();
-            //builder.Property(c => c.CoverPicture).IsRequired();
             builder.Property(c => c.Price).IsRequired();
-            //builder.Property(c => c.CreationDate).HasDefaultValueSql();
 
             ////Data Seeding
             builder.HasData(
