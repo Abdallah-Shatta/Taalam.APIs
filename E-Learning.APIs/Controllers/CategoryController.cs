@@ -1,6 +1,6 @@
-﻿using E_Learning.BL.Dtos.Category;
+﻿using E_Learning.BL.DTO.Course;
+using E_Learning.BL.Dtos.Category;
 using E_Learning.BL.Managers.CategoryManager;
-using E_Learning.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,29 +22,51 @@ namespace E_Learning.APIs.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<ReadCategoryDto>> GetAll()
         {
-            var categories = _categoryManager.GetAllCategories();
+            var categories = _categoryManager.GetAll();
             return Ok(categories);
         }
         /*------------------------------------------------------------------------*/
-
-        [HttpPost]
-        public ActionResult<Category> createCategory([FromBody] CreateCategoryDto createCategoryDto)
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        public ActionResult<IEnumerable<ReadCourseDTO>> GetCoursesByCategoryId(int id)
         {
-            return Ok( _categoryManager.createCategory(createCategoryDto) );
+            var courses = _categoryManager.GetCategoryCourses(id);
+            if(courses == null || !courses.Any())
+            {
+                return NotFound(new { Message = "Category Courses Not Found" });
+            }
+            return Ok(courses);
         }
+        /*------------------------------------------------------------------------*/
+        //[HttpPost]
+        //public ActionResult CreateCategory([FromBody] CreateCategoryDto createCategoryDto)
+        //{
+        //    if(createCategoryDto != null)
+        //    {
+        //        _categoryManager.CreateCategory(createCategoryDto);
+        //        return Ok(new { Message = "Category Creation Succeded" });
+        //    }
+        //    return BadRequest(ModelState);
+        //}
 
-        [HttpPut]
-        public ActionResult<Category> updatecategory(int id,[FromBody] CreateCategoryDto createCategoryDto)
-        {
-            
-            return Ok(_categoryManager.updatecategory(id, createCategoryDto));
-        }
+        /*------------------------------------------------------------------------*/
+        //[HttpPut]
+        //public ActionResult<Category> UpdateCategory(int id,[FromBody] CreateCategoryDto createCategoryDto)
+        //{
+        //    if(createCategoryDto != null)
+        //    {
+        //        _categoryManager.UpdateCategory(id, createCategoryDto);
+        //        return Ok();
+        //    }
+        //    return BadRequest(ModelState);
+        //}
 
-        [HttpDelete]
-        public void deleteCategory(int id)
-        {
-            _categoryManager.deletecategory(id);
-        }
+        /*------------------------------------------------------------------------*/
+        //[HttpDelete]
+        //public void DeleteCategory(int id)
+        //{
+        //    _categoryManager.DeleteCategory(id);
+        //}
         
     }
 }

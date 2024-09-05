@@ -13,5 +13,6 @@ namespace E_Learning.BL.Managers.CourseManager
         ReadOneCourseDetailsDto GetCourseDetailsById(int id);
         IEnumerable<ReadCourseDTO> GetAllCourses();
         IEnumerable<ReadCourseDTO> SearchCourses(string searchTerm);
+        IEnumerable<ReadCourseDTO> GetCoursesByCategoty(int id);
     }
 }

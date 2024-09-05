@@ -28,7 +28,7 @@ namespace E_Learning.DAL.Repositories.CourseRepository
         /////////////////////////////////////////////////////////////
         public IEnumerable<Course> GetAllCourses()
         {
-            return _context.Courses.Include(c => c.User);
+            return _context.Courses.Include(c => c.User).Include(c => c.Category);
         }
 
         public IEnumerable<Course> SearchCourses(string searchTerm)

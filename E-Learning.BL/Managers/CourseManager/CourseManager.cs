@@ -100,7 +100,7 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-
+                    CategoryName = c.Category.Name
                 });
         }
 
@@ -116,12 +116,24 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-
-
+                    CategoryName = c.Category.Name
                 });
         }
 
-
-
+        public IEnumerable<ReadCourseDTO> GetCoursesByCategoty(int id)
+        {
+            return _unitOfWork.CourseRepository.GetAllCourses().Where(c => c.CategoryId == id)
+                .Select(c => new ReadCourseDTO
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    InstructorName = c.User.FName + " " + c.User.LName,
+                    Description = c.Description,
+                    Price = c.Price,
+                    Rate = c.Rate,
+                    CoverPicture = c.CoverPicture,
+                    CategoryName = c.Category.Name
+                });
+        }
     }
 }
