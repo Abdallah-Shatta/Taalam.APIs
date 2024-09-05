@@ -11,6 +11,7 @@ namespace E_Learning.BL.Managers.CourseManager
     public interface ICourseManager
     {
         ReadOneCourseDetailsDto GetCourseDetailsById(int id);
-
+        IEnumerable<ReadCourseDTO> GetAllCourses();
+        IEnumerable<ReadCourseDTO> SearchCourses(string searchTerm);
     }
 }
