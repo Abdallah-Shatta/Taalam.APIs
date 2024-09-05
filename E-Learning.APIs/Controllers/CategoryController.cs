@@ -18,6 +18,7 @@ namespace E_Learning.APIs.Controllers
             _categoryManager = categoryManager;
         }
         /*------------------------------------------------------------------------*/
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<ReadCategoryDto>> GetAll()
         {

@@ -8,7 +8,7 @@ using E_Learning.DAL.UnitOfWorkDP;
 
 namespace E_Learning.BL.Managers.CourseManager
 {
-    public class CourseManager: ICourseManager
+    public class CourseManager : ICourseManager
     {
 
         private readonly IUnitOfWork _unitOfWork;
@@ -29,14 +29,14 @@ namespace E_Learning.BL.Managers.CourseManager
             ReadOneCourseDetailsDto courseDetails = new ReadOneCourseDetailsDto
             {
                 Id = course.Id,
-                Instructor =  new ReadCourseInstructorInfoDTO
+                Instructor = new ReadCourseInstructorInfoDTO
                 {
                     Id = course.User.Id,
                     FName = course.User.FName,
                     LName = course.User.LName,
                     Description = course.User.Description
 
-                } ,
+                },
 
                 CourseCategory = course.Category == null ? null : new Dtos.Category.ReadCategoryDto
                 {
@@ -51,47 +51,33 @@ namespace E_Learning.BL.Managers.CourseManager
                 Rate = course.Rate,
                 CreationDate = course.CreationDate,
                 UpdatedDate = course.UpdatedDate,
-                SectionsNo = course.Sections!=null? course.Sections.Count():0,
+                SectionsNo = course.Sections != null ? course.Sections.Count() : 0,
 
-                Sections = course.Sections == null ? null : course.Sections.Select(section => new
-                ReadCourseSectionInfoDTO
+                Sections = course.Sections == null ? null : course.Sections.Select(section => new ReadCourseSectionInfoDTO
                 {
                     Id = section.Id,
                     SectionNumber = section.SectionNumber,
                     Title = section.Title,
-                    LessonsNo = section.Lessons!=null? section.Lessons.Count():0,
+                    LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
 
-                    Lessons = section.Lessons==null? null: section.Lessons.Select(lesson => new ReadCourseLessonDTO
+                    Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
 
                     {
                         Id = lesson.Id,
                         Title = lesson.Title,
                         Duration = lesson.Duration,
 
-                    }
-
-             ).ToList(),
-                    Quizes = section.Quizes==null? null: section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
+                    }).ToList(),
+                    Quizes = section.Quizes == null ? null : section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
                     {
                         Id = quiz.Id,
                         Title = quiz.Title,
 
 
                     }).ToList(),
-
-
                 }).ToList()
-            
             };
-
             return courseDetails;
-
-
-
-
-
         }
-
-
     }
 }

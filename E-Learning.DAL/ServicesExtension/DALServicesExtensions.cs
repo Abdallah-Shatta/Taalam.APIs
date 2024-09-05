@@ -1,8 +1,5 @@
 ﻿using E_Learning.DAL.Data.Context;
 using E_Learning.DAL.Models;
-
-
-
 using E_Learning.DAL.Repositories.AnswerRepository;
 using E_Learning.DAL.Repositories.CartRepository;
 using E_Learning.DAL.Repositories.CategoryRepository;
@@ -36,36 +33,23 @@ namespace E_Learning.DAL.ServicesExtension
                 loggingBuilder.AddDebug();
             });
             /*------------------------------------------------------------------------*/
-            var connectionString = configuration.GetConnectionString("ConStr");
+            var connectionString = configuration.GetConnectionString("Abdallah");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             /*------------------------------------------------------------------------*/
-            services.AddScoped<IAnswerRepository, AnswerRepository>();
-            services.AddScoped<ICartRepository, CartRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ICourseRepository, CourseRepository>();
-            services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
-            services.AddScoped<ILessonRepository, LessonRepository>();
-            services.AddScoped<IQuestionRepository, QuestionRepository>();
-            services.AddScoped<IQuizRepository, QuizRepository>();
-            services.AddScoped<ISectionRepository, SectionRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-
-
-            // services.AddTransient<I>();
+            //services.AddScoped<IAnswerRepository, AnswerRepository>();
+            //services.AddScoped<ICartRepository, CartRepository>();
+            //services.AddScoped<ICategoryRepository, CategoryRepository>();
+            //services.AddScoped<ICourseRepository, CourseRepository>();
+            //services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+            //services.AddScoped<ILessonRepository, LessonRepository>();
+            //services.AddScoped<IQuestionRepository, QuestionRepository>();
+            //services.AddScoped<IQuizRepository, QuizRepository>();
+            //services.AddScoped<ISectionRepository, SectionRepository>();
+            //services.AddScoped<IUserRepository, UserRepository>();
             /*------------------------------------------------------------------------*/
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             /*------------------------------------------------------------------------*/
-
-
-        
-
-
-  
-      
-
-
-            }
-            }
-  
+        }
     }
+}
 
