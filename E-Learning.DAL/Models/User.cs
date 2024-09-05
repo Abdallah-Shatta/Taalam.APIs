@@ -20,6 +20,7 @@ namespace E_Learning.DAL.Models
         public List<Cart>? CartItems { get; set; }
         public List<Enrollment>? UserEnrollments { get; set; }
 
+        public List<WishList>? WishListItems { get; set; }
         public string? RefreshToken { get; set; }
 
         public DateTime RefreshTokenExpirationDateTime { get; set; }

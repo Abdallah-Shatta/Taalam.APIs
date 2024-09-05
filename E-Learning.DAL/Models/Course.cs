@@ -24,5 +24,10 @@ namespace E_Learning.DAL.Models
         public Category Category { get; set; } = null!;
         public List<Cart>? Carts { get; set; }
         public List<Enrollment>? Enrollments { get; set; }
+
+
+public List<WishList>? WishLists { get; set; }     
+        
+
     }
 }

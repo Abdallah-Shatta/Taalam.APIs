@@ -1,6 +1,7 @@
 ﻿using E_Learning.BL.Managers.AccountManager;
 using E_Learning.BL.Managers.AuthenticationManager;
 using E_Learning.BL.Managers.CategoryManager;
+using E_Learning.BL.Managers.Mailmanager;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace E_Learning.BL.ServicesExtention
@@ -13,6 +14,7 @@ namespace E_Learning.BL.ServicesExtention
             services.AddScoped<IUserManager, UserManager>();
             services.AddTransient<IJwtManager, JwtManager>();
             services.AddTransient<IAccountManager,AccountManager>();
+            services.AddTransient<IMailManager,MailManager>();
         }
     }
 }
