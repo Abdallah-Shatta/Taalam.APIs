@@ -1,4 +1,5 @@
-﻿using E_Learning.BL.DTO.User;
+﻿using E_Learning.BL.DTO.Mail;
+using E_Learning.BL.DTO.User;
 using E_Learning.BL.Enums;
 using E_Learning.BL.Managers.AccountManager;
 using E_Learning.BL.Managers.AuthenticationManager;
@@ -105,7 +106,7 @@ namespace E_Learning.APIs.Controllers
             return Ok(authenticationResponse);
         }
 
-        [HttpGet("forget-password")]
+        [HttpGet("forget-password")] //malhash lazma
 public async Task<IActionResult> forgetPasswordview(string email , string token)
         {
             var model = new ForgetPasswordDTO { Email = email, Token = token };
@@ -113,23 +114,93 @@ public async Task<IActionResult> forgetPasswordview(string email , string token)
         }
 
         [HttpPost("forget-password")]
-        public async Task<IActionResult> forgetPassword(ForgetPasswordDTO forgetPasswordDTO)
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordDTO forgetPasswordDTO)
         {
             var user = await _userManager.FindByNameAsync(forgetPasswordDTO.Email);
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                string link = $"http://localhost:5062/api/Account/ForgetPassword?token={token}&email={user.Email}";
+                string link = $"http://localhost:5062/api/Account/forget-password?token={token}&email={user.Email}";
 
-                //send the email with this url
+                // HTML template for the email
+                string htmlBody = $@"
+        <html>
+        <head>
+            <style>
+                .container {{
+                    width: 80%;
+                    margin: 0 auto;
+                    background-color: #f9f9f9;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                }}
+                .button {{
+                    background-color: #4CAF50;
+                    border: none;
+                    color: white;
+                    padding: 10px 20px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 20px 0;
+                    border-radius: 5px;
+                }}
+                .button:hover {{
+                    background-color: #45a049;
+                }}
+                .message {{
+                    font-size: 18px;
+                    color: #333;
+                }}
+                .footer {{
+                    margin-top: 20px;
+                    font-size: 12px;
+                    color: #999;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h2>Password Reset Request</h2>
+                <p class='message'>You have requested to reset your password. Click the button below to proceed.</p>
+                <a href='{link}' class='button'>Reset Password</a>
+                <p>If you did not request a password reset, please ignore this email.</p>
+                <div class='footer'>
+                    <p>Thank you,<br>The E-Learning Team</p>
+                </div>
+            </div>
+        </body>
+        </html>";
 
-                return Ok($"the forget password email is sent ,token={token.ToString()}");
+                // Create email data
+                MailData mailData = new MailData
+                {
+                    RecieverMail =  user.Email ,
+                    EmailSubject = "Password Reset Request",
+                    EmailBody = htmlBody
+                };
 
+                // Use your email sending logic here (e.g., call MailManager.SendMail(mailData))
+                ;
+                if (_mailManager.SendMail(mailData)== true)
+                {
+                    return Ok("email has been sent successfully");
+                }
+                else
+                {
+                    return Problem($"error with send email");
+                }
+
+             
             }
             else
             {
-                return Problem("error");
+                return Problem("Error: User not found");
             }
         }
 
