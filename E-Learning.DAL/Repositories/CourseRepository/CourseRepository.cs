@@ -24,5 +24,18 @@ namespace E_Learning.DAL.Repositories.CourseRepository
 
             return course;
         }
+
+        /////////////////////////////////////////////////////////////
+        public IEnumerable<Course> GetAllCourses()
+        {
+            return _context.Courses.Include(c => c.User);
+        }
+
+        public IEnumerable<Course> SearchCourses(string searchTerm)
+        {
+            return _context.Courses.Include(c => c.User)
+           .Where(c => c.Title.Contains(searchTerm) || c.Description.Contains(searchTerm));
+        }
+
     }
 }

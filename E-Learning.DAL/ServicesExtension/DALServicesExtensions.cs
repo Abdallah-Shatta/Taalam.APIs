@@ -13,6 +13,7 @@ using E_Learning.DAL.Repositories.QuestionRepository;
 using E_Learning.DAL.Repositories.QuizRepository;
 using E_Learning.DAL.Repositories.SectionRepository;
 using E_Learning.DAL.Repositories.UserRepository;
+using E_Learning.DAL.Repositories.WishListRepository;
 using E_Learning.DAL.UnitOfWorkDP;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,7 +37,7 @@ namespace E_Learning.DAL.ServicesExtension
                 loggingBuilder.AddDebug();
             });
             /*------------------------------------------------------------------------*/
-            var connectionString = configuration.GetConnectionString("ConStr");
+            var connectionString = configuration.GetConnectionString("Marwa");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             /*------------------------------------------------------------------------*/
             services.AddScoped<IAnswerRepository, AnswerRepository>();
@@ -49,7 +50,7 @@ namespace E_Learning.DAL.ServicesExtension
             services.AddScoped<IQuizRepository, QuizRepository>();
             services.AddScoped<ISectionRepository, SectionRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddScoped<IWishListRepository, WishListRepository>();
 
             // services.AddTransient<I>();
             /*------------------------------------------------------------------------*/
