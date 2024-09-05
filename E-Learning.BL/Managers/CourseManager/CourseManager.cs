@@ -5,6 +5,7 @@ using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseQuizInfoDTO;
 using E_Learning.BL.DTO.CourseDTO.InstructorInfoDTO;
 using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Learning.BL.Managers.CourseManager
 {
@@ -78,6 +79,49 @@ namespace E_Learning.BL.Managers.CourseManager
                 }).ToList()
             };
             return courseDetails;
+
+
+
+
+
         }
+
+        ////////////////////////////////////////////////////////////////////////////////
+        public IEnumerable<ReadCourseDTO> GetAllCourses()
+        {
+
+            return _unitOfWork.CourseRepository.GetAllCourses()
+                .Select(c => new ReadCourseDTO
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    InstructorName = c.User.FName + " " + c.User.LName,
+                    Description = c.Description,
+                    Price = c.Price,
+                    Rate = c.Rate,
+                    CoverPicture = c.CoverPicture,
+
+                });
+        }
+
+        public IEnumerable<ReadCourseDTO> SearchCourses(string searchTerm)
+        {
+            return _unitOfWork.CourseRepository.SearchCourses(searchTerm)
+                .Select(c => new ReadCourseDTO
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    InstructorName = c.User.FName + " " + c.User.LName,
+                    Description = c.Description,
+                    Price = c.Price,
+                    Rate = c.Rate,
+                    CoverPicture = c.CoverPicture,
+
+
+                });
+        }
+
+
+
     }
 }
