@@ -12,7 +12,7 @@ namespace E_Learning.APIs.Controllers
         {
             this._ratingManager = ratingManager;
         }
-        [HttpGet("/course/{id}")]
+        [HttpGet("course/{id}")]
         [AllowAnonymous]
         public IActionResult getAllRatingsForCourse(int id)
         {
@@ -24,7 +24,7 @@ namespace E_Learning.APIs.Controllers
             return Ok(ratings);
         }
 
-        [HttpGet("/student/{id}")]
+        [HttpGet("student/{id}")]
         [AllowAnonymous]
         public IActionResult GetAllRatingGivenByUser(int id)
         {
