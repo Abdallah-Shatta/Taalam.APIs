@@ -1,4 +1,5 @@
-﻿using E_Learning.BL.DTO.Course;
+﻿using E_Learning.BL.DTO.Category;
+using E_Learning.BL.DTO.Course;
 using E_Learning.BL.Dtos.Category;
 using E_Learning.BL.Managers.CategoryManager;
 using Microsoft.AspNetCore.Authorization;
@@ -28,14 +29,14 @@ namespace E_Learning.APIs.Controllers
         /*------------------------------------------------------------------------*/
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<ReadCourseDTO>> GetCoursesByCategoryId(int id)
+        public ActionResult<CategoryWithCoursesDTO> GetCoursesByCategoryId(int id)
         {
-            var courses = _categoryManager.GetCategoryCourses(id);
-            if(courses == null || !courses.Any())
+            var category = _categoryManager.GetCategoryWithCourses(id);
+            if(category == null)
             {
                 return NotFound(new { Message = "Category Courses Not Found" });
             }
-            return Ok(courses);
+            return Ok(category);
         }
         /*------------------------------------------------------------------------*/
         //[HttpPost]
