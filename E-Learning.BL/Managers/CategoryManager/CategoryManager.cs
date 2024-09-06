@@ -11,15 +11,11 @@ namespace E_Learning.BL.Managers.CategoryManager
     {
         /*------------------------------------------------------------------------*/
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ICourseManager _courseManager;
-
         /*------------------------------------------------------------------------*/
-        public CategoryManager(IUnitOfWork unitOfWork, ICourseManager courseManager)
+        public CategoryManager(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _courseManager = courseManager;
         }
-        
         /*------------------------------------------------------------------------*/
         public IEnumerable<ReadCategoryDto> GetAll()
         {
@@ -51,8 +47,7 @@ namespace E_Learning.BL.Managers.CategoryManager
         public CategoryWithCoursesDTO GetCategoryWithCourses(int id)
         {
             var categoy = _unitOfWork.CategoryRepository.GetByIdWithCourses(id);
-            var courses = _courseManager.GetCoursesByCategoty(id);
-            if(categoy != null && courses != null)
+            if(categoy != null)
             {
                 return new CategoryWithCoursesDTO()
                 {
