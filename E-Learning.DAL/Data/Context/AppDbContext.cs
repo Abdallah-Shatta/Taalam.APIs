@@ -20,7 +20,9 @@ namespace E_Learning.DAL.Data.Context
 
         public DbSet<Cart> Carts { get; set; }
 
-        public DbSet<WishList> WishList { get; set; }   
+        public DbSet<WishList> WishList { get; set; }  
+        
+        public DbSet<Rating> Rating { get; set; }
         /*------------------------------------------------------------------------*/
         // Ctor
         public AppDbContext(DbContextOptions options) : base(options) { }
