@@ -6,6 +6,7 @@ using E_Learning.DAL.Repositories.EnrollmentRepository;
 using E_Learning.DAL.Repositories.LessonRepository;
 using E_Learning.DAL.Repositories.QuestionRepository;
 using E_Learning.DAL.Repositories.QuizRepository;
+using E_Learning.DAL.Repositories.RatingRepository;
 using E_Learning.DAL.Repositories.SectionRepository;
 using E_Learning.DAL.Repositories.UserRepository;
 using E_Learning.DAL.Repositories.WishListRepository;
@@ -26,6 +27,7 @@ namespace E_Learning.DAL.UnitOfWorkDP
         ISectionRepository SectionRepository { get; }
         IUserRepository UserRepository { get; }
         IWishListRepository WishListRepository { get; }
+        IRatingRepository RatingRepository { get; }
         /*------------------------------------------------------------------------*/
         void SaveChanges();
         /*------------------------------------------------------------------------*/
