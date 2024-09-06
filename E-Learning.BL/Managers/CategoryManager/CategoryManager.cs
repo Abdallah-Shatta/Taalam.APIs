@@ -1,4 +1,5 @@
-﻿using E_Learning.BL.DTO.Course;
+﻿using E_Learning.BL.DTO.Category;
+using E_Learning.BL.DTO.Course;
 using E_Learning.BL.Dtos.Category;
 using E_Learning.BL.Managers.CourseManager;
 using E_Learning.DAL.Models;
@@ -18,23 +19,7 @@ namespace E_Learning.BL.Managers.CategoryManager
             _unitOfWork = unitOfWork;
             _courseManager = courseManager;
         }
-        /*------------------------------------------------------------------------*/
-        //public void CreateCategory(CreateCategoryDto createCategoryDto)
-        //{
-        //    Category category = new Category() { Name = createCategoryDto.Name };
-        //    _unitOfWork.CategoryRepository.Create(category);
-        //    _unitOfWork.SaveChanges();
-        //}
-        /*------------------------------------------------------------------------*/
-        //public void DeleteCategory(int id)
-        //{
-        //    Category? category = _unitOfWork.CategoryRepository.GetById(id);
-        //    if (category != null)
-        //    {
-        //        _unitOfWork.CategoryRepository.Delete(category);
-        //        _unitOfWork.SaveChanges();
-        //    }
-        //}
+        
         /*------------------------------------------------------------------------*/
         public IEnumerable<ReadCategoryDto> GetAll()
         {
@@ -63,12 +48,28 @@ namespace E_Learning.BL.Managers.CategoryManager
         }
 
         /*------------------------------------------------------------------------*/
-        public IEnumerable<ReadCourseDTO> GetCategoryCourses(int id)
+        public CategoryWithCoursesDTO GetCategoryWithCourses(int id)
         {
+            var categoy = _unitOfWork.CategoryRepository.GetByIdWithCourses(id);
             var courses = _courseManager.GetCoursesByCategoty(id);
-            if(courses != null)
+            if(categoy != null && courses != null)
             {
-                return courses;
+                return new CategoryWithCoursesDTO()
+                {
+                    Id = categoy.Id,
+                    Name = categoy.Name,
+                    Courses = categoy.Courses.Select(c => new ReadCourseDTO()
+                    {
+                        Id = c.Id,
+                        Title = c.Title,
+                        InstructorName = c.User.FName + " " + c.User.LName,
+                        Description = c.Description,
+                        Price = c.Price,
+                        Rate = c.Rate,
+                        CoverPicture = c.CoverPicture,
+                        CategoryName = c.Category.Name
+                    }).ToList()
+                };
             }
             return null!;
         }
@@ -79,6 +80,23 @@ namespace E_Learning.BL.Managers.CategoryManager
         //    if (category != null)
         //    {
         //        category.Name = createCategoryDto.Name;
+        //        _unitOfWork.SaveChanges();
+        //    }
+        //}
+        /*------------------------------------------------------------------------*/
+        //public void CreateCategory(CreateCategoryDto createCategoryDto)
+        //{
+        //    Category category = new Category() { Name = createCategoryDto.Name };
+        //    _unitOfWork.CategoryRepository.Create(category);
+        //    _unitOfWork.SaveChanges();
+        //}
+        /*------------------------------------------------------------------------*/
+        //public void DeleteCategory(int id)
+        //{
+        //    Category? category = _unitOfWork.CategoryRepository.GetById(id);
+        //    if (category != null)
+        //    {
+        //        _unitOfWork.CategoryRepository.Delete(category);
         //        _unitOfWork.SaveChanges();
         //    }
         //}
