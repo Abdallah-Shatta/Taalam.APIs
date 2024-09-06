@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure;
+using Microsoft.AspNetCore.Identity;
 
 namespace E_Learning.DAL.Models
 {
@@ -25,6 +26,8 @@ namespace E_Learning.DAL.Models
         public string? RefreshToken { get; set; }
 
         public DateTime RefreshTokenExpirationDateTime { get; set; }
+
+        public List<Rating>? Ratings { get; } = [];
 
 
     }

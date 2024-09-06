@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace E_Learning.DAL.Models
 {
@@ -15,7 +16,7 @@ namespace E_Learning.DAL.Models
         [Column(TypeName = "decimal(2,1)")]
         public decimal? Rate { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
-        public DateTime? UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; } = DateTime.Now;
         public int LessonsNo { get; set; }
         public int SectionsNo { get; set; }
         public string? Duration { get; set; } // check logic laterrr
@@ -24,8 +25,10 @@ namespace E_Learning.DAL.Models
         public Category Category { get; set; } = null!;
         public List<Cart>? Carts { get; set; }
         public List<Enrollment>? Enrollments { get; set; }
-        public List<WishList>? WishLists { get; set; }     
-        
+        public List<WishList>? WishLists { get; set; }
+
+        public List<Rating>? Ratings { get; } = [];
+
 
     }
 }
