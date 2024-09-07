@@ -7,6 +7,7 @@ using E_Learning.DAL.Repositories.EnrollmentRepository;
 using E_Learning.DAL.Repositories.LessonRepository;
 using E_Learning.DAL.Repositories.QuestionRepository;
 using E_Learning.DAL.Repositories.QuizRepository;
+using E_Learning.DAL.Repositories.RatingRepository;
 using E_Learning.DAL.Repositories.SectionRepository;
 using E_Learning.DAL.Repositories.UserRepository;
 using E_Learning.DAL.Repositories.WishListRepository;
@@ -29,6 +30,8 @@ namespace E_Learning.DAL.UnitOfWorkDP
         public ISectionRepository SectionRepository { get; }
         public IUserRepository UserRepository { get; }
         public IWishListRepository WishListRepository { get; }
+
+        public IRatingRepository RatingRepository { get; }
         /*------------------------------------------------------------------------*/
         public UnitOfWork
              (AppDbContext context)
@@ -45,6 +48,7 @@ namespace E_Learning.DAL.UnitOfWorkDP
             SectionRepository = new SectionRepository(_context);
             UserRepository = new UserRepository(_context);
             WishListRepository = new WishListRepository(_context);
+            RatingRepository = new RatingRepository(_context);
         }
         /*------------------------------------------------------------------------*/
         public void SaveChanges()
