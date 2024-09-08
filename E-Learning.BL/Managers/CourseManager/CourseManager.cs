@@ -1,4 +1,5 @@
 ﻿using E_Learning.BL.DTO.Course;
+using E_Learning.BL.DTO.CourseDTO.CourseContentDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseLessonDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseQuizInfoDTO;
@@ -79,11 +80,65 @@ namespace E_Learning.BL.Managers.CourseManager
                 }).ToList()
             };
             return courseDetails;
+        }
+
+            public ReadCourseContentDTO GetCourseContentForUser(int userId, int courseId) 
+            {
+
+                (var course, var ennrollment) = _unitOfWork.CourseRepository.GetCourseContentForUser(userId, courseId);
+
+
+                ReadCourseContentDTO couresResult = new ReadCourseContentDTO
+                {
+                    Id = course.Id,
+                    TeacherId = course.UserId,
+                    Duration = course.Duration,
+
+                    Sections = course.Sections == null ? null : course.Sections.Select(section => new ReadCourseSectionInfoDTO
+                    {
+                        Id = section.Id,
+                        SectionNumber = section.SectionNumber,
+                        Title = section.Title,
+                        LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
+
+                        Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
+
+                        {
+                            Id = lesson.Id,
+                            Title = lesson.Title,
+                            Duration = lesson.Duration,
+                            Content = lesson.Content,
+
+                        }).ToList(),
+                        Quizes = section.Quizes == null ? null : section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
+                        {
+                            Id = quiz.Id,
+                            Title = quiz.Title,
+
+
+                        }).ToList(),
+                    }).ToList(),
+
+                    StudentEnnrollment = new CourseEnrollmentInfoDTO
+                    {
+                        ProgressPercentage = ennrollment.ProgressPercentage,
+                        CompletedLessons = ennrollment.CompletedLessons,
+                        EnrollmentDate = ennrollment.EnrollmentDate,
+                    }
 
 
 
 
+                };
 
+                return couresResult;
+
+
+        }
+
+        public bool IsStudentEnrolled(int userId, int courseId)
+        {
+           return _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +155,7 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-
+                    CategoryName = c.Category.Name
                 });
         }
 
@@ -116,12 +171,24 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-
-
+                    CategoryName = c.Category.Name
                 });
         }
 
-
-
+        public IEnumerable<ReadCourseDTO> GetCoursesByCategoty(int id)
+        {
+            return _unitOfWork.CourseRepository.GetAllCourses().Where(c => c.CategoryId == id)
+                .Select(c => new ReadCourseDTO
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    InstructorName = c.User.FName + " " + c.User.LName,
+                    Description = c.Description,
+                    Price = c.Price,
+                    Rate = c.Rate,
+                    CoverPicture = c.CoverPicture,
+                    CategoryName = c.Category.Name
+                });
+        }
     }
 }

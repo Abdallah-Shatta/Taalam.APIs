@@ -15,7 +15,7 @@ namespace E_Learning.DAL.Repositories.CartRepository
 
         public IEnumerable<Cart> GetCartItemsByUserId(int userId)
         {
-            return _context.Carts.Include(c => c.Course).Where(c => c.UserId == userId);
+            return _context.Carts.Include(c => c.Course ).ThenInclude(course => course.User).Where(c => c.UserId == userId);
         }
         public Cart? GetCartItem(int userId, int courseId)
         {
