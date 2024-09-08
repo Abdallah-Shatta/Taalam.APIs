@@ -7,7 +7,6 @@ namespace E_Learning.APIs.Controllers
     public class UserController : APIBaseController
     {
         private readonly IUserManager _userManager;
-
         public UserController(IUserManager userManager)
         {
             _userManager = userManager;
@@ -23,14 +22,16 @@ namespace E_Learning.APIs.Controllers
         }
 
         [HttpPut("Edit-User-Profile")]
-        public ActionResult EditUserProfile(EditUserProfileDTO editUserProfileDTO)
+        public async Task<ActionResult<EditUserProfileDTO>> EditUserProfile([FromForm] EditUserProfileDTO editUserProfileDTO)
         {
-            var result = _userManager.EditUserProfile(editUserProfileDTO);//EditUserProfile Calling
+            string scheme = Request.Scheme;
+            string host = Request.Host.Value;
+            var result =  await _userManager.EditUserProfile(editUserProfileDTO ,scheme,host); // Calling
             if (result)
-                return Ok("Your profile has updated successfully");
-            return BadRequest();
+            {
+                return Ok(editUserProfileDTO);
+            }
+            return BadRequest("Failed to update the profile");
         }
-
-
     }
 }
