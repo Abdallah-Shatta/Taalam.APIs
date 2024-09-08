@@ -34,7 +34,9 @@ namespace E_Learning.DAL.ServicesExtension
                 loggingBuilder.AddDebug();
             });
             /*------------------------------------------------------------------------*/
+
             var connectionString = configuration.GetConnectionString("mohsen");
+
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             /*------------------------------------------------------------------------*/

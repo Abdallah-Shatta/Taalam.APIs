@@ -74,8 +74,11 @@ namespace E_Learning.APIs
 
             //this for refresh token (any generated token in database)
             builder.Services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromHours(2));
+
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
+          
+
             //this for using cookie authentication
             builder.Services.ConfigureApplicationCookie(options =>
             {
