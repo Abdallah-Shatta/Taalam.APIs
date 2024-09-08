@@ -26,6 +26,25 @@ namespace E_Learning.APIs.Controllers
             return Ok(course);
         }
 
+        [HttpGet("content/{courseId}")]
+        [AllowAnonymous]
+        public IActionResult getCourseContentForUser([FromQuery] int userId, int courseId)
+
+        {
+            if (_courseManager.IsStudentEnrolled(userId, courseId)==false){
+                return BadRequest();
+            }
+            
+
+            var course = _courseManager.GetCourseContentForUser(userId, courseId);
+            if (course == null)
+            {
+                return NoContent();
+            }
+            return Ok(course);
+        }
+
+
         /////////////////////////////////////////////////////////////////////////////
         [AllowAnonymous]
 
