@@ -35,7 +35,9 @@ namespace E_Learning.DAL.ServicesExtension
             });
             /*------------------------------------------------------------------------*/
 
-            var connectionString = configuration.GetConnectionString("mohsen");
+            var connectionString = configuration.GetConnectionString("Yasser");
+
+
 
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
