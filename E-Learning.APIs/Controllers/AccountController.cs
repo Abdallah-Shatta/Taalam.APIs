@@ -1,4 +1,5 @@
-﻿using E_Learning.BL.DTO.User;
+﻿using E_Learning.BL.DTO.Mail;
+using E_Learning.BL.DTO.User;
 using E_Learning.BL.Enums;
 using E_Learning.BL.Managers.AccountManager;
 using E_Learning.BL.Managers.AuthenticationManager;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Web;
 
 namespace E_Learning.APIs.Controllers
 {
@@ -17,16 +19,15 @@ namespace E_Learning.APIs.Controllers
     public class AccountController : APIBaseController
     {
         private readonly IAccountManager _accountManager;
-        private readonly IMailManager _mailManager;
-        private readonly UserManager<User> _userManager;
+      
         public AccountController(IAccountManager accountManager,IMailManager mailManager, UserManager<User> userManager)
         {
             _accountManager = accountManager;
-            _mailManager = mailManager;
-            _userManager = userManager;
+         
+           
         }
         [HttpPost("Register")]
-        public async Task<ActionResult<User>> AccountRegister([FromBody] RegisterDTO registerDTO)
+        public async Task<IActionResult> AccountRegister([FromBody] RegisterDTO registerDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -39,7 +40,9 @@ namespace E_Learning.APIs.Controllers
             if (result.Succeeded)
             {
                 var user = await _accountManager.FindUserByEmailAsync(registerDTO.Email);
-                return Ok(user);
+                LoginDTO loginDTO = new LoginDTO() { Email = user.Email , Password =registerDTO.Password};
+                var authenticationResponse = await _accountManager.LoginAsync(loginDTO);
+                return Ok(authenticationResponse);
             }
             else
             {
@@ -53,6 +56,10 @@ namespace E_Learning.APIs.Controllers
             var users = _accountManager.GetAllUsers();
             return Ok(users);
         }
+
+
+
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
@@ -105,7 +112,7 @@ namespace E_Learning.APIs.Controllers
             return Ok(authenticationResponse);
         }
 
-        [HttpGet("forget-password")]
+        [HttpGet("forget-password")] //malhash lazma
 public async Task<IActionResult> forgetPasswordview(string email , string token)
         {
             var model = new ForgetPasswordDTO { Email = email, Token = token };
@@ -113,25 +120,19 @@ public async Task<IActionResult> forgetPasswordview(string email , string token)
         }
 
         [HttpPost("forget-password")]
-        public async Task<IActionResult> forgetPassword(ForgetPasswordDTO forgetPasswordDTO)
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordDTO forgetPasswordDTO)
         {
-            var user = await _userManager.FindByNameAsync(forgetPasswordDTO.Email);
-            if (user != null)
+            var (success, message) = await _accountManager.ForgetPasswordAsync(forgetPasswordDTO);
+            if (success)
             {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-                string link = $"http://localhost:5062/api/Account/ForgetPassword?token={token}&email={user.Email}";
-
-                //send the email with this url
-
-                return Ok($"the forget password email is sent ,token={token.ToString()}");
-
+                return Ok(new { Message = message });
             }
             else
             {
-                return Problem("error");
+                return Problem(message);
             }
         }
+    
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> resetpassword(ForgetPasswordDTO forgetPasswordDTO)
@@ -142,28 +143,15 @@ public async Task<IActionResult> forgetPasswordview(string email , string token)
                 return Problem(errorMessage);
             }
 
-            var user = await _userManager.FindByEmailAsync(forgetPasswordDTO.Email);
-            if (user != null)
+            var (success, message) = await _accountManager.ResetPasswordAsync(forgetPasswordDTO);
+            if (success)
             {
-                var resetpasswordresult = await _userManager.ResetPasswordAsync(user, forgetPasswordDTO.Token, forgetPasswordDTO.Password);
-                if (!resetpasswordresult.Succeeded)
-                {
-                    foreach(var error in resetpasswordresult.Errors)
-                    {
-                        ModelState.AddModelError(error.Code, error.Description);
-                    }
-                    return Ok(ModelState);
-                }
-                else
-                {
-                    return Ok("password has been reset suucessfully");
-                }
+                return Ok(new { Message = message });
             }
-            else{
-
-                return Problem("user doesnt exist ");
+            else
+            {
+                return BadRequest(new { Message = message });
             }
-
 
 
 

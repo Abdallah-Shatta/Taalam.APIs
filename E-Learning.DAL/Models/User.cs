@@ -27,6 +27,7 @@ namespace E_Learning.DAL.Models
 
         public DateTime RefreshTokenExpirationDateTime { get; set; }
 
+        public ICollection<Rating>? Ratings { get; set; }
 
     }
 }

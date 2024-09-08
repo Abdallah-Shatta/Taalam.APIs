@@ -1,16 +1,18 @@
-﻿using E_Learning.BL.Dtos.Category;
-using E_Learning.DAL.Models;
+﻿using E_Learning.BL.DTO.Category;
+using E_Learning.BL.DTO.Course;
+using E_Learning.BL.DTO.CourseDTO.CourseContentDTO;
+using E_Learning.BL.Dtos.Category;
 
 namespace E_Learning.BL.Managers.CategoryManager
 {
     public interface ICategoryManager
     {
-        IEnumerable<ReadCategoryDto> GetAllCategories();
+        IEnumerable<ReadCategoryDto> GetAll();
+        ReadCategoryDto GetById(int id);
+        CategoryWithCoursesDTO GetCategoryWithCourses(int id);
 
-        Category createCategory(CreateCategoryDto createCategoryDto);
-
-        Category updatecategory(int id, CreateCategoryDto createCategoryDto);
-
-        void deletecategory(int id);
+        //void CreateCategory(CreateCategoryDto createCategoryDto);
+        //void UpdateCategory(int id, CreateCategoryDto createCategoryDto);
+        //void DeleteCategory(int id);
     }
 }

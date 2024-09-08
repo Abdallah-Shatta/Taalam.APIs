@@ -5,5 +5,6 @@ namespace E_Learning.DAL.Repositories.CategoryRepository
 {
     public interface ICategoryRepository : IGenericRepository<Category>
     {
+        Category GetByIdWithCourses(int id);
     }
 }

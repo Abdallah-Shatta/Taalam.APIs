@@ -34,7 +34,8 @@ namespace E_Learning.DAL.ServicesExtension
                 loggingBuilder.AddDebug();
             });
             /*------------------------------------------------------------------------*/
-            var connectionString = configuration.GetConnectionString("Marwa");
+            var connectionString = configuration.GetConnectionString("ConStr");
+
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             /*------------------------------------------------------------------------*/
             //services.AddScoped<IAnswerRepository, AnswerRepository>();

@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using E_Learning.BL.Managers.CartManager;
 using E_Learning.BL.Managers.WishListManager;
+using E_Learning.BL.Managers.RatingManager;
 
 namespace E_Learning.BL.ServicesExtention
 {
@@ -21,6 +22,7 @@ namespace E_Learning.BL.ServicesExtention
             services.AddScoped<ICourseManager, CourseManager>();
             services.AddScoped<ICartManager, CartManager>();
             services.AddScoped<IWishListManager, WishListManager>();
+            services.AddScoped<IRatingManager, RatingManager>();
 
 
             services.AddScoped<IUserManager, UserManager>();

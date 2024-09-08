@@ -29,10 +29,10 @@ namespace E_Learning.APIs.Controllers
 
         [HttpDelete("RemoveWishListItem")]
 
-        public ActionResult DeleteWishListItems(int userId,int courseId)
+        public ActionResult<IEnumerable<CourseDTO>> DeleteWishListItems(int userId,int courseId)
         {
-            _wishListManager.RemoveItemFromWishList(userId, courseId);
-            return NoContent();
+           var wishListItems= _wishListManager.RemoveItemFromWishList(userId, courseId);
+            return Ok(wishListItems);
         }
     }
 }
