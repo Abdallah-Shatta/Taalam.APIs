@@ -68,34 +68,34 @@ namespace E_Learning.APIs
             builder.Services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromHours(10));
 
 
-            var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-            var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
+            //var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+            //var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
 
             /*------------------------------------------------------------------------*/
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;//bearer  ---
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;//bearer  ---
 
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                 options.TokenValidationParameters = new TokenValidationParameters()//this what property you want to valid
-                 {
-                     ValidateIssuer = true,
-                     ValidateLifetime = true,
-                     ValidateAudience = true,
-                     ValidateIssuerSigningKey = true,
-                     ValidIssuer = jwtSettings.GetSection("Issuer").Value,
-                     ValidAudience = jwtSettings.GetSection("Audience").Value,
-                     IssuerSigningKey = new SymmetricSecurityKey(key)
-                 };
-            });
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //.AddJwtBearer(options =>
+            //{
+            //    options.TokenValidationParameters = new TokenValidationParameters()//this what property you want to valid
+            //    {
+            //        ValidateIssuer = true,
+            //        ValidateLifetime = true,
+            //        ValidateAudience = true,
+            //        ValidateIssuerSigningKey = true,
+            //        ValidIssuer = jwtSettings.GetSection("Issuer").Value,
+            //        ValidAudience = jwtSettings.GetSection("Audience").Value,
+            //        IssuerSigningKey = new SymmetricSecurityKey(key)
+            //    };
+            //});
 
             /*------------------------------------------------------------------------*/
-            builder.Services.AddAuthorization(options =>
-            {
-            });
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //});
             /*------------------------------------------------------------------------*/
             var app = builder.Build();
             /*------------------------------------------------------------------------*/
@@ -106,15 +106,16 @@ namespace E_Learning.APIs
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            
+            // Serve static files
+            app.UseStaticFiles();
             /* app.UseCors("MyPolicy");*/
             app.UseCors();
             
             // app.MapIdentityApi<User>();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.MapControllers();
 
