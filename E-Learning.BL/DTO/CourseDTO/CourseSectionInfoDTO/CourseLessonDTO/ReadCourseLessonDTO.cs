@@ -11,6 +11,7 @@ namespace E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseLessonDTO
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Duration { get; set; }
+        public string? Content  { get; set; }
 
     }
 }

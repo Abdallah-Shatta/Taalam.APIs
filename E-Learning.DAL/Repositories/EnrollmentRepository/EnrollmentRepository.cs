@@ -9,5 +9,17 @@ namespace E_Learning.DAL.Repositories.EnrollmentRepository
         public EnrollmentRepository(AppDbContext _context) : base(_context)
         {
         }
+
+        public bool IsStudentEnrolled(int userId, int courseId)
+        {
+            var enrollment = _context.Enrollments.Where(e=>e.UserId==userId).Where(e=>e.CourseId==courseId).FirstOrDefault();
+
+            if (enrollment != null) {
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }

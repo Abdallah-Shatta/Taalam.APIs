@@ -25,6 +25,29 @@ namespace E_Learning.DAL.Repositories.CourseRepository
             return course;
         }
 
+        public (Course, Enrollment) GetCourseContentForUser(int userId, int courseId)
+        {
+            var course = _context.Courses
+                .Include(c => c.Sections)
+                    .ThenInclude(s => s.Lessons)
+                .Include(c => c.Sections)
+                    .ThenInclude(s => s.Quizes)
+                .FirstOrDefault(c => c.Id == courseId);
+
+            var enrollment = _context.Enrollments
+                .FirstOrDefault(e => e.CourseId == courseId && e.UserId == userId);
+
+            if(course == null || enrollment == null)
+            {
+                return (null, null);
+            }
+
+            return (course, enrollment);
+
+        }
+
+
+
         /////////////////////////////////////////////////////////////
         public IEnumerable<Course> GetAllCourses()
         {
