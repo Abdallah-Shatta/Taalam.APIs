@@ -13,6 +13,6 @@ namespace E_Learning.BL.Managers.CartManager
     {
         IEnumerable<ReadCourseDTO> GetCartItems(int userId);
         CartTotalDTO GetCartTotal(int userId);
-        void RemoveItemFromCart(int userId, int courseId);
+        IEnumerable<ReadCourseDTO> RemoveItemFromCart(int userId, int courseId);
     }
 }

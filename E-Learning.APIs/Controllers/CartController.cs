@@ -27,10 +27,10 @@ namespace E_Learning.APIs.Controllers
         }
 
         [HttpDelete("RemoveCartItem")]
-        public ActionResult RemoveCartItem(int userId, int courseId)
+        public ActionResult<IEnumerable<CourseDTO>> RemoveCartItem(int userId, int courseId)
         {
-            _cartManager.RemoveItemFromCart(userId, courseId);
-            return NoContent();
+           var cartItems= _cartManager.RemoveItemFromCart(userId, courseId);
+            return Ok(cartItems);
         }
 
 
