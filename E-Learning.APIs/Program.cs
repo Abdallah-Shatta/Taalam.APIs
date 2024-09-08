@@ -85,6 +85,7 @@ namespace E_Learning.APIs
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
 
 
+
             //this for using cookie authentication
             builder.Services.ConfigureApplicationCookie(options =>
             {
