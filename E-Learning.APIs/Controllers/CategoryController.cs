@@ -19,7 +19,7 @@ namespace E_Learning.APIs.Controllers
             _categoryManager = categoryManager;
         }
         /*------------------------------------------------------------------------*/
-        [AllowAnonymous]
+     
         [HttpGet]
         public ActionResult<IEnumerable<ReadCategoryDto>> GetAll()
         {
@@ -27,7 +27,8 @@ namespace E_Learning.APIs.Controllers
             return Ok(categories);
         }
         /*------------------------------------------------------------------------*/
-        [AllowAnonymous]
+
+
         [HttpGet("{id}")]
         public ActionResult<CategoryWithCoursesDTO> GetCoursesByCategoryId(int id)
         {

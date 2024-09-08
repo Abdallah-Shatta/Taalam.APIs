@@ -21,5 +21,9 @@ namespace E_Learning.BL.Managers.AccountManager
         Task<AuthenticationResponseDTO> LoginAsync(LoginDTO loginDTO);
         Task<AuthenticationResponseDTO> GenerateNewJwtTokenAsync(TokenModel tokenModel);
 
+        Task<(bool Success, string Message)> ForgetPasswordAsync(ForgetPasswordDTO forgetPasswordDTO);
+
+        Task<(bool Success, string Message)> ResetPasswordAsync(ForgetPasswordDTO forgetPasswordDTO);
+
     }
 }
