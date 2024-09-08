@@ -24,23 +24,28 @@ namespace E_Learning.BL.Managers.CartManager
             return _unitOfWork.CartRepository.GetCartItemsByUserId(userId)
                 .Select(c => new ReadCourseDTO
                 {
-                    Id = c.Id,
+                    Id = c.Course.Id,
                     Title = c.Course.Title,
                     Price = c.Course.Price,
-                    CoverPicture =c.Course.CoverPicture,
+                    CoverPicture = c.Course.CoverPicture,
+                    InstructorName = c.Course.User.FName + ' ' + c.Course.User.LName
                 });
         }
 
 
 
-        public void RemoveItemFromCart(int userId, int courseId)
+        public IEnumerable<ReadCourseDTO> RemoveItemFromCart(int userId, int courseId)
         {
             var cartItem = _unitOfWork.CartRepository.GetCartItem(userId, courseId);
             if (cartItem != null)
             {
                 _unitOfWork.CartRepository.Delete(cartItem);
+                //GetCartTotal(userId);
                 _unitOfWork.SaveChanges();
+
             }
+
+            return GetCartItems(userId);
         }
         public CartTotalDTO GetCartTotal(int userId)
         {

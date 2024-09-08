@@ -23,14 +23,15 @@ namespace E_Learning.BL.Managers.WishListManager
             return _unitOfWork.WishListRepository.GetWishListItemsByUserId(userId)
                 .Select(c => new ReadCourseDTO
                 {
-                    Id = c.Id,
+                    Id = c.Course.Id,
                     Title = c.Course.Title,
                     Price = c.Course.Price,
                     CoverPicture = c.Course.CoverPicture,
+                    InstructorName = c.Course.User.FName + ' ' + c.Course.User.LName
 
                 });
         }
-        public void RemoveItemFromWishList(int userId, int courseId)
+        public IEnumerable<ReadCourseDTO> RemoveItemFromWishList(int userId, int courseId)
         {
            var WishListItem= _unitOfWork.WishListRepository.GetWishListItem(userId, courseId);
             if (WishListItem is not null) 
@@ -38,6 +39,7 @@ namespace E_Learning.BL.Managers.WishListManager
                 _unitOfWork.WishListRepository.Delete(WishListItem);
                 _unitOfWork.SaveChanges();
             }
+            return GetWishListItems(userId);
         }
     }
 }

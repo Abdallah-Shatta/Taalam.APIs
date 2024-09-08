@@ -19,7 +19,7 @@ namespace E_Learning.DAL.Repositories.WishListRepository
 
         public IEnumerable<WishList> GetWishListItemsByUserId(int userId)
         {
-            return _context.WishList.Include(c => c.Course).Where(c => c.UserId == userId);
+            return _context.WishList.Include(c => c.Course).ThenInclude(course => course.User).Where(c => c.UserId == userId);
         }
         public WishList? GetWishListItem(int userId, int courseId)
         {

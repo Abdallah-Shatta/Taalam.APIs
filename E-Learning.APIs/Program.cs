@@ -28,12 +28,7 @@ namespace E_Learning.APIs
                 //Authorization policy for authunticating all endpoints
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
-
-
-
             });
-
-
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -80,10 +75,9 @@ namespace E_Learning.APIs
             //this for refresh token (any generated token in database)
             builder.Services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromHours(2));
 
-
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
-
+          
 
             //this for using cookie authentication
             builder.Services.ConfigureApplicationCookie(options =>
@@ -140,8 +134,10 @@ namespace E_Learning.APIs
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            
-    
+            // Serve static files
+            app.UseStaticFiles();
+          
+            /* app.UseCors("MyPolicy");*/
             app.UseCors();
             
            
