@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Net.Smtp;
-using E_Learning.BL.Configuration;
+
 using MailKit.Security;
 using MimeKit.Text;
 using SendGrid.Helpers.Mail;

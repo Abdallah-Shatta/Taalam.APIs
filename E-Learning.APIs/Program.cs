@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
-using E_Learning.BL.Configuration;
+
 
 namespace E_Learning.APIs
 {
@@ -32,7 +32,7 @@ namespace E_Learning.APIs
 
 
             //for configiring the mail
-            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+           // builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -75,7 +75,9 @@ namespace E_Learning.APIs
                 );*/
 
             /*------------------------------------------------------------------------*/
-            builder.Services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromHours(10));
+
+            //this for refresh token (any generated token in database)
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(opts => opts.TokenLifespan = TimeSpan.FromHours(2));
 
 
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
