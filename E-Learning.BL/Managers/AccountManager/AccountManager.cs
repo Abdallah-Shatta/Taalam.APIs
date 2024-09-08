@@ -171,25 +171,57 @@ namespace E_Learning.BL.Managers.AccountManager
 
                 // HTML template for the email
                 string htmlBody = $@"
-                    <html>
-                    <head>
-                        <style>
-                            .container {{ /* Your email styles here */ }}
-                            .button {{ /* Your button styles here */ }}
-                        </style>
-                    </head>
-                    <body>
-                        <div class='container'>
-                            <h2>Password Reset Request</h2>
-                            <p class='message'>You have requested to reset your password. Click the button below to proceed.</p>
-                            <a href='{link}' class='button'>Reset Password</a>
-                            <p>If you did not request a password reset, please ignore this email.</p>
-                            <div class='footer'>
-                                <p>Thank you,<br>The E-Learning Team</p>
-                            </div>
-                        </div>
-                    </body>
-                    </html>";
+        <html>
+        <head>
+            <style>
+                .container {{
+                    width: 80%;
+                    margin: 0 auto;
+                    background-color: #f9f9f9;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                }}
+                .button {{
+                    background-color: #4CAF50;
+                    border: none;
+                    color: white;
+                    padding: 10px 20px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 20px 0;
+                    border-radius: 5px;
+                }}
+                .button:hover {{
+                    background-color: #45a049;
+                }}
+                .message {{
+                    font-size: 18px;
+                    color: #333;
+                }}
+                .footer {{
+                    margin-top: 20px;
+                    font-size: 12px;
+                    color: #999;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h2>Password Reset Request</h2>
+                <p class='message'>You have requested to reset your password. Click the button below to proceed.</p>
+                <a href='{link}' class='button'>Reset Password</a>
+                <p>If you did not request a password reset, please ignore this email.</p>
+                <div class='footer'>
+                    <p>Thank you,<br>The E-Learning Team</p>
+                </div>
+            </div>
+        </body>
+        </html>";
 
                 MailData mailData = new MailData
                 {
