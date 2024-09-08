@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace E_Learning.APIs.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
+    [AllowAnonymous]
     public class CategoryController :APIBaseController
     {
         /*------------------------------------------------------------------------*/

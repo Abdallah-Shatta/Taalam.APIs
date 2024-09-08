@@ -12,6 +12,6 @@ namespace E_Learning.BL.Managers.WishListManager
     public interface IWishListManager
     {
         IEnumerable<ReadCourseDTO> GetWishListItems(int userId);
-        public void RemoveItemFromWishList(int userId, int courseId);
+        IEnumerable<ReadCourseDTO>  RemoveItemFromWishList(int userId, int courseId);
     }
 }
