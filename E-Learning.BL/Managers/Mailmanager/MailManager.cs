@@ -8,15 +8,13 @@ using E_Learning.BL.DTO.Mail;
 using E_Learning.BL.DTO.User;
 using E_Learning.DAL.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.Options;
+
 using MimeKit;
 using MailKit.Net.Smtp;
 
 using MailKit.Security;
 using MimeKit.Text;
-using SendGrid.Helpers.Mail;
+
 using Microsoft.Extensions.Configuration;
 
 namespace E_Learning.BL.Managers.Mailmanager

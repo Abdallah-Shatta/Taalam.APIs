@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 
 namespace E_Learning.APIs
@@ -24,15 +25,15 @@ namespace E_Learning.APIs
 
             builder.Services.AddControllers(options =>
             {
-                //Authorization policy
-                //var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                //options.Filters.Add(new AuthorizeFilter(policy));
+                //Authorization policy for authunticating all endpoints
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+
+
 
             });
 
 
-            //for configiring the mail
-           // builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -51,7 +52,7 @@ namespace E_Learning.APIs
                 options.AddDefaultPolicy(policyBuilder =>
                 {
                     policyBuilder
-                    .WithOrigins("http://localhost:4200")
+                    .WithOrigins("*")
                     .WithHeaders("Authorization", "origin", "accept", "content-type")
                     .WithMethods("GET", "POST", "PUT", "DELETE");
                 });
@@ -83,32 +84,53 @@ namespace E_Learning.APIs
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
 
+
+            //this for using cookie authentication
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                // Set cookie expiration time
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+
+             
+                options.Cookie.Name = "taalam";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.Lax;
+
+                // Configure other options as needed
+            });
             /*------------------------------------------------------------------------*/
+
+            /*------------------------------------------------------------------------*/
+            // Combine JWT and Cookie Authentication
             builder.Services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;//bearer  ---
-
+                // Default authentication scheme
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  ///bearer
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(options =>
+            .AddJwtBearer("jwt",options =>
             {
-                 options.TokenValidationParameters = new TokenValidationParameters()//this what property you want to valid
-                 {
-                     ValidateIssuer = true,
-                     ValidateLifetime = true,
-                     ValidateAudience = true,
-                     ValidateIssuerSigningKey = true,
-                     ValidIssuer = jwtSettings.GetSection("Issuer").Value,
-                     ValidAudience = jwtSettings.GetSection("Audience").Value,
-                     IssuerSigningKey = new SymmetricSecurityKey(key)
-                 };
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.GetSection("Issuer").Value,
+                    ValidAudience = jwtSettings.GetSection("Audience").Value,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateLifetime = true
+                };
             });
+            //this for adding cookie authorization  
+            builder.Services.AddAuthorization(b =>
+            {
+                b.DefaultPolicy = new AuthorizationPolicyBuilder()
+                //IdentityConstants.ApplicationScheme is the cookie authentication
+                .RequireAuthenticatedUser().AddAuthenticationSchemes(IdentityConstants.ApplicationScheme, "jwt").Build();
 
-            /*------------------------------------------------------------------------*/
-            builder.Services.AddAuthorization(options =>
-            {
             });
-            /*------------------------------------------------------------------------*/
+           
+
             var app = builder.Build();
             /*------------------------------------------------------------------------*/
 
@@ -119,10 +141,10 @@ namespace E_Learning.APIs
                 app.UseSwaggerUI();
             }
             
-            /* app.UseCors("MyPolicy");*/
+    
             app.UseCors();
             
-            // app.MapIdentityApi<User>();
+           
 
             app.UseAuthentication();
 
