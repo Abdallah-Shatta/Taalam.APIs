@@ -65,10 +65,10 @@ namespace E_Learning.BL.Managers.AccountManager
                 await _userManager.AddToRoleAsync(user, roleName);
 
                 // Sign-in the user
-                await _signInManager.SignInAsync(user, isPersistent: false);
+             //   await _signInManager.SignInAsync(user, isPersistent: false);
 
                 // Generate JWT token and refresh token
-                var authenticationResponse = _jwtManager.createJwtToken(user);
+                var authenticationResponse = await _jwtManager.createJwtToken(user);
                 user.RefreshToken = authenticationResponse.RefreshToken;
                 user.RefreshTokenExpirationDateTime = authenticationResponse.RefreshTokenExpirationDateTime;
 
@@ -96,7 +96,7 @@ namespace E_Learning.BL.Managers.AccountManager
 
         public async Task<AuthenticationResponseDTO> GenerateNewJwtTokenAsync(User user, TokenModel tokenModel)
         {
-            var authenticationResponse = _jwtManager.createJwtToken(user);
+            var authenticationResponse = await _jwtManager.createJwtToken(user);
             user.RefreshToken = authenticationResponse.RefreshToken;
             user.RefreshTokenExpirationDateTime = authenticationResponse.RefreshTokenExpirationDateTime;
 
@@ -118,18 +118,18 @@ namespace E_Learning.BL.Managers.AccountManager
 
         public async Task<AuthenticationResponseDTO> LoginAsync(LoginDTO loginDTO)
         {
-            var result = await _signInManager.PasswordSignInAsync(loginDTO.Email, loginDTO.Password, isPersistent: false, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(loginDTO.Email, loginDTO.Password, isPersistent: true, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(loginDTO.Email);
-
+     
                 if (user == null)
                 {
                     return null;
                 }
 
-                var authenticationResponse = _jwtManager.createJwtToken(user);
+                var authenticationResponse =await _jwtManager.createJwtToken(user);
                 user.RefreshToken = authenticationResponse.RefreshToken;
                 user.RefreshTokenExpirationDateTime = authenticationResponse.RefreshTokenExpirationDateTime;
                 await _userManager.UpdateAsync(user);

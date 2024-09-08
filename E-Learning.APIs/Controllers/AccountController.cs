@@ -19,12 +19,11 @@ namespace E_Learning.APIs.Controllers
     public class AccountController : APIBaseController
     {
         private readonly IAccountManager _accountManager;
-        private readonly IMailManager _mailManager;
       
         public AccountController(IAccountManager accountManager,IMailManager mailManager, UserManager<User> userManager)
         {
             _accountManager = accountManager;
-            _mailManager = mailManager;
+         
            
         }
         [HttpPost("Register")]
@@ -57,6 +56,10 @@ namespace E_Learning.APIs.Controllers
             var users = _accountManager.GetAllUsers();
             return Ok(users);
         }
+
+
+
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)

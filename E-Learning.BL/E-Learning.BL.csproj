@@ -19,4 +19,8 @@
     <ProjectReference Include="..\E-Learning.DAL\E-Learning.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+
 </Project>
