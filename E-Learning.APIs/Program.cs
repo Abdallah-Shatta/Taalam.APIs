@@ -78,6 +78,7 @@ namespace E_Learning.APIs
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
           
+
             //this for using cookie authentication
             builder.Services.ConfigureApplicationCookie(options =>
             {
@@ -141,9 +142,9 @@ namespace E_Learning.APIs
             
            
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.MapControllers();
 
