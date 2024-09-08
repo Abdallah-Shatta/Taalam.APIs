@@ -11,7 +11,7 @@ namespace E_Learning.BL.Managers.AuthenticationManager
 {
     public interface IJwtManager
     {
-        AuthenticationResponseDTO createJwtToken(User user);
+        Task<AuthenticationResponseDTO> createJwtToken(User user);
 
         ClaimsPrincipal GetClaimsPrinciplFromJwtToken(string? token );
 

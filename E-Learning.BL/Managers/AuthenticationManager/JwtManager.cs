@@ -1,5 +1,6 @@
 ﻿using E_Learning.BL.DTO.User;
 using E_Learning.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -16,56 +17,58 @@ namespace E_Learning.BL.Managers.AuthenticationManager
     public class JwtManager : IJwtManager
     {
         private readonly IConfiguration _configuration;
-
-        public JwtManager(IConfiguration configuration)
+        private readonly UserManager<User> _userManager;
+        public JwtManager(IConfiguration configuration, UserManager<User> userManager)
         {
             _configuration = configuration;
+            _userManager = userManager;
+
         }
-        public AuthenticationResponseDTO createJwtToken(User user)
+        public async Task<AuthenticationResponseDTO> createJwtToken(User user)
         {
-            // Create a DateTime object representing the token expiration time by adding the number of minutes specified in the configuration to the current UTC time.
+            // Create a DateTime object representing the token expiration time
             DateTime expiration = DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["JwtSettings:ExpiryMinutes"]));
 
-            // Create an array of Claim objects representing the user's claims, such as their ID, name, email, etc.
+            // Get the user's roles from the UserManager
+            var roles = await _userManager.GetRolesAsync(user);
+
+            // Create a list of claims representing the user's information
             var claims = new List<Claim>
-        {
-           new Claim(JwtRegisteredClaimNames.Sub , user.FName),
-           new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()),
-           new Claim(ClaimTypes.NameIdentifier , user.Id.ToString()),
-       };
+    {
+        new Claim(JwtRegisteredClaimNames.Sub , user.FName),
+        new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.NameIdentifier , user.Id.ToString())
+    };
 
+            // Add roles to claims
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
-            // Create a SymmetricSecurityKey object using the key specified in the configuration.
-            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("2846ae81-0119-49c8-a6ad-21f693a61ad3-7e85d41a-2627-4f8b-bfe0-30de8eb81fd5"));
+            // Create the signing credentials using the secret key from configuration
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            // Create a SigningCredentials object with the security key and the HMACSHA256 algorithm.
-            SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            // Create a JwtSecurityToken object with the given issuer, audience, claims, expiration, and signing credentials.
-            JwtSecurityToken tokenGenerator = new JwtSecurityToken(
-           issuer: _configuration["JwtSettings:Issuer"],
-            audience: _configuration["JwtSettings:Audience"],
-            expires: expiration,
-            signingCredentials: signingCredentials,
-            claims : claims
-       
-      
+            // Create the token
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JwtSettings:Issuer"],
+                audience: _configuration["JwtSettings:Audience"],
+                claims: claims,
+                expires: expiration,
+                signingCredentials: creds
             );
 
-            // Create a JwtSecurityTokenHandler object and use it to write the token as a string.
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            string token = tokenHandler.WriteToken(tokenGenerator);
-
-            // Create and return an AuthenticationResponse object containing the token, user email, user name, and token expiration time.
-            return new AuthenticationResponseDTO()
+            // Return the JWT token and other related info
+            var response = new AuthenticationResponseDTO
             {
-                Token = token,
-                Email = user.Email,
-                FName = user.FName,
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration,
-                RefreshToken = GenerateRefreshToken(),
-                RefreshTokenExpirationDateTime = DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["RefreshToken:EXPIRATION_MINUTES"]))
+                RefreshToken = GenerateRefreshToken(), // Assuming you have a method to generate a refresh token
+                RefreshTokenExpirationDateTime = DateTime.Now.AddDays(7) // Example refresh token expiry
             };
+
+            return response;
         }
 
         public ClaimsPrincipal GetClaimsPrinciplFromJwtToken(string? token)
