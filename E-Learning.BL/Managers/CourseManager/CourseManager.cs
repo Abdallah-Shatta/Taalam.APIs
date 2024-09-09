@@ -82,63 +82,63 @@ namespace E_Learning.BL.Managers.CourseManager
             return courseDetails;
         }
 
-            public ReadCourseContentDTO GetCourseContentForUser(int userId, int courseId) 
+        public ReadCourseContentDTO GetCourseContentForUser(int userId, int courseId)
+        {
+
+            (var course, var ennrollment) = _unitOfWork.CourseRepository.GetCourseContentForUser(userId, courseId);
+
+
+            ReadCourseContentDTO couresResult = new ReadCourseContentDTO
             {
+                Id = course.Id,
+                TeacherId = course.UserId,
+                Duration = course.Duration,
 
-                (var course, var ennrollment) = _unitOfWork.CourseRepository.GetCourseContentForUser(userId, courseId);
-
-
-                ReadCourseContentDTO couresResult = new ReadCourseContentDTO
+                Sections = course.Sections == null ? null : course.Sections.Select(section => new ReadCourseSectionInfoDTO
                 {
-                    Id = course.Id,
-                    TeacherId = course.UserId,
-                    Duration = course.Duration,
+                    Id = section.Id,
+                    SectionNumber = section.SectionNumber,
+                    Title = section.Title,
+                    LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
 
-                    Sections = course.Sections == null ? null : course.Sections.Select(section => new ReadCourseSectionInfoDTO
+                    Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
+
                     {
-                        Id = section.Id,
-                        SectionNumber = section.SectionNumber,
-                        Title = section.Title,
-                        LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
+                        Id = lesson.Id,
+                        Title = lesson.Title,
+                        Duration = lesson.Duration,
+                        Content = lesson.Content,
 
-                        Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
-
-                        {
-                            Id = lesson.Id,
-                            Title = lesson.Title,
-                            Duration = lesson.Duration,
-                            Content = lesson.Content,
-
-                        }).ToList(),
-                        Quizes = section.Quizes == null ? null : section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
-                        {
-                            Id = quiz.Id,
-                            Title = quiz.Title,
-
-
-                        }).ToList(),
                     }).ToList(),
-
-                    StudentEnnrollment = new CourseEnrollmentInfoDTO
+                    Quizes = section.Quizes == null ? null : section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
                     {
-                        ProgressPercentage = ennrollment.ProgressPercentage,
-                        CompletedLessons = ennrollment.CompletedLessons,
-                        EnrollmentDate = ennrollment.EnrollmentDate,
-                    }
+                        Id = quiz.Id,
+                        Title = quiz.Title,
+
+
+                    }).ToList(),
+                }).ToList(),
+
+                StudentEnnrollment = new CourseEnrollmentInfoDTO
+                {
+                    ProgressPercentage = ennrollment.ProgressPercentage,
+                    CompletedLessons = ennrollment.CompletedLessons,
+                    EnrollmentDate = ennrollment.EnrollmentDate,
+                }
 
 
 
 
-                };
+            };
 
-                return couresResult;
+            return couresResult;
 
 
         }
 
         public bool IsStudentEnrolled(int userId, int courseId)
         {
-           return _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId);
+            return _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -155,7 +155,8 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-                    CategoryName = c.Category.Name
+                    CategoryName = c.Category.Name,
+                    Duration = c.Duration,
                 });
         }
 
@@ -171,7 +172,9 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-                    CategoryName = c.Category?.Name
+                    CategoryName = c.Category?.Name,
+                    Duration = c.Duration,
+
                 });
         }
 
@@ -187,7 +190,9 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-                    CategoryName = c.Category.Name
+                    CategoryName = c.Category.Name,
+                    Duration = c.Duration,
+
                 });
         }
     }
