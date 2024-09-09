@@ -166,12 +166,12 @@ namespace E_Learning.BL.Managers.CourseManager
                 {
                     Id = c.Id,
                     Title = c.Title,
-                    InstructorName = c.User.FName + " " + c.User.LName,
+                    InstructorName = c.User?.FName + " " + c.User?.LName,
                     Description = c.Description,
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-                    CategoryName = c.Category.Name
+                    CategoryName = c.Category?.Name
                 });
         }
 

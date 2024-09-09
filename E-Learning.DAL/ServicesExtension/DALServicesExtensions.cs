@@ -35,7 +35,7 @@ namespace E_Learning.DAL.ServicesExtension
             });
             /*------------------------------------------------------------------------*/
 
-            var connectionString = configuration.GetConnectionString("Yasser");
+            var connectionString = configuration.GetConnectionString("Marwa");
 
 
 
