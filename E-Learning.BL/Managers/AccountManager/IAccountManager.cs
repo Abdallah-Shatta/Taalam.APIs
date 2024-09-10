@@ -25,5 +25,8 @@ namespace E_Learning.BL.Managers.AccountManager
 
         Task<(bool Success, string Message)> ResetPasswordAsync(ForgetPasswordDTO forgetPasswordDTO);
 
+        Task<IdentityResult> RegisterUserWithGoogle(GoogleregisterDTO googleRegisterDTO);
+
+        Task<AuthenticationResponseDTO> LoginWithGoogle(User user);
     }
 }
