@@ -18,5 +18,7 @@ namespace E_Learning.BL.DTO.Course
         public decimal? Rate { get; set; }
         public string? CoverPicture { get; set; }
         public string CategoryName { get; set; }
+        public string? Duration { get; set; }
+
     }
 }

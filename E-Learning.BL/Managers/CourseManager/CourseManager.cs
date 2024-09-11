@@ -104,6 +104,26 @@ namespace E_Learning.BL.Managers.CourseManager
                     LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
 
                     Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
+        public ReadCourseContentDTO GetCourseContentForUser(int userId, int courseId)
+        {
+
+            (var course, var ennrollment) = _unitOfWork.CourseRepository.GetCourseContentForUser(userId, courseId);
+
+
+            ReadCourseContentDTO couresResult = new ReadCourseContentDTO
+            {
+                Id = course.Id,
+                TeacherId = course.UserId,
+                Duration = course.Duration,
+
+                Sections = course.Sections == null ? null : course.Sections.Select(section => new ReadCourseSectionInfoDTO
+                {
+                    Id = section.Id,
+                    SectionNumber = section.SectionNumber,
+                    Title = section.Title,
+                    LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
+
+                    Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
 
                     {
                         Id = lesson.Id,
@@ -117,6 +137,33 @@ namespace E_Learning.BL.Managers.CourseManager
                         Id = quiz.Id,
                         Title = quiz.Title,
 
+                    {
+                        Id = lesson.Id,
+                        Title = lesson.Title,
+                        Duration = lesson.Duration,
+                        Content = lesson.Content,
+
+                    }).ToList(),
+                    Quizes = section.Quizes == null ? null : section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
+                    {
+                        Id = quiz.Id,
+                        Title = quiz.Title,
+
+                }).ToList(),
+
+                StudentEnnrollment = new CourseEnrollmentInfoDTO
+                {
+                    ProgressPercentage = ennrollment.ProgressPercentage,
+                    CompletedLessons = ennrollment.CompletedLessons,
+                    EnrollmentDate = ennrollment.EnrollmentDate,
+                }
+
+
+
+
+            };
+
+            return couresResult;
 
                     }).ToList(),
                 }).ToList(),
@@ -133,7 +180,7 @@ namespace E_Learning.BL.Managers.CourseManager
 
         public bool IsStudentEnrolled(int userId, int courseId)
         {
-           return _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId);
+            return _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId);
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -150,7 +197,8 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-                    CategoryName = c.Category.Name
+                    CategoryName = c.Category.Name,
+                    Duration = c.Duration,
                 });
         }
 
@@ -161,12 +209,14 @@ namespace E_Learning.BL.Managers.CourseManager
                 {
                     Id = c.Id,
                     Title = c.Title,
-                    InstructorName = c.User.FName + " " + c.User.LName,
+                    InstructorName = c.User?.FName + " " + c.User?.LName,
                     Description = c.Description,
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-                    CategoryName = c.Category.Name
+                    CategoryName = c.Category?.Name,
+                    Duration = c.Duration,
+
                 });
         }
 
@@ -182,7 +232,9 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-                    CategoryName = c.Category.Name
+                    CategoryName = c.Category.Name,
+                    Duration = c.Duration,
+
                 });
         }
 

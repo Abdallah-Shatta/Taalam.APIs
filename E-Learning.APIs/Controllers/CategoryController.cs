@@ -9,9 +9,9 @@ namespace E_Learning.APIs.Controllers
 {
 
 
-    //[Authorize]
+    [Authorize]
 
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public class CategoryController :APIBaseController
     {
         /*------------------------------------------------------------------------*/
