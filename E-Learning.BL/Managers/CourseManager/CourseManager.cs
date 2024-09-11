@@ -84,26 +84,6 @@ namespace E_Learning.BL.Managers.CourseManager
             return courseDetails;
         }
 
-        public ReadCourseContentDTO GetCourseContentForUser(int userId, int courseId) 
-        {
-
-            (var course, var ennrollment) = _unitOfWork.CourseRepository.GetCourseContentForUser(userId, courseId);
-
-
-            ReadCourseContentDTO couresResult = new ReadCourseContentDTO
-            {
-                Id = course.Id,
-                TeacherId = course.UserId,
-                Duration = course.Duration,
-
-                Sections = course.Sections == null ? null : course.Sections.Select(section => new ReadCourseSectionInfoDTO
-                {
-                    Id = section.Id,
-                    SectionNumber = section.SectionNumber,
-                    Title = section.Title,
-                    LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
-
-                    Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
         public ReadCourseContentDTO GetCourseContentForUser(int userId, int courseId)
         {
 
@@ -124,7 +104,6 @@ namespace E_Learning.BL.Managers.CourseManager
                     LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
 
                     Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
-
                     {
                         Id = lesson.Id,
                         Title = lesson.Title,
@@ -137,35 +116,7 @@ namespace E_Learning.BL.Managers.CourseManager
                         Id = quiz.Id,
                         Title = quiz.Title,
 
-                    {
-                        Id = lesson.Id,
-                        Title = lesson.Title,
-                        Duration = lesson.Duration,
-                        Content = lesson.Content,
-
-                    }).ToList(),
-                    Quizes = section.Quizes == null ? null : section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
-                    {
-                        Id = quiz.Id,
-                        Title = quiz.Title,
-
-                }).ToList(),
-
-                StudentEnnrollment = new CourseEnrollmentInfoDTO
-                {
-                    ProgressPercentage = ennrollment.ProgressPercentage,
-                    CompletedLessons = ennrollment.CompletedLessons,
-                    EnrollmentDate = ennrollment.EnrollmentDate,
-                }
-
-
-
-
-            };
-
-            return couresResult;
-
-                    }).ToList(),
+                    }).ToList()
                 }).ToList(),
 
                 StudentEnnrollment = new CourseEnrollmentInfoDTO
@@ -175,6 +126,7 @@ namespace E_Learning.BL.Managers.CourseManager
                     EnrollmentDate = ennrollment.EnrollmentDate,
                 }
             };
+
             return couresResult;
         }
 
