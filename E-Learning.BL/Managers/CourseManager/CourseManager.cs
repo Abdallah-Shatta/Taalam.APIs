@@ -3,7 +3,9 @@ using E_Learning.BL.DTO.CourseDTO.CourseContentDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseLessonDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseQuizInfoDTO;
+using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
 using E_Learning.BL.DTO.CourseDTO.InstructorInfoDTO;
+using E_Learning.BL.DTO.User;
 using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
 using Microsoft.AspNetCore.Authorization;
@@ -82,6 +84,26 @@ namespace E_Learning.BL.Managers.CourseManager
             return courseDetails;
         }
 
+        public ReadCourseContentDTO GetCourseContentForUser(int userId, int courseId) 
+        {
+
+            (var course, var ennrollment) = _unitOfWork.CourseRepository.GetCourseContentForUser(userId, courseId);
+
+
+            ReadCourseContentDTO couresResult = new ReadCourseContentDTO
+            {
+                Id = course.Id,
+                TeacherId = course.UserId,
+                Duration = course.Duration,
+
+                Sections = course.Sections == null ? null : course.Sections.Select(section => new ReadCourseSectionInfoDTO
+                {
+                    Id = section.Id,
+                    SectionNumber = section.SectionNumber,
+                    Title = section.Title,
+                    LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
+
+                    Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
         public ReadCourseContentDTO GetCourseContentForUser(int userId, int courseId)
         {
 
@@ -115,8 +137,18 @@ namespace E_Learning.BL.Managers.CourseManager
                         Id = quiz.Id,
                         Title = quiz.Title,
 
+                    {
+                        Id = lesson.Id,
+                        Title = lesson.Title,
+                        Duration = lesson.Duration,
+                        Content = lesson.Content,
 
                     }).ToList(),
+                    Quizes = section.Quizes == null ? null : section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
+                    {
+                        Id = quiz.Id,
+                        Title = quiz.Title,
+
                 }).ToList(),
 
                 StudentEnnrollment = new CourseEnrollmentInfoDTO
@@ -133,7 +165,17 @@ namespace E_Learning.BL.Managers.CourseManager
 
             return couresResult;
 
+                    }).ToList(),
+                }).ToList(),
 
+                StudentEnnrollment = new CourseEnrollmentInfoDTO
+                {
+                    ProgressPercentage = ennrollment.ProgressPercentage,
+                    CompletedLessons = ennrollment.CompletedLessons,
+                    EnrollmentDate = ennrollment.EnrollmentDate,
+                }
+            };
+            return couresResult;
         }
 
         public bool IsStudentEnrolled(int userId, int courseId)
@@ -194,6 +236,45 @@ namespace E_Learning.BL.Managers.CourseManager
                     Duration = c.Duration,
 
                 });
+        }
+
+        public (bool success , string message) UploadCourse(UploadCourseDTO uploadCourse)
+        {
+            #region trying
+            try
+            {
+                Course uploadedCourse = new Course
+                {
+                    UserId = uploadCourse.UserId,
+                    Title = uploadCourse.Title,
+                    Description = uploadCourse.Description,
+                    Duration = uploadCourse.Duration,
+                    CategoryId = _unitOfWork.CategoryRepository.GetCategoryIdByName(uploadCourse.CourseCategory),
+                    CoverPicture = uploadCourse.CoverPicture,
+                    Price = uploadCourse.Price,
+                    Rate = 0,
+                    CreationDate = DateTime.Now,
+                    SectionsNo = uploadCourse.SectionsNo,
+                    Sections = uploadCourse == null ? null : uploadCourse.Sections.Select(section => new Section
+                    {
+                        Title = section.SectionTitle,
+                        LessonsNo = section.NumberOfLessons,
+                        Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new Lesson
+                        {
+                            Title = lesson.LessonTitle,
+                            Content = lesson.LessonUrl
+                        }).ToList()
+                    }).ToList()
+                };
+                _unitOfWork.CourseRepository.Create(uploadedCourse);
+                _unitOfWork.SaveChanges();
+                return (true, "Course Uploaded Successfully");
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message);
+            }
+            #endregion
         }
     }
 }
