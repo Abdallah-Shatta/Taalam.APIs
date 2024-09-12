@@ -35,9 +35,10 @@ namespace E_Learning.BL.Managers.AuthenticationManager
             // Create a list of claims representing the user's information
             var claims = new List<Claim>
     {
+            new Claim(ClaimTypes.NameIdentifier , user.Id.ToString()),
+
         new Claim(JwtRegisteredClaimNames.Sub , user.FName),
         new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()),
-        new Claim(ClaimTypes.NameIdentifier , user.Id.ToString())
     };
 
             // Add roles to claims
