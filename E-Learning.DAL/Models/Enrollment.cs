@@ -12,5 +12,7 @@ namespace E_Learning.DAL.Models
         public DateTime? EnrollmentDate { get; set; }
         public Course? Course { get; set; }
         public User? User { get; set; }
+
+        public ICollection<CompletedLesson>? CompletedLessonsList { get; set; }
     }
 }

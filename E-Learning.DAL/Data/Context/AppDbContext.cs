@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace E_Learning.DAL.Data.Context
 {
-    public class AppDbContext : IdentityDbContext<User,Role , int>
+    public class AppDbContext : IdentityDbContext<User, Role, int>
     {
         //public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
@@ -23,6 +23,8 @@ namespace E_Learning.DAL.Data.Context
         public DbSet<WishList> WishList { get; set; }
 
         public DbSet<Rating> Rating { get; set; }
+
+        public DbSet<CompletedLesson> CompletedLessons  { get; set; }
         /*------------------------------------------------------------------------*/
         // Ctor
         public AppDbContext(DbContextOptions options) : base(options) { }
