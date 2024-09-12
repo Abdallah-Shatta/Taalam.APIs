@@ -8,6 +8,8 @@ namespace E_Learning.DAL.Repositories.CourseRepository
         Course getCourseDetailsById(int id);
         (Course, Enrollment) GetCourseContentForUser(int userId, int courseId);
 
+        HashSet<int> GetCompletedLessonIdsForUserAndCourse(int userId, int courseId);
+
         IEnumerable<Course> GetAllCourses();
         IEnumerable<Course> SearchCourses(string searchTerm);
     }
