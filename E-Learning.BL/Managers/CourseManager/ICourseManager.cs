@@ -21,5 +21,6 @@ namespace E_Learning.BL.Managers.CourseManager
         bool IsStudentEnrolled(int userId, int courseId);
 
         (bool success, string message) UploadCourse(UploadCourseDTO uploadCourse);
+        IEnumerable<EnrolledCourse> GetCoursesByUserId(int id);
     }
 }

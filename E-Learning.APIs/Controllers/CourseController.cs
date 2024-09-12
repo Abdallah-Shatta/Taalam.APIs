@@ -1,4 +1,5 @@
-﻿using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
+﻿using E_Learning.BL.DTO.Course;
+using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
 using E_Learning.BL.DTO.User;
 using E_Learning.BL.Managers.CourseManager;
 using E_Learning.DAL.Models;
@@ -78,6 +79,18 @@ namespace E_Learning.APIs.Controllers
             {
                 return BadRequest(result.message);
             }
+        }
+
+        [HttpGet("GetAllUserCourses/{userId}")]
+        [AllowAnonymous]
+        public ActionResult<IEnumerable<EnrolledCourse>> GetAllUserCourses(int userId)
+        {
+            var courses = _courseManager.GetCoursesByUserId(userId);
+            if (courses.Any())
+            {
+                return Ok(courses);
+            }
+            return NotFound("No courses found for this user.");
         }
     }
 }

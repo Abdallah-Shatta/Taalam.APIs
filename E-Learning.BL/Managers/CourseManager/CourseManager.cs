@@ -228,5 +228,28 @@ namespace E_Learning.BL.Managers.CourseManager
             }
             #endregion
         }
+
+        public IEnumerable<EnrolledCourse> GetCoursesByUserId(int userId)
+        {
+            if (_unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId))
+            {
+                return _unitOfWork.CourseRepository.GetAllCoursesByUserId(userId)
+                    .Select(c => new EnrolledCourse
+                    {
+                        Id = c.Id,
+                        Title = c.Title,
+                        InstructorName = (c.User != null) ? $"{c.User.FName} {c.User.LName}" : "null",
+                        InstructorInfo = c.User.Description,
+                        Description = c.Description,
+                        Price = c.Price,
+                        Rate = c.Rate.Value,
+                        CoverPicture = c.CoverPicture,
+                        CategoryName = (c.Category != null) ? c.Category.Name : "null",
+                        Duration = c.Duration,
+                    });
+            }
+            return Enumerable.Empty<EnrolledCourse>();
+        }
+
     }
 }
