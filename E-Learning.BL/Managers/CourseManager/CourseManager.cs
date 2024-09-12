@@ -3,7 +3,9 @@ using E_Learning.BL.DTO.CourseDTO.CourseContentDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseLessonDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseQuizInfoDTO;
+using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
 using E_Learning.BL.DTO.CourseDTO.InstructorInfoDTO;
+using E_Learning.BL.DTO.User;
 using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
 using Microsoft.AspNetCore.Authorization;
@@ -108,7 +110,6 @@ namespace E_Learning.BL.Managers.CourseManager
                     LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
 
                     Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
-
                     {
                         Id = lesson.Id,
                         Title = lesson.Title,
@@ -122,8 +123,7 @@ namespace E_Learning.BL.Managers.CourseManager
                         Id = quiz.Id,
                         Title = quiz.Title,
 
-
-                    }).ToList(),
+                    }).ToList()
                 }).ToList(),
 
                 StudentEnrollment = new CourseEnrollmentInfoDTO
@@ -132,15 +132,9 @@ namespace E_Learning.BL.Managers.CourseManager
                     CompletedLessons = completedLessonsCount,
                     EnrollmentDate = ennrollment.EnrollmentDate,
                 }
-
-
-
-
             };
 
             return couresResult;
-
-
         }
 
         public bool IsStudentEnrolled(int userId, int courseId)
@@ -254,6 +248,45 @@ namespace E_Learning.BL.Managers.CourseManager
                     Duration = c.Duration,
 
                 });
+        }
+
+        public (bool success , string message) UploadCourse(UploadCourseDTO uploadCourse)
+        {
+            #region trying
+            try
+            {
+                Course uploadedCourse = new Course
+                {
+                    UserId = uploadCourse.UserId,
+                    Title = uploadCourse.Title,
+                    Description = uploadCourse.Description,
+                    Duration = uploadCourse.Duration,
+                    CategoryId = _unitOfWork.CategoryRepository.GetCategoryIdByName(uploadCourse.CourseCategory),
+                    CoverPicture = uploadCourse.CoverPicture,
+                    Price = uploadCourse.Price,
+                    Rate = 0,
+                    CreationDate = DateTime.Now,
+                    SectionsNo = uploadCourse.SectionsNo,
+                    Sections = uploadCourse == null ? null : uploadCourse.Sections.Select(section => new Section
+                    {
+                        Title = section.SectionTitle,
+                        LessonsNo = section.NumberOfLessons,
+                        Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new Lesson
+                        {
+                            Title = lesson.LessonTitle,
+                            Content = lesson.LessonUrl
+                        }).ToList()
+                    }).ToList()
+                };
+                _unitOfWork.CourseRepository.Create(uploadedCourse);
+                _unitOfWork.SaveChanges();
+                return (true, "Course Uploaded Successfully");
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message);
+            }
+            #endregion
         }
     }
 }

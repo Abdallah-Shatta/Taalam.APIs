@@ -35,10 +35,10 @@ namespace E_Learning.BL.Managers.AuthenticationManager
             // Create a list of claims representing the user's information
             var claims = new List<Claim>
     {
-            new Claim(ClaimTypes.NameIdentifier , user.Id.ToString()),
-
-        new Claim(JwtRegisteredClaimNames.Sub , user.FName),
-        new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.NameIdentifier , user.Id.ToString()) // User ID
+        new Claim(JwtRegisteredClaimNames.Sub , user.FName ?? "Unknown"), // Use FName or default to "Unknown"
+        new Claim(JwtRegisteredClaimNames.Email, user.Email ?? "Unknown"), // Add the user's email as a claim
+        new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()), // Token ID
     };
 
             // Add roles to claims
@@ -63,9 +63,11 @@ namespace E_Learning.BL.Managers.AuthenticationManager
             // Return the JWT token and other related info
             var response = new AuthenticationResponseDTO
             {
+                Email = user.Email,
+                FName = user.FName,
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration,
-                RefreshToken = GenerateRefreshToken(), // Assuming you have a method to generate a refresh token
+                RefreshToken = GenerateRefreshToken(),
                 RefreshTokenExpirationDateTime = DateTime.Now.AddDays(7) // Example refresh token expiry
             };
 

@@ -15,5 +15,16 @@ namespace E_Learning.DAL.Repositories.CategoryRepository
         {
             return _context.Categories.Where(c => c.Id == id).Include(c => c.Courses).ThenInclude(c => c.User).FirstOrDefault();
         }
+
+        public int GetCategoryIdByName(string categoryName)
+        {
+            Category? category = _context.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
+            if(category == null)
+            {
+                _context.Categories.Add(new Category { Name = categoryName });
+            }
+            return category.Id;
+        }
+
     }
 }

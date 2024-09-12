@@ -36,6 +36,8 @@ namespace E_Learning.BL.Managers.AccountManager
             _mailManager = mailManager;
         }
 
+
+
         public async Task<IdentityResult> RegisterUserAsync(RegisterDTO registerDTO)
         {
             // Create the User entity from the DTO
@@ -74,6 +76,8 @@ namespace E_Learning.BL.Managers.AccountManager
 
                 // Update the user with the new refresh token
                 await _userManager.UpdateAsync(user);
+
+                
             }
 
             return result;
@@ -265,5 +269,88 @@ namespace E_Learning.BL.Managers.AccountManager
 
             return (false, "User does not exist.");
         }
+
+
+        public async Task<IdentityResult> RegisterUserWithGoogle(GoogleregisterDTO googleRegisterDTO)
+        {
+            User user = new User()
+            {
+                Email = googleRegisterDTO.Email,
+                FName = googleRegisterDTO.FName,
+                UserName=googleRegisterDTO.Email
+            
+            };
+
+            // Generate a secure password that meets the password policy
+            string generatedPassword = GenerateSecurePassword();
+
+            // Register the user with the generated password
+            IdentityResult result = await _userManager.CreateAsync(user, generatedPassword);
+
+            if (result.Succeeded)
+            {
+                // Assign the user role (modify based on your needs)
+                string roleName = UserRoleOptions.User.ToString();
+
+                if (await _roleManager.FindByNameAsync(roleName) == null)
+                {
+                    Role role = new Role() { Name = roleName };
+                    await _roleManager.CreateAsync(role);
+                }
+
+                await _userManager.AddToRoleAsync(user, roleName);
+
+                // Generate a JWT token and assign a refresh token
+                var authenticationResponse = await _jwtManager.createJwtToken(user);
+                user.RefreshToken = authenticationResponse.RefreshToken;
+                user.RefreshTokenExpirationDateTime = authenticationResponse.RefreshTokenExpirationDateTime;
+
+                await _userManager.UpdateAsync(user);  // Save changes
+            }
+
+            return result;
+        }
+
+        public async Task<AuthenticationResponseDTO> LoginWithGoogle(User user)
+        {
+            // Generate JWT token for the user
+            var authenticationResponse = await _jwtManager.createJwtToken(user);
+
+            user.RefreshToken = authenticationResponse.RefreshToken;
+            user.RefreshTokenExpirationDateTime = authenticationResponse.RefreshTokenExpirationDateTime;
+
+            await _userManager.UpdateAsync(user);  // Save refresh token details
+
+            return authenticationResponse;
+        }
+
+        public string GenerateSecurePassword(int length = 12)
+        {
+            const string upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string lowerCase = "abcdefghijklmnopqrstuvwxyz";
+            const string digits = "0123456789";
+            const string specialChars = "!@#$%^&*()-_=+[]{}|;:'\",.<>?";
+
+            Random random = new Random();
+
+            // Make sure we have at least one of each required character type
+            string password = upperCase[random.Next(upperCase.Length)].ToString();
+            password += lowerCase[random.Next(lowerCase.Length)];
+            password += digits[random.Next(digits.Length)];
+            password += specialChars[random.Next(specialChars.Length)];
+
+            // Fill the rest of the password length with random characters
+            string allChars = upperCase + lowerCase + digits + specialChars;
+            for (int i = 4; i < length; i++)
+            {
+                password += allChars[random.Next(allChars.Length)];
+            }
+
+            // Shuffle the characters in the password to randomize their positions
+            return new string(password.OrderBy(x => random.Next()).ToArray());
+        }
+
+
+
     }
 }

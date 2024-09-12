@@ -6,7 +6,7 @@ namespace E_Learning.APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+ //   [AllowAnonymous]
     public class APIBaseController : ControllerBase
     {
     }

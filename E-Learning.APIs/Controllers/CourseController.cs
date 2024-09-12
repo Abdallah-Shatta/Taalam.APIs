@@ -1,8 +1,11 @@
 ﻿
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseLessonDTO;
 using E_Learning.BL.DTO.CourseDTO.EnrollmentDTO;
+
+﻿using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
 using E_Learning.BL.DTO.User;
 using E_Learning.BL.Managers.CourseManager;
+using E_Learning.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -146,6 +149,21 @@ namespace E_Learning.APIs.Controllers
         {
             var courses = _courseManager.SearchCourses(searchTerm);
             return Ok(courses);
+        }
+
+        [HttpPost("uploadCourse")]
+        [AllowAnonymous]
+        public ActionResult UploadCourse(UploadCourseDTO courseDto)
+        {
+            var result = _courseManager.UploadCourse(courseDto);
+            if (result.success)
+            {
+                return Ok(result.message);
+            }
+            else
+            {
+                return BadRequest(result.message);
+            }
         }
     }
 }

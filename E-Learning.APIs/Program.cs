@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 
 
 namespace E_Learning.APIs
@@ -26,8 +27,8 @@ namespace E_Learning.APIs
             builder.Services.AddControllers(options =>
             {
                 //Authorization policy for authunticating all endpoints
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
+                //var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                //options.Filters.Add(new AuthorizeFilter(policy));
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -35,10 +36,13 @@ namespace E_Learning.APIs
 
             //adding the mail service
             builder.Services.AddSwaggerGen();
-        
-        /*------------------------------------------------------------------------*/
-        builder.Services.AddBLServices();
+
+            /*------------------------------------------------------------------------*/
+            builder.Services.AddBLServices();
             builder.Services.AddDALServices(builder.Configuration);
+
+            var googleClientId = builder.Configuration["googleOAuth:ClientId"];
+            var googleClientSecret = builder.Configuration["googleOAuth:ClientSecret"];
 
 
             //CORS: localhost:4200, localhost:4100
@@ -47,7 +51,7 @@ namespace E_Learning.APIs
                 options.AddDefaultPolicy(policyBuilder =>
                 {
                     policyBuilder
-                    .WithOrigins("*")
+                    .WithOrigins("http://localhost:5062", "http://localhost:4200")
                     .WithHeaders("Authorization", "origin", "accept", "content-type")
                     .WithMethods("GET", "POST", "PUT", "DELETE");
                 });
@@ -77,7 +81,7 @@ namespace E_Learning.APIs
 
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
-          
+
 
             //this for using cookie authentication
             builder.Services.ConfigureApplicationCookie(options =>
@@ -85,7 +89,7 @@ namespace E_Learning.APIs
                 // Set cookie expiration time
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 
-             
+
                 options.Cookie.Name = "taalam";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SameSite = SameSiteMode.Lax;
@@ -102,7 +106,7 @@ namespace E_Learning.APIs
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  ///bearer
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer("jwt",options =>
+            .AddJwtBearer("jwt", options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -114,16 +118,22 @@ namespace E_Learning.APIs
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateLifetime = true
                 };
-            });
+            }).AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+            {
+                options.ClientId = "213364838907-cvtfj09hjqkov0o5dk6t96c6dddd1cl3.apps.googleusercontent.com";
+                options.ClientSecret = "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";
+                //   options.SignInScheme = IdentityConstants.ExternalScheme;
+                options.CallbackPath = new PathString("/external-login-callback");
+            }); 
             //this for adding cookie authorization  
             builder.Services.AddAuthorization(b =>
             {
                 b.DefaultPolicy = new AuthorizationPolicyBuilder()
                 //IdentityConstants.ApplicationScheme is the cookie authentication
-                .RequireAuthenticatedUser().AddAuthenticationSchemes(IdentityConstants.ApplicationScheme, "jwt").Build();
+                .RequireAuthenticatedUser().AddAuthenticationSchemes(IdentityConstants.ApplicationScheme, "jwt", GoogleDefaults.AuthenticationScheme).Build();
 
             });
-           
+
 
             var app = builder.Build();
             /*------------------------------------------------------------------------*/
@@ -134,13 +144,14 @@ namespace E_Learning.APIs
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseHttpsRedirection();
             // Serve static files
             app.UseStaticFiles();
-          
+
             /* app.UseCors("MyPolicy");*/
             app.UseCors();
-            
-           
+
+
 
             app.UseAuthentication();
 
