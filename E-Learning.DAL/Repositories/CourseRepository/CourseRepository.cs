@@ -38,7 +38,6 @@ namespace E_Learning.DAL.Repositories.CourseRepository
                  .Include(e => e.CompletedLessonsList)
                 .FirstOrDefault(e => e.CourseId == courseId && e.UserId == userId);
 
-            //add rating
             if (course == null || enrollment == null)
             {
                 return (null, null);
@@ -73,6 +72,15 @@ namespace E_Learning.DAL.Repositories.CourseRepository
             return _context.Courses.Include(c => c.User)
            .Where(c => c.Title.Contains(searchTerm) || c.Description.Contains(searchTerm));
         }
-
+        public IEnumerable<Course> GetAllCoursesByUserId(int userId)
+        {
+            return _context.Courses
+                  .Include(c => c.Enrollments)
+                  .Include(c => c.User)
+                  .Include(c => c.Category)
+                  .Include(c => c.Ratings)
+                  .Where(c => c.Enrollments.Any(e => e.UserId == userId))
+                  .ToList();
+        }
     }
 }

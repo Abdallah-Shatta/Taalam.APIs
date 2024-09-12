@@ -7,6 +7,7 @@ namespace E_Learning.DAL.Repositories.EnrollmentRepository
     {
 
         bool IsStudentEnrolled (int userId, int courseId);
+        bool IsStudentEnrolled(int userId);
         public Enrollment? GetEnrollment(int userId, int courseId);
 
 

@@ -12,5 +12,6 @@ namespace E_Learning.DAL.Repositories.CourseRepository
 
         IEnumerable<Course> GetAllCourses();
         IEnumerable<Course> SearchCourses(string searchTerm);
+        IEnumerable<Course> GetAllCoursesByUserId(int id);
     }
 }

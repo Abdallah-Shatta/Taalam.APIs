@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240912183340_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,47 +197,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 2,
                             Name = "Sporting"
                         });
-                });
-
-            modelBuilder.Entity("E_Learning.DAL.Models.CompletedLesson", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CompletedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EnrollmentCourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EnrollmentUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LessonId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("LessonId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("EnrollmentUserId", "EnrollmentCourseId");
-
-                    b.ToTable("CompletedLessons", (string)null);
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Course", b =>
@@ -1228,37 +1190,6 @@ namespace E_Learning.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("E_Learning.DAL.Models.CompletedLesson", b =>
-                {
-                    b.HasOne("E_Learning.DAL.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("E_Learning.DAL.Models.Lesson", "Lesson")
-                        .WithMany()
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("E_Learning.DAL.Models.User", "User")
-                        .WithMany("CompletedLessonsList")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("E_Learning.DAL.Models.Enrollment", null)
-                        .WithMany("CompletedLessonsList")
-                        .HasForeignKey("EnrollmentUserId", "EnrollmentCourseId");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Lesson");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("E_Learning.DAL.Models.Course", b =>
                 {
                     b.HasOne("E_Learning.DAL.Models.Category", "Category")
@@ -1448,11 +1379,6 @@ namespace E_Learning.DAL.Migrations
                     b.Navigation("WishLists");
                 });
 
-            modelBuilder.Entity("E_Learning.DAL.Models.Enrollment", b =>
-                {
-                    b.Navigation("CompletedLessonsList");
-                });
-
             modelBuilder.Entity("E_Learning.DAL.Models.Question", b =>
                 {
                     b.Navigation("Answers");
@@ -1473,8 +1399,6 @@ namespace E_Learning.DAL.Migrations
             modelBuilder.Entity("E_Learning.DAL.Models.User", b =>
                 {
                     b.Navigation("CartItems");
-
-                    b.Navigation("CompletedLessonsList");
 
                     b.Navigation("OwnedCourses");
 

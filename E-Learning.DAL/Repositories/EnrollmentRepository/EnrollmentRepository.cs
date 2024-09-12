@@ -37,5 +37,10 @@ namespace E_Learning.DAL.Repositories.EnrollmentRepository
             _context.Enrollments.Add(enrollment);
         }
 
+        public bool IsStudentEnrolled(int userId)
+        {
+            return _context.Enrollments.Any(e => e.UserId == userId);
+        }
+
     }
 }
