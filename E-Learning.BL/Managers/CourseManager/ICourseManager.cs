@@ -15,6 +15,8 @@ namespace E_Learning.BL.Managers.CourseManager
         ReadOneCourseDetailsDto GetCourseDetailsById(int id);
         ReadCourseContentDTO GetCourseContentForUser(int userId, int courseId);
 
+        bool EnrollUserInCourse(int userId, int courseId);
+        bool CompleteLesson(int userId, int courseId, int lessonId);
         IEnumerable<ReadCourseDTO> GetAllCourses();
         IEnumerable<ReadCourseDTO> SearchCourses(string searchTerm);
         IEnumerable<ReadCourseDTO> GetCoursesByCategoty(int id);

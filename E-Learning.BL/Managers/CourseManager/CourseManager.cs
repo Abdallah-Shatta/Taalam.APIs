@@ -9,6 +9,8 @@ using E_Learning.BL.DTO.User;
 using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 
 namespace E_Learning.BL.Managers.CourseManager
 {
@@ -89,14 +91,18 @@ namespace E_Learning.BL.Managers.CourseManager
 
             (var course, var ennrollment) = _unitOfWork.CourseRepository.GetCourseContentForUser(userId, courseId);
 
+            var completedLessonIds = _unitOfWork.CourseRepository.GetCompletedLessonIdsForUserAndCourse(userId, courseId);
+            int totalLessons = course.Sections?.Sum(section => section.Lessons.Count) ?? 0;
+            int completedLessonsCount = completedLessonIds.Count;
 
+            decimal progressPercentage = totalLessons > 0 ? (decimal)completedLessonsCount / totalLessons * 100 : 0;
             ReadCourseContentDTO couresResult = new ReadCourseContentDTO
             {
                 Id = course.Id,
                 TeacherId = course.UserId,
                 Duration = course.Duration,
 
-                Sections = course.Sections == null ? null : course.Sections.Select(section => new ReadCourseSectionInfoDTO
+                Sections = course.Sections?.Select(section => new ReadCourseSectionInfoDTO
                 {
                     Id = section.Id,
                     SectionNumber = section.SectionNumber,
@@ -109,6 +115,7 @@ namespace E_Learning.BL.Managers.CourseManager
                         Title = lesson.Title,
                         Duration = lesson.Duration,
                         Content = lesson.Content,
+                        IsCompleted = completedLessonIds.Contains(lesson.Id)
 
                     }).ToList(),
                     Quizes = section.Quizes == null ? null : section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
@@ -119,10 +126,10 @@ namespace E_Learning.BL.Managers.CourseManager
                     }).ToList()
                 }).ToList(),
 
-                StudentEnnrollment = new CourseEnrollmentInfoDTO
+                StudentEnrollment = new CourseEnrollmentInfoDTO
                 {
-                    ProgressPercentage = ennrollment.ProgressPercentage,
-                    CompletedLessons = ennrollment.CompletedLessons,
+                    ProgressPercentage = progressPercentage,
+                    CompletedLessons = completedLessonsCount,
                     EnrollmentDate = ennrollment.EnrollmentDate,
                 }
             };
@@ -134,6 +141,8 @@ namespace E_Learning.BL.Managers.CourseManager
         {
             return _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId);
         }
+
+        
 
         ////////////////////////////////////////////////////////////////////////////////
         public IEnumerable<ReadCourseDTO> GetAllCourses()
@@ -153,6 +162,57 @@ namespace E_Learning.BL.Managers.CourseManager
                     Duration = c.Duration,
                 });
         }
+
+        public bool EnrollUserInCourse(int userId, int courseId)
+        {
+            //var existingEnrollment = _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId,courseId);
+
+            //if (existingEnrollment)
+            //{
+            //    return false; 
+            //}
+
+            var enrollment = new Enrollment
+            {
+                UserId = userId,
+                CourseId = courseId,
+                EnrollmentDate = DateTime.UtcNow,
+                ProgressPercentage = 0,
+                CompletedLessons = 0
+            };
+
+            _unitOfWork.EnrollmentRepository.AddEnrollment(enrollment);
+            _unitOfWork.SaveChanges();
+            return true;
+        }
+
+
+        public  bool CompleteLesson(int userId, int courseId, int lessonId)
+        {
+
+            var enrollment =  _unitOfWork.EnrollmentRepository.GetEnrollment(userId, courseId);
+            if (enrollment == null) return false;
+
+            var completedLesson = new CompletedLesson
+            {
+                UserId = userId,
+                LessonId = lessonId,
+                CourseId = courseId,
+                CompletedDate = DateTime.Now
+            };
+
+            _unitOfWork.LessonRepository.MarkLessonAsComplete(userId, lessonId, courseId);
+
+            //// Update progress
+            //var totalLessons = _unitOfWork.LessonRepository.GetTotalLessons(courseId);
+            //var completedLessonsCount = _unitOfWork.CompletedLessonRepository.GetCompletedLessonsCount(userId, courseId);
+            //var progressPercentage = (decimal)completedLessonsCount / totalLessons * 100;
+
+            _unitOfWork.SaveChanges();
+            return true;
+
+        }
+
 
         public IEnumerable<ReadCourseDTO> SearchCourses(string searchTerm)
         {
