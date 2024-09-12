@@ -35,7 +35,7 @@ namespace E_Learning.BL.Managers.AuthenticationManager
             // Create a list of claims representing the user's information
             var claims = new List<Claim>
     {
-        new Claim(ClaimTypes.NameIdentifier , user.Id.ToString()) // User ID
+        new Claim(ClaimTypes.NameIdentifier , user.Id.ToString()), // User ID
         new Claim(JwtRegisteredClaimNames.Sub , user.FName ?? "Unknown"), // Use FName or default to "Unknown"
         new Claim(JwtRegisteredClaimNames.Email, user.Email ?? "Unknown"), // Add the user's email as a claim
         new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()), // Token ID
