@@ -16,7 +16,7 @@ namespace E_Learning.BL.DTO.CourseDTO.CourseContentDTO
         public string? Title { get; set; }
         public string? Duration { get; set; }
         public List<ReadCourseSectionInfoDTO>? Sections { get; set; } = null!;
-        public CourseEnrollmentInfoDTO? StudentEnnrollment { get; set; }
+        public CourseEnrollmentInfoDTO? StudentEnrollment { get; set; }
 
 
 

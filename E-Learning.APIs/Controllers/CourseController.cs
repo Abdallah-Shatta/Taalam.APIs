@@ -1,8 +1,11 @@
 ﻿
+using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseLessonDTO;
+using E_Learning.BL.DTO.CourseDTO.EnrollmentDTO;
 using E_Learning.BL.DTO.User;
 using E_Learning.BL.Managers.CourseManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace E_Learning.APIs.Controllers
 {
@@ -27,12 +30,23 @@ namespace E_Learning.APIs.Controllers
         }
 
         [HttpGet("content/{courseId}")]
-        [AllowAnonymous]
-        public IActionResult getCourseContentForUser([FromQuery] int userId, int courseId)
+        public IActionResult getCourseContentForUser(int courseId)
 
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized(); // Return 401 Unauthorized if the user is not logged in
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized();
+            }
+
             if (_courseManager.IsStudentEnrolled(userId, courseId)==false){
-                return BadRequest();
+                return BadRequest("user is not enrolled in this course");
             }
             
 
@@ -43,6 +57,76 @@ namespace E_Learning.APIs.Controllers
             }
             return Ok(course);
         }
+
+        [HttpPost("enroll")]
+        public IActionResult EnrollInCourse([FromBody] EnrollPostRequestDTO enrollRequest)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized(); // Return 401 Unauthorized if the user is not logged in
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized(); 
+            }
+            if (_courseManager.IsStudentEnrolled(userId, enrollRequest.CourseId))
+            {
+                return BadRequest("User is already enrolled in this course.");
+            }
+
+            var enrollmentResult = _courseManager.EnrollUserInCourse(userId, enrollRequest.CourseId);
+
+            if (enrollmentResult)
+            {
+                return Ok(new { message = "User enrolled successfully!" });
+            }
+
+            return StatusCode(500, "There was an error enrolling the user.");
+        }
+
+
+        [HttpPost("complete-lesson")]
+        public  IActionResult CompleteLesson([FromBody] CompleteLessonRequestDTO request)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized(); 
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized();
+            }
+
+
+            if (_courseManager.IsStudentEnrolled(userId, request.CourseId)==false)
+            {
+                return BadRequest("User is not enrolled in course.");
+            }
+
+            var result =  _courseManager.CompleteLesson(userId, request.CourseId, request.LessonId);
+            if (!result)
+            {
+                return BadRequest("Failed to mark lesson as completed.");
+            }
+
+            return Ok(new { message = "Lesson marked as completed" });
+        }
+
+
+        [HttpGet("debuguser")]
+        public IActionResult debugUser()
+        {
+            var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
+            return Ok(claims);
+        }
+
+        
 
 
         /////////////////////////////////////////////////////////////////////////////
