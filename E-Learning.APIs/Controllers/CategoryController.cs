@@ -7,11 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Learning.APIs.Controllers
 {
-
-
-    [Authorize]
-
-    //[AllowAnonymous]
+    //[Authorize]
+    [AllowAnonymous]
     public class CategoryController :APIBaseController
     {
         /*------------------------------------------------------------------------*/
@@ -22,7 +19,6 @@ namespace E_Learning.APIs.Controllers
             _categoryManager = categoryManager;
         }
         /*------------------------------------------------------------------------*/
-     
         [HttpGet]
         public ActionResult<IEnumerable<ReadCategoryDto>> GetAll()
         {
@@ -30,8 +26,6 @@ namespace E_Learning.APIs.Controllers
             return Ok(categories);
         }
         /*------------------------------------------------------------------------*/
-
-
         [HttpGet("{id}")]
         public ActionResult<CategoryWithCoursesDTO> GetCoursesByCategoryId(int id)
         {
@@ -72,6 +66,5 @@ namespace E_Learning.APIs.Controllers
         //{
         //    _categoryManager.DeleteCategory(id);
         //}
-        
     }
 }
