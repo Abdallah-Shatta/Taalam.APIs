@@ -1,9 +1,12 @@
 ﻿using E_Learning.BL.DTO.User;
 using E_Learning.BL.Managers.CategoryManager;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Learning.APIs.Controllers
 {
+    [AllowAnonymous]
+
     public class UserController : APIBaseController
     {
         private readonly IUserManager _userManager;
