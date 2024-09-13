@@ -77,10 +77,13 @@ namespace E_Learning.APIs.Controllers
 
 
             [HttpGet("getusers")]
-        public IActionResult GetUsers()
+        public async Task< IActionResult> GetUsers()
         {
-            var users = _accountManager.GetAllUsers();
-            return Ok(users);
+           
+                var users = await _accountManager.GetAllUsers();
+                return Ok(users);
+            
+           
         }
 
 

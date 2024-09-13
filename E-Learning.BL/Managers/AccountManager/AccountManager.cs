@@ -55,29 +55,36 @@ namespace E_Learning.BL.Managers.AccountManager
 
             if (result.Succeeded)
             {
-                // Determine the role and assign it
-                string roleName = registerDTO.UserRole == UserRoleOptions.Admin ? UserRoleOptions.Admin.ToString() : UserRoleOptions.User.ToString();
-
-                if (await _roleManager.FindByNameAsync(roleName) == null)
+                // Map the string to the enum
+                if (Enum.TryParse<UserRoleOptions>(registerDTO.UserRole, true, out var userRole))
                 {
-                    Role role = new Role() { Name = roleName };
-                    await _roleManager.CreateAsync(role);
+                    string roleName = userRole == UserRoleOptions.Admin ? UserRoleOptions.Admin.ToString() : UserRoleOptions.User.ToString();
+
+                    if (await _roleManager.FindByNameAsync(roleName) == null)
+                    {
+                        Role role = new Role() { Name = roleName };
+                        await _roleManager.CreateAsync(role);
+                    }
+
+                    await _userManager.AddToRoleAsync(user, roleName);
+
+                    // Sign-in the user
+                    // await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    // Generate JWT token and refresh token
+                    var authenticationResponse = await _jwtManager.createJwtToken(user);
+                    user.RefreshToken = authenticationResponse.RefreshToken;
+                    user.RefreshTokenExpirationDateTime = authenticationResponse.RefreshTokenExpirationDateTime;
+
+                    // Update the user with the new refresh token
+                    await _userManager.UpdateAsync(user);
                 }
-
-                await _userManager.AddToRoleAsync(user, roleName);
-
-                // Sign-in the user
-             //   await _signInManager.SignInAsync(user, isPersistent: false);
-
-                // Generate JWT token and refresh token
-                var authenticationResponse = await _jwtManager.createJwtToken(user);
-                user.RefreshToken = authenticationResponse.RefreshToken;
-                user.RefreshTokenExpirationDateTime = authenticationResponse.RefreshTokenExpirationDateTime;
-
-                // Update the user with the new refresh token
-                await _userManager.UpdateAsync(user);
-
-                
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, UserRoleOptions.User.ToString());
+                    // Handle invalid role value
+                    result = IdentityResult.Failed(new IdentityError { Description = "Invalid role specified." });
+                }
             }
 
             return result;
@@ -109,9 +116,39 @@ namespace E_Learning.BL.Managers.AccountManager
             return authenticationResponse;
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public async Task<IEnumerable<object>> GetAllUsers()
         {
-            return _unitOfWork.UserRepository.GetAll();
+        
+            var users = _unitOfWork.UserRepository.GetAll().ToList();
+
+    
+            var userResults = new List<object>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userResults.Add(new
+                {
+                    user.Id,
+                    user.FName,
+                    user.LName,
+                    user.Email,
+                    user.ProfilePicture,
+                    user.PhoneNumber,
+                    user.UserName,
+                    user.Facebook,
+                    user.Twitter,
+                    user.GitHub,
+                    user.Ratings,
+                    user.Description,
+                    user.OwnedCourses,
+                    user.Youtube,
+                    user.CartItems,
+                    role = roles
+                });
+            }
+
+            return userResults;
         }
 
         public async Task<bool> IsEmailAlreadyRegisteredAsync(string email)

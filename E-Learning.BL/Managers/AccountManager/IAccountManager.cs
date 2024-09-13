@@ -16,7 +16,7 @@ namespace E_Learning.BL.Managers.AccountManager
         Task<SignInResult> LoginUserAsync(LoginDTO loginDTO);
         Task SignOutUserAsync();
         Task<AuthenticationResponseDTO> GenerateNewJwtTokenAsync(User user, TokenModel tokenModel);
-        IEnumerable<User> GetAllUsers();
+         Task<IEnumerable<object>> GetAllUsers();
         Task<bool> IsEmailAlreadyRegisteredAsync(string email);
         Task<AuthenticationResponseDTO> LoginAsync(LoginDTO loginDTO);
         Task<AuthenticationResponseDTO> GenerateNewJwtTokenAsync(TokenModel tokenModel);
