@@ -15,7 +15,7 @@ namespace E_Learning.APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+
     public class MailController : ControllerBase
     {
       private readonly  IMailManager _mailmanager;
