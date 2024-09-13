@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240912183340_test")]
-    partial class test
+    [Migration("20240913111432_fix courses")]
+    partial class fixcourses
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -199,6 +199,47 @@ namespace E_Learning.DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("E_Learning.DAL.Models.CompletedLesson", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CompletedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EnrollmentCourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EnrollmentUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("EnrollmentUserId", "EnrollmentCourseId");
+
+                    b.ToTable("CompletedLessons", (string)null);
+                });
+
             modelBuilder.Entity("E_Learning.DAL.Models.Course", b =>
                 {
                     b.Property<int>("Id")
@@ -259,7 +300,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 1,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvJBvVedFjpONzC1ZOR-YSWauBp9ZKK6ydA&s",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(3899),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1237),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -271,7 +312,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 2,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2o9_OmdunGnBKDIiSGo3uLYvA8vySqQ-M9fyVT_nys9HMMbZJv8cU8YtPkPbexgrf3J8&usqp=CAU",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(3965),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1290),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -283,7 +324,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 3,
                             CategoryId = 2,
                             CoverPicture = "https://dynamic.brandcrowd.com/template/preview/design/90728fda-b283-4797-973e-9a0775dec439?v=4&designTemplateVersion=5&size=design-preview-standalone-1x",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(3970),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1292),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -295,7 +336,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 4,
                             CategoryId = 2,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo1cHnjZlK64h9Pc5OvWCYfYWYexByKhPpeg&s",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(3973),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1294),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -307,7 +348,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 5,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCmO_j4YW82XwWIM-_Fo6afxyuN2pSGoZMBQ&s",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(3977),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1295),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -319,7 +360,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 6,
                             CategoryId = 1,
                             CoverPicture = "https://d1jnx9ba8s6j9r.cloudfront.net/imgver.1551437392/img/co_img_1539_1633434090.png",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(3980),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1296),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -331,11 +372,11 @@ namespace E_Learning.DAL.Migrations
                             Id = 7,
                             CategoryId = 1,
                             CoverPicture = "https://static.gunnarpeipman.com/wp-content/uploads/2019/12/ef-core-featured.png",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(3983),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1297),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
-                            Title = "EF Core and programming course C# to learn fundamentals of programming ",
+                            Title = "EF Core",
                             UserId = 1
                         },
                         new
@@ -343,7 +384,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 8,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKIa50KjBUhvtvuMbOaL_QtJrzstWIQA3YSg&s",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(3987),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1298),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -355,7 +396,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 9,
                             CategoryId = 1,
                             CoverPicture = "https://www.construx.com/wp-content/uploads/2018/08/design-pattern-essentials-course-image.jpg",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(3990),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1300),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -367,7 +408,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 10,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-HJM_i7rOg2yY9OgpVPYRLL4fYjA9CTfEoQ&s",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(4069),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1301),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -379,7 +420,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 11,
                             CategoryId = 2,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtx7PjCp_KBWQZtHauOWMG2WiRpXxjpbYf3w&s",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(4075),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1302),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -391,7 +432,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 12,
                             CategoryId = 2,
                             CoverPicture = "https://static.vecteezy.com/system/resources/previews/024/700/836/non_2x/fitness-gym-training-social-media-timeline-cover-and-video-thumbnail-and-web-banner-design-free-vector.jpg",
-                            CreationDate = new DateTime(2024, 9, 12, 21, 33, 38, 699, DateTimeKind.Local).AddTicks(4078),
+                            CreationDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(1303),
                             LessonsNo = 0,
                             Price = 0m,
                             SectionsNo = 0,
@@ -428,13 +469,13 @@ namespace E_Learning.DAL.Migrations
                         {
                             UserId = 3,
                             CourseId = 1,
-                            EnrollmentDate = new DateTime(2024, 9, 12, 21, 33, 38, 700, DateTimeKind.Local).AddTicks(5772)
+                            EnrollmentDate = new DateTime(2024, 9, 13, 14, 14, 31, 567, DateTimeKind.Local).AddTicks(7992)
                         },
                         new
                         {
                             UserId = 4,
                             CourseId = 2,
-                            EnrollmentDate = new DateTime(2024, 9, 12, 22, 33, 38, 700, DateTimeKind.Local).AddTicks(5821)
+                            EnrollmentDate = new DateTime(2024, 9, 13, 15, 14, 31, 567, DateTimeKind.Local).AddTicks(8007)
                         });
                 });
 
@@ -963,7 +1004,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "44d30729-6a0e-44ee-9022-081466fb1b16",
+                            ConcurrencyStamp = "381d0129-d4db-4b49-a7a4-a9d21e575bdc",
                             Email = "AbdallahShatta@gmail.com",
                             EmailConfirmed = false,
                             FName = "Abdallah",
@@ -980,7 +1021,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bea90e65-6d06-4b88-8116-97168b96a250",
+                            ConcurrencyStamp = "b7bd9b9a-5c34-43cd-8f4d-5db7f45f71c3",
                             Email = "MohamedErbahim@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohamed",
@@ -997,7 +1038,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a627d42e-41b5-405e-a986-9eb1a86dcc13",
+                            ConcurrencyStamp = "4ee3da36-f338-4567-9f3b-a1bfdaf18da4",
                             Email = "MohsemTayseer@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohsen",
@@ -1012,7 +1053,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aef53439-3cab-4e67-b0e4-f27e7caf28c6",
+                            ConcurrencyStamp = "74640ffb-8637-487b-bf8c-6e734545658b",
                             Email = "MarwaElkasaby@gmail.com",
                             EmailConfirmed = false,
                             FName = "Marwa",
@@ -1186,6 +1227,37 @@ namespace E_Learning.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("E_Learning.DAL.Models.CompletedLesson", b =>
+                {
+                    b.HasOne("E_Learning.DAL.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("E_Learning.DAL.Models.Lesson", "Lesson")
+                        .WithMany()
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("E_Learning.DAL.Models.User", "User")
+                        .WithMany("CompletedLessonsList")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("E_Learning.DAL.Models.Enrollment", null)
+                        .WithMany("CompletedLessonsList")
+                        .HasForeignKey("EnrollmentUserId", "EnrollmentCourseId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Lesson");
 
                     b.Navigation("User");
                 });
@@ -1379,6 +1451,11 @@ namespace E_Learning.DAL.Migrations
                     b.Navigation("WishLists");
                 });
 
+            modelBuilder.Entity("E_Learning.DAL.Models.Enrollment", b =>
+                {
+                    b.Navigation("CompletedLessonsList");
+                });
+
             modelBuilder.Entity("E_Learning.DAL.Models.Question", b =>
                 {
                     b.Navigation("Answers");
@@ -1399,6 +1476,8 @@ namespace E_Learning.DAL.Migrations
             modelBuilder.Entity("E_Learning.DAL.Models.User", b =>
                 {
                     b.Navigation("CartItems");
+
+                    b.Navigation("CompletedLessonsList");
 
                     b.Navigation("OwnedCourses");
 
