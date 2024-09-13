@@ -302,7 +302,7 @@ namespace E_Learning.BL.Managers.CourseManager
                         InstructorInfo = c.User.Description,
                         Description = c.Description,
                         Price = c.Price,
-                        Rate = c.Rate.Value,
+                        Rate = c.Rate,
                         CoverPicture = c.CoverPicture,
                         CategoryName = (c.Category != null) ? c.Category.Name : "null",
                         Duration = c.Duration,
