@@ -157,14 +157,14 @@ namespace E_Learning.APIs.Controllers
         [AllowAnonymous]
         public ActionResult UploadCourse(UploadCourseDTO courseDto)
         {
-            var result = _courseManager.UploadCourse(courseDto);
-            if (result.success)
+            (var success, var message) = _courseManager.UploadCourse(courseDto);
+            if (success == true)
             {
-                return Ok(result.message);
+                return Ok(new { message = message });
             }
             else
             {
-                return BadRequest(result.message);
+                return BadRequest(new { message = message });
             }
         }
 
