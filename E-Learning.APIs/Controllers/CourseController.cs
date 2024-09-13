@@ -14,7 +14,7 @@ using System.Security.Claims;
 
 namespace E_Learning.APIs.Controllers
 {
-    [Authorize]
+   
 
     public class CourseController : APIBaseController
     {
@@ -154,7 +154,7 @@ namespace E_Learning.APIs.Controllers
         }
 
         [HttpPost("uploadCourse")]
-        [AllowAnonymous]
+        
         public ActionResult UploadCourse(UploadCourseDTO courseDto)
         {
             (var success, var message) = _courseManager.UploadCourse(courseDto);

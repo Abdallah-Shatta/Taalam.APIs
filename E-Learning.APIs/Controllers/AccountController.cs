@@ -39,6 +39,18 @@ namespace E_Learning.APIs.Controllers
             return Ok(name);
         }
 
+
+        [HttpGet("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            // Call the account manager to sign out the user
+            await _accountManager.SignOutUserAsync();
+
+            HttpContext.Response.Cookies.Delete("taalam");
+            return NoContent();
+        }
+
+
         [HttpPost("Register")]
         public async Task<IActionResult> AccountRegister([FromBody] RegisterDTO registerDTO)
         {
@@ -207,12 +219,7 @@ namespace E_Learning.APIs.Controllers
             return Ok(!isRegistered);
         }
 
-        [HttpGet("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await _accountManager.SignOutUserAsync();
-            return NoContent();
-        }
+      
 
         [HttpPost("generate-new-jwt-token")]
         public async Task<IActionResult> GenerateNewAccessToken([FromBody] TokenModel tokenModel)

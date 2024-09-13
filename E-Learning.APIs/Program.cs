@@ -28,9 +28,9 @@ namespace E_Learning.APIs
 
             builder.Services.AddControllers(options =>
             {
-                //Authorization policy for authunticating all endpoints
-                //var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                //options.Filters.Add(new AuthorizeFilter(policy));
+                //Authorization policy for authunticating all endpoints 
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -70,7 +70,7 @@ namespace E_Learning.APIs
             /* builder.Services.AddIdentityApiEndpoints<User>()
             .AddEntityFrameworkStores<AppDbContext>();*/
 
-            //de 3ashan el forget password
+            //de 3ashan el forget password da msh me5aly ay 7ad y login ela law el confirmedemail =true
             /* builder.Services.Configure<IdentityOptions>(
                 opts => opts.SignIn.RequireConfirmedEmail = true
                 );*/
@@ -108,7 +108,7 @@ namespace E_Learning.APIs
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  ///bearer
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer("jwt", options =>
+            .AddJwtBearer("jwt", options => //hna enta zawdt tareqa gededa l el authentication
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -124,9 +124,9 @@ namespace E_Learning.APIs
             {
                 options.ClientId = googleClientId;
                 options.ClientSecret = googleClientSecret;
-                //   options.SignInScheme = IdentityConstants.ExternalScheme;
-                options.CallbackPath = new PathString("/external-login-callback");
-                options.Events = new OAuthEvents
+                options.SignInScheme = IdentityConstants.ExternalScheme;
+                options.CallbackPath = new PathString("/external-login-callback");//call back 
+                options.Events = new OAuthEvents //de lma ta3mel login with google w law dost no f saf7et el login
                 {
                     OnRemoteFailure = context =>
                     {
@@ -171,9 +171,9 @@ namespace E_Learning.APIs
 
 
 
-            app.UseAuthentication();
+            app.UseAuthentication(); // da be5aly el backend e2ra el cookies w el jwt token
 
-            app.UseAuthorization();
+            app.UseAuthorization(); 
 
             app.MapControllers();
 

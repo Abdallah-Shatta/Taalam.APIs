@@ -9,7 +9,7 @@ namespace E_Learning.APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+
     public class CartController : APIBaseController
     {
         private readonly ICartManager _cartManager;
@@ -20,6 +20,7 @@ namespace E_Learning.APIs.Controllers
         }
 
         [HttpGet("GetCartItems")]
+
         public ActionResult<IEnumerable<CourseDTO>> GetCartItems(int userId)
         {
             var cartItems = _cartManager.GetCartItems(userId);

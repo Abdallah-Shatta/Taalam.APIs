@@ -9,7 +9,7 @@ namespace E_Learning.APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+  
     public class WishListController : APIBaseController
     {
         private readonly IWishListManager _wishListManager;
