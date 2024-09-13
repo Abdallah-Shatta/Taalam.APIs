@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Web;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace E_Learning.APIs.Controllers
 {
@@ -28,6 +29,16 @@ namespace E_Learning.APIs.Controllers
          
            
         }
+
+        [HttpGet("debugger")]
+
+        public IActionResult Get()
+        {
+            var name = User.Identity.Name;
+            var users = User;
+            return Ok(name);
+        }
+
         [HttpPost("Register")]
         public async Task<IActionResult> AccountRegister([FromBody] RegisterDTO registerDTO)
         {
@@ -36,15 +47,25 @@ namespace E_Learning.APIs.Controllers
                 string errorMessage = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
                 return Problem(errorMessage);
             }
-
+            //here we are checking the existing of the user 
             IdentityResult result = await _accountManager.RegisterUserAsync(registerDTO);
 
             if (result.Succeeded)
             {
+                //in case of success register login the user
                 var user = await _accountManager.FindUserByEmailAsync(registerDTO.Email);
                 LoginDTO loginDTO = new LoginDTO() { Email = user.Email , Password =registerDTO.Password};
+                //_signInManager.PasswordSignInAsync
                 var authenticationResponse = await _accountManager.LoginAsync(loginDTO);
-                return Ok(authenticationResponse);
+                if (authenticationResponse != null)
+                {
+                    return Ok(authenticationResponse);
+                }
+                else
+                {
+                    return Problem("error with creating jwt");
+                }
+             
             }
             else
             {
@@ -52,6 +73,9 @@ namespace E_Learning.APIs.Controllers
                 return Problem(errorMessage);
             }
         }
+
+
+
             [HttpGet("getusers")]
         public IActionResult GetUsers()
         {
@@ -82,8 +106,15 @@ namespace E_Learning.APIs.Controllers
             return Ok(authenticationResponse);
         }
 
+        [HttpGet("signin-facebook")]
+        public async Task LoginFacebook()
+        {
+            await HttpContext.ChallengeAsync(FacebookDefaults.AuthenticationScheme, new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("ExternalLoginCallback")
+            });
+        }
 
-     
         [HttpGet("signin-google")]
         public async Task LoginGoogle()
         {
@@ -94,6 +125,8 @@ namespace E_Learning.APIs.Controllers
                 RedirectUri = Url.Action("ExternalLoginCallback")
             });
 
+
+            // this needs google business account to extract phone number
             //await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties
             //{
             //    RedirectUri = Url.Action("ExternalLoginCallback"),
@@ -114,7 +147,8 @@ namespace E_Learning.APIs.Controllers
 
             // Get user details from Google
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+            var name = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+
 
             if (string.IsNullOrEmpty(email))
             {
@@ -129,8 +163,8 @@ namespace E_Learning.APIs.Controllers
             {
                 GoogleregisterDTO googleregisterDTO = new GoogleregisterDTO()
                 {
-                    Email = info.Principal.FindFirstValue(ClaimTypes.Email),
-                    FName = info.Principal.FindFirstValue(ClaimTypes.Name)
+                    Email = email,
+                    FName = name
                 };
 
                 IdentityResult registerResult = await _accountManager.RegisterUserWithGoogle(googleregisterDTO);
@@ -157,6 +191,11 @@ namespace E_Learning.APIs.Controllers
             return Redirect($"http://localhost:4200/auth-callback?token={authenticationResponse.Token}");
         }
 
+        [HttpGet("login-failed")]
+        public IActionResult LoginFailed()
+        {
+            return Problem("Login with Google was canceled or failed. Please try again.");
+        }
 
         [HttpGet("is-email-registered")]
         public async Task<IActionResult> IsEmailAlreadyRegistered(string email)
@@ -190,12 +229,12 @@ namespace E_Learning.APIs.Controllers
             return Ok(authenticationResponse);
         }
 
-        [HttpGet("forget-password")] //malhash lazma
-public async Task<IActionResult> forgetPasswordview(string email , string token)
-        {
-            var model = new ForgetPasswordDTO { Email = email, Token = token };
-            return Ok(model);
-        }
+//        [HttpGet("forget-password")] //malhash lazma
+//public async Task<IActionResult> forgetPasswordview(string email , string token)
+//        {
+//            var model = new ForgetPasswordDTO { Email = email, Token = token };
+//            return Ok(model);
+//        }
 
         [HttpPost("forget-password")]
         public async Task<IActionResult> ForgetPassword(ForgetPasswordDTO forgetPasswordDTO)

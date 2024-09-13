@@ -14,6 +14,8 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 
 namespace E_Learning.APIs
@@ -41,8 +43,7 @@ namespace E_Learning.APIs
             builder.Services.AddBLServices();
             builder.Services.AddDALServices(builder.Configuration);
 
-            var googleClientId = builder.Configuration["googleOAuth:ClientId"];
-            var googleClientSecret = builder.Configuration["googleOAuth:ClientSecret"];
+         
 
 
             //CORS: localhost:4200, localhost:4100
@@ -82,7 +83,8 @@ namespace E_Learning.APIs
             var jwtSettings = builder.Configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value);
 
-
+            var googleClientId = builder.Configuration["googleOAuth:ClientId"];
+            var googleClientSecret = builder.Configuration["googleOAuth:ClientSecret"];
             //this for using cookie authentication
             builder.Services.ConfigureApplicationCookie(options =>
             {
@@ -120,12 +122,28 @@ namespace E_Learning.APIs
                 };
             }).AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
             {
-                options.ClientId = "213364838907-cvtfj09hjqkov0o5dk6t96c6dddd1cl3.apps.googleusercontent.com";
-                options.ClientSecret = "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";
+                options.ClientId = googleClientId;
+                options.ClientSecret = googleClientSecret;
                 //   options.SignInScheme = IdentityConstants.ExternalScheme;
                 options.CallbackPath = new PathString("/external-login-callback");
-            }); 
-            //this for adding cookie authorization  
+                options.Events = new OAuthEvents
+                {
+                    OnRemoteFailure = context =>
+                    {
+                        // Handle failure (e.g., redirect to an error page or return a friendly error)
+                        context.Response.Redirect("/api/Account/login-failed");
+                        context.HandleResponse(); // Mark the failure as handled
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+            //.AddFacebook(FacebookDefaults.AuthenticationScheme, options =>
+            //{
+            //    options.AppId = builder.Configuration["facebookOAuth:AppId"];
+            //    options.AppSecret = builder.Configuration["facebookOAuth:AppSecret"];
+            //    options.CallbackPath = new PathString("/external-login-callback"); // Adjust the path if necessary
+            //});
+            //this for adding cookie authorization  and jwt and google compination
             builder.Services.AddAuthorization(b =>
             {
                 b.DefaultPolicy = new AuthorizationPolicyBuilder()
