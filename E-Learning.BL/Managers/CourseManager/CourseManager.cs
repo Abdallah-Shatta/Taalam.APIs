@@ -3,10 +3,14 @@ using E_Learning.BL.DTO.CourseDTO.CourseContentDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseLessonDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseQuizInfoDTO;
+using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
 using E_Learning.BL.DTO.CourseDTO.InstructorInfoDTO;
+using E_Learning.BL.DTO.User;
 using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 
 namespace E_Learning.BL.Managers.CourseManager
 {
@@ -87,14 +91,18 @@ namespace E_Learning.BL.Managers.CourseManager
 
             (var course, var ennrollment) = _unitOfWork.CourseRepository.GetCourseContentForUser(userId, courseId);
 
+            var completedLessonIds = _unitOfWork.CourseRepository.GetCompletedLessonIdsForUserAndCourse(userId, courseId);
+            int totalLessons = course.Sections?.Sum(section => section.Lessons.Count) ?? 0;
+            int completedLessonsCount = completedLessonIds.Count;
 
+            decimal progressPercentage = totalLessons > 0 ? (decimal)completedLessonsCount / totalLessons * 100 : 0;
             ReadCourseContentDTO couresResult = new ReadCourseContentDTO
             {
                 Id = course.Id,
                 TeacherId = course.UserId,
                 Duration = course.Duration,
 
-                Sections = course.Sections == null ? null : course.Sections.Select(section => new ReadCourseSectionInfoDTO
+                Sections = course.Sections?.Select(section => new ReadCourseSectionInfoDTO
                 {
                     Id = section.Id,
                     SectionNumber = section.SectionNumber,
@@ -102,12 +110,12 @@ namespace E_Learning.BL.Managers.CourseManager
                     LessonsNo = section.Lessons != null ? section.Lessons.Count() : 0,
 
                     Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new ReadCourseLessonDTO
-
                     {
                         Id = lesson.Id,
                         Title = lesson.Title,
                         Duration = lesson.Duration,
                         Content = lesson.Content,
+                        IsCompleted = completedLessonIds.Contains(lesson.Id)
 
                     }).ToList(),
                     Quizes = section.Quizes == null ? null : section.Quizes.Select(quiz => new ReadCourseQuizInfoDTO
@@ -115,31 +123,26 @@ namespace E_Learning.BL.Managers.CourseManager
                         Id = quiz.Id,
                         Title = quiz.Title,
 
-
-                    }).ToList(),
+                    }).ToList()
                 }).ToList(),
 
-                StudentEnnrollment = new CourseEnrollmentInfoDTO
+                StudentEnrollment = new CourseEnrollmentInfoDTO
                 {
-                    ProgressPercentage = ennrollment.ProgressPercentage,
-                    CompletedLessons = ennrollment.CompletedLessons,
+                    ProgressPercentage = progressPercentage,
+                    CompletedLessons = completedLessonsCount,
                     EnrollmentDate = ennrollment.EnrollmentDate,
                 }
-
-
-
-
             };
 
             return couresResult;
-
-
         }
 
         public bool IsStudentEnrolled(int userId, int courseId)
         {
             return _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId);
         }
+
+        
 
         ////////////////////////////////////////////////////////////////////////////////
         public IEnumerable<ReadCourseDTO> GetAllCourses()
@@ -159,6 +162,57 @@ namespace E_Learning.BL.Managers.CourseManager
                     Duration = c.Duration,
                 });
         }
+
+        public bool EnrollUserInCourse(int userId, int courseId)
+        {
+            //var existingEnrollment = _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId,courseId);
+
+            //if (existingEnrollment)
+            //{
+            //    return false; 
+            //}
+
+            var enrollment = new Enrollment
+            {
+                UserId = userId,
+                CourseId = courseId,
+                EnrollmentDate = DateTime.UtcNow,
+                ProgressPercentage = 0,
+                CompletedLessons = 0
+            };
+
+            _unitOfWork.EnrollmentRepository.AddEnrollment(enrollment);
+            _unitOfWork.SaveChanges();
+            return true;
+        }
+
+
+        public  bool CompleteLesson(int userId, int courseId, int lessonId)
+        {
+
+            var enrollment =  _unitOfWork.EnrollmentRepository.GetEnrollment(userId, courseId);
+            if (enrollment == null) return false;
+
+            var completedLesson = new CompletedLesson
+            {
+                UserId = userId,
+                LessonId = lessonId,
+                CourseId = courseId,
+                CompletedDate = DateTime.Now
+            };
+
+            _unitOfWork.LessonRepository.MarkLessonAsComplete(userId, lessonId, courseId);
+
+            //// Update progress
+            //var totalLessons = _unitOfWork.LessonRepository.GetTotalLessons(courseId);
+            //var completedLessonsCount = _unitOfWork.CompletedLessonRepository.GetCompletedLessonsCount(userId, courseId);
+            //var progressPercentage = (decimal)completedLessonsCount / totalLessons * 100;
+
+            _unitOfWork.SaveChanges();
+            return true;
+
+        }
+
 
         public IEnumerable<ReadCourseDTO> SearchCourses(string searchTerm)
         {
@@ -195,5 +249,67 @@ namespace E_Learning.BL.Managers.CourseManager
 
                 });
         }
+
+        public (bool success , string message) UploadCourse(UploadCourseDTO uploadCourse)
+        {
+            #region trying
+            try
+            {
+                Course uploadedCourse = new Course
+                {
+                    UserId = uploadCourse.UserId,
+                    Title = uploadCourse.Title,
+                    Description = uploadCourse.Description,
+                    Duration = uploadCourse.Duration,
+                    CategoryId = _unitOfWork.CategoryRepository.GetCategoryIdByName(uploadCourse.CourseCategory),
+                    CoverPicture = uploadCourse.CoverPicture,
+                    Price = uploadCourse.Price,
+                    Rate = 0,
+                    CreationDate = DateTime.Now,
+                    SectionsNo = uploadCourse.SectionsNo,
+                    Sections = uploadCourse == null ? null : uploadCourse.Sections.Select(section => new Section
+                    {
+                        Title = section.SectionTitle,
+                        LessonsNo = section.NumberOfLessons,
+                        Lessons = section.Lessons == null ? null : section.Lessons.Select(lesson => new Lesson
+                        {
+                            Title = lesson.LessonTitle,
+                            Content = lesson.LessonUrl
+                        }).ToList()
+                    }).ToList()
+                };
+                _unitOfWork.CourseRepository.Create(uploadedCourse);
+                _unitOfWork.SaveChanges();
+                return (true, "Course Uploaded Successfully");
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message);
+            }
+            #endregion
+        }
+
+        public IEnumerable<EnrolledCourse> GetCoursesByUserId(int userId)
+        {
+            if (_unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId))
+            {
+                return _unitOfWork.CourseRepository.GetAllCoursesByUserId(userId)
+                    .Select(c => new EnrolledCourse
+                    {
+                        Id = c.Id,
+                        Title = c.Title,
+                        InstructorName = (c.User != null) ? $"{c.User.FName} {c.User.LName}" : "null",
+                        InstructorInfo = c.User.Description,
+                        Description = c.Description,
+                        Price = c.Price,
+                        Rate = c.Rate.Value,
+                        CoverPicture = c.CoverPicture,
+                        CategoryName = (c.Category != null) ? c.Category.Name : "null",
+                        Duration = c.Duration,
+                    });
+            }
+            return Enumerable.Empty<EnrolledCourse>();
+        }
+
     }
 }

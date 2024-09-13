@@ -12,13 +12,34 @@ namespace E_Learning.DAL.Repositories.EnrollmentRepository
 
         public bool IsStudentEnrolled(int userId, int courseId)
         {
-            var enrollment = _context.Enrollments.Where(e=>e.UserId==userId).Where(e=>e.CourseId==courseId).FirstOrDefault();
+            var isEnrolled = _context.Enrollments.Any(e => e.UserId == userId && e.CourseId == courseId); ;
 
-            if (enrollment != null) {
-                return true;
+            
+
+            return isEnrolled;
+        }
+
+        public Enrollment? GetEnrollment(int userId, int courseId)
+        {
+            var enrollment = _context.Enrollments.Where(e => e.UserId == userId).Where(e => e.CourseId == courseId).FirstOrDefault();
+
+            if (enrollment == null)
+            {
+                return null;
             }
 
-            return false;
+            return enrollment;
+        }
+
+
+        public void AddEnrollment(Enrollment enrollment)
+        {
+            _context.Enrollments.Add(enrollment);
+        }
+
+        public bool IsStudentEnrolled(int userId)
+        {
+            return _context.Enrollments.Any(e => e.UserId == userId);
         }
 
     }

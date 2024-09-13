@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using E_Learning.BL.Managers.CartManager;
 using E_Learning.BL.Managers.WishListManager;
 using E_Learning.BL.Managers.RatingManager;
+using E_Learning.BL.Managers.PaymentManager;
 
 namespace E_Learning.BL.ServicesExtention
 {
@@ -23,6 +24,7 @@ namespace E_Learning.BL.ServicesExtention
             services.AddScoped<ICartManager, CartManager>();
             services.AddScoped<IWishListManager, WishListManager>();
             services.AddScoped<IRatingManager, RatingManager>();
+            services.AddScoped<IPaymentManager, PaymentManager>();
 
 
             services.AddScoped<IUserManager, UserManager>();

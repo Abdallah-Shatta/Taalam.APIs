@@ -13,13 +13,13 @@ namespace E_Learning.DAL.Repositories.CourseRepository
 
         public Course getCourseDetailsById(int id)
         {
-            var course= _context.Courses
+            var course = _context.Courses
                 .Include(c => c.Sections)
                     .ThenInclude(s => s.Lessons)
                 .Include(c => c.Sections)
                     .ThenInclude(s => s.Quizes)
-                .Include(c => c.Category) 
-                .Include(c => c.User) 
+                .Include(c => c.Category)
+                .Include(c => c.User)
                 .FirstOrDefault(c => c.Id == id);
 
             return course;
@@ -35,9 +35,10 @@ namespace E_Learning.DAL.Repositories.CourseRepository
                 .FirstOrDefault(c => c.Id == courseId);
 
             var enrollment = _context.Enrollments
+                 .Include(e => e.CompletedLessonsList)
                 .FirstOrDefault(e => e.CourseId == courseId && e.UserId == userId);
 
-            if(course == null || enrollment == null)
+            if (course == null || enrollment == null)
             {
                 return (null, null);
             }
@@ -45,6 +46,18 @@ namespace E_Learning.DAL.Repositories.CourseRepository
             return (course, enrollment);
 
         }
+
+        public HashSet<int> GetCompletedLessonIdsForUserAndCourse(int userId, int courseId)
+        {
+            return _context.CompletedLessons
+                .Where(cl => cl.UserId == userId && cl.CourseId == courseId)
+                .Select(cl => cl.LessonId)
+                .ToHashSet();
+        }
+
+        
+
+        
 
 
 
@@ -59,6 +72,15 @@ namespace E_Learning.DAL.Repositories.CourseRepository
             return _context.Courses.Include(c => c.User)
            .Where(c => c.Title.Contains(searchTerm) || c.Description.Contains(searchTerm));
         }
-
+        public IEnumerable<Course> GetAllCoursesByUserId(int userId)
+        {
+            return _context.Courses
+                  .Include(c => c.Enrollments)
+                  .Include(c => c.User)
+                  .Include(c => c.Category)
+                  .Include(c => c.Ratings)
+                  .Where(c => c.Enrollments.Any(e => e.UserId == userId))
+                  .ToList();
+        }
     }
 }
