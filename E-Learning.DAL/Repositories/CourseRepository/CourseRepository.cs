@@ -78,7 +78,6 @@ namespace E_Learning.DAL.Repositories.CourseRepository
                   .Include(c => c.Enrollments)
                   .Include(c => c.User)
                   .Include(c => c.Category)
-                  .Include(c => c.Ratings)
                   .Where(c => c.Enrollments.Any(e => e.UserId == userId))
                   .ToList();
         }
