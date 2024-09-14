@@ -1,6 +1,7 @@
 ﻿using E_Learning.BL.DTO.CourseDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseRatingDTO;
 using E_Learning.BL.DTO.User;
+using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
 
 namespace E_Learning.BL.Managers.RatingManager
@@ -58,5 +59,94 @@ namespace E_Learning.BL.Managers.RatingManager
             return ratings;
         }
 
+        public bool CreateRating(CreateRatingByUser ratingDto)
+        {
+
+
+            var existingRating = _unitOfWork.RatingRepository.getOneRatingByUserForCourse(ratingDto.UserId, ratingDto.CourseId);
+            if (existingRating != null)
+            {
+                return false; 
+            }
+
+            Rating newRating = new Rating
+            {
+                UserId = ratingDto.UserId,
+                CourseId = ratingDto.CourseId,
+                Value = ratingDto.Value,
+                Description = ratingDto.Description
+            };
+
+             var ratingCreated=  _unitOfWork.RatingRepository.CreateRating(newRating);
+
+            if (ratingCreated)
+            {
+                // Update course's average rating
+                UpdateCourseAverageRating(ratingDto.CourseId);
+            }
+
+            return ratingCreated;
+
+        }
+
+
+        public bool EditRating(CreateRatingByUser ratingDto)
+        {
+            var existingRating = _unitOfWork.RatingRepository.getOneRatingByUserForCourse(ratingDto.UserId, ratingDto.CourseId);
+            if (existingRating == null)
+            {
+                return false; 
+            }
+
+            existingRating.Value = ratingDto.Value;
+            existingRating.Description = ratingDto.Description;
+
+            var ratingWasEdited= _unitOfWork.RatingRepository.EditRating(existingRating);
+            if (ratingWasEdited)
+            {
+                UpdateCourseAverageRating(ratingDto.CourseId);
+            }
+            return ratingWasEdited;
+        }
+
+        public ReadCourseRatingDTO? GetOneRatingByUserForCourse(int userId, int courseId)
+        {
+            var rating = _unitOfWork.RatingRepository.getOneRatingByUserForCourse(userId, courseId);
+            if (rating == null)
+            {
+                return null;
+            }
+            var resultDto = new ReadCourseRatingDTO
+            {
+                Id = rating.Id,
+                Description = rating.Description,
+                Value = rating.Value,
+
+
+            };
+
+            return resultDto;
+        }
+
+        private void UpdateCourseAverageRating(int courseId)
+        {
+            var course = _unitOfWork.CourseRepository.GetById(courseId);
+
+            if (course != null)
+            {
+                var ratings = _unitOfWork.RatingRepository.GetAllRatingsForCourse(courseId);
+                if (ratings != null && ratings.Any())
+                {
+                    var averageRating = ratings.Average(r => r.Value);
+
+                    course.Rate = (decimal)averageRating;
+
+                    _unitOfWork.CourseRepository.Update(course);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+        }
+
+        
     }
 }
