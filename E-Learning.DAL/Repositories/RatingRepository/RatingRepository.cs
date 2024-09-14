@@ -35,5 +35,26 @@ namespace E_Learning.DAL.Repositories.RatingRepository
                 .ToList();
             return ratingList;
         }
+
+        public Rating? getOneRatingByUserForCourse(int userId, int courseId)
+        {
+            var rating = _context.Rating.FirstOrDefault(r=>r.UserId==userId&&r.CourseId==courseId);
+
+       
+           return rating == null ? null : rating;
+        }
+        public bool EditRating(Rating rating)
+        {
+            _context.Entry(rating).State = EntityState.Modified;
+            return _context.SaveChanges() > 0;
+        }
+
+        public bool CreateRating(Rating rating)
+        {
+            _context.Rating.Add(rating);
+            return _context.SaveChanges() > 0;
+        }
+        
+       
     }
 }

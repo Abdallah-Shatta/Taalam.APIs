@@ -53,7 +53,7 @@ namespace E_Learning.APIs
                 {
                     policyBuilder
                     .WithOrigins("http://localhost:5062", "http://localhost:4200")
-                    .WithHeaders("Authorization", "origin", "accept", "content-type")
+                    .AllowAnyHeader()
                     .WithMethods("GET", "POST", "PUT", "DELETE");
                 });
             });

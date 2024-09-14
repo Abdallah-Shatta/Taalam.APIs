@@ -12,6 +12,13 @@ namespace E_Learning.BL.Managers.RatingManager
     {
         IEnumerable<ReadCourseRatingDTO> GetAllRatingsForCourse(int courseId);
         IEnumerable<ReadCourseRatingByUserDTO> GetAllRatingGivenByUser(int userId);
+        public bool CreateRating(CreateRatingByUser ratingDto);
+
+
+        public ReadCourseRatingDTO? GetOneRatingByUserForCourse(int userId, int courseId);
+        public bool EditRating(CreateRatingByUser ratingDto);
+
+
 
     }
 }
