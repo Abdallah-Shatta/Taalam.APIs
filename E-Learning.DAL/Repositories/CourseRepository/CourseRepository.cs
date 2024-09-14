@@ -69,7 +69,7 @@ namespace E_Learning.DAL.Repositories.CourseRepository
 
         public IEnumerable<Course> SearchCourses(string searchTerm)
         {
-            return _context.Courses.Include(c => c.User)
+            return _context.Courses.Include(c => c.User).Include(c => c.Category)
            .Where(c => c.Title.Contains(searchTerm) || c.Description.Contains(searchTerm));
         }
         public IEnumerable<Course> GetAllCoursesByUserId(int userId)
