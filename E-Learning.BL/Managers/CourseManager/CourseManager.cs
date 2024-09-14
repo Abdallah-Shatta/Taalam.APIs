@@ -158,7 +158,7 @@ namespace E_Learning.BL.Managers.CourseManager
                     Price = c.Price,
                     Rate = c.Rate,
                     CoverPicture = c.CoverPicture,
-                    CategoryName = c.Category.Name,
+                    CategoryName = c.Category?.Name,
                     Duration = c.Duration,
                 });
         }
