@@ -18,7 +18,7 @@ namespace E_Learning.DAL.ServicesExtension
             });
             /*------------------------------------------------------------------------*/
 
-            var connectionString = configuration.GetConnectionString("Marwa");
+            var connectionString = configuration.GetConnectionString("Abdallah");
 
 
 

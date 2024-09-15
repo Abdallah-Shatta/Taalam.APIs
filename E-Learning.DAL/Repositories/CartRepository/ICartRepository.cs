@@ -8,5 +8,6 @@ namespace E_Learning.DAL.Repositories.CartRepository
         IEnumerable<Cart> GetCartItemsByUserId(int userId);
         Cart? GetCartItem(int userId, int courseId);
         public decimal GetCartTotalByUserId(int userId);
+        public void DeleteAllUserCartItems(int userId);
     }
 }

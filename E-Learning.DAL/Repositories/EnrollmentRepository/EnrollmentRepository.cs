@@ -1,6 +1,7 @@
 ﻿using E_Learning.DAL.Data.Context;
 using E_Learning.DAL.Models;
 using E_Learning.DAL.Repositories.GenericRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Learning.DAL.Repositories.EnrollmentRepository
 {
@@ -12,11 +13,8 @@ namespace E_Learning.DAL.Repositories.EnrollmentRepository
 
         public bool IsStudentEnrolled(int userId, int courseId)
         {
-            var isEnrolled = _context.Enrollments.Any(e => e.UserId == userId && e.CourseId == courseId); ;
-
-            
-
-            return isEnrolled;
+            var isEnrolled = _context.Enrollments.Any(e => e.UserId == userId && e.CourseId == courseId); 
+           return isEnrolled;
         }
 
         public Enrollment? GetEnrollment(int userId, int courseId)
@@ -34,12 +32,23 @@ namespace E_Learning.DAL.Repositories.EnrollmentRepository
 
         public void AddEnrollment(Enrollment enrollment)
         {
-            _context.Enrollments.Add(enrollment);
+            //if (IsStudentEnrolled(enrollment.UserId, enrollment.CourseId))
+            //{
+                _context.Enrollments.Add(enrollment);
+            //}
+            //else
+            //{
+            //}
         }
 
         public bool IsStudentEnrolled(int userId)
         {
             return _context.Enrollments.Any(e => e.UserId == userId);
+        }
+
+        public async Task<bool> IsStudentEnrolledAsync(int userId, int courseId)
+        {
+            return await _context.Enrollments.AsNoTracking().AnyAsync(e => e.UserId == userId && e.CourseId == courseId);
         }
 
     }
