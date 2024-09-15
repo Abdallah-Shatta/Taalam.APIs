@@ -26,5 +26,10 @@ namespace E_Learning.DAL.Repositories.CartRepository
             // return _context.Carts.Where(c => c.UserId == userId).Sum(c => c.Course.Price);
             return _context.Carts.Where(c => c.UserId == userId).Sum(c => (decimal?)c.Course.Price) ?? 0;
         }
+
+        public bool CartItemExists(int userId, int courseId)
+        {
+            return _context.Carts.Any(c => c.UserId==userId && c.CourseId == courseId);
+        }
     }
 }

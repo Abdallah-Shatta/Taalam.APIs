@@ -13,6 +13,8 @@ namespace E_Learning.BL.DTO.CourseDTO.InstructorInfoDTO
         public string? LName { get; set; }
         public string? Description { get; set; }
 
+        public string ProfilePicture { get; set; }
+
 
     }
 }
