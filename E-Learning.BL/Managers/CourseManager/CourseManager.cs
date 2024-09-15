@@ -102,6 +102,7 @@ namespace E_Learning.BL.Managers.CourseManager
                 Id = course.Id,
                 TeacherId = course.UserId,
                 Duration = course.Duration,
+                Title = course.Title,
 
                 Sections = course.Sections?.Select(section => new ReadCourseSectionInfoDTO
                 {
