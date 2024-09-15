@@ -67,14 +67,18 @@ namespace E_Learning.APIs.Controllers
 
             try
             {
-                _cartManager.AddToCart(cartItemDto);
+               var addedToCart= _cartManager.AddToCart(cartItemDto);
+                if (addedToCart == false) {
+                    return BadRequest("course is already in cart");
+
+                }
             }
             catch (InvalidOperationException ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return NoContent();
+            return Ok(new {message= "course added to cart" });
         }
 
 
