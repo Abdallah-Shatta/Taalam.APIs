@@ -10,9 +10,9 @@ namespace E_Learning.BL.DTO.Payment
     {
         public string AuthToken { get; set; }
         public readonly bool DeliveryNeeded = false;
-        private int _amountCents;
+        private decimal _amountCents;
 
-        public int AmountCents
+        public decimal AmountCents
         {
             get => _amountCents;
             set => _amountCents = value * 100;
@@ -20,7 +20,7 @@ namespace E_Learning.BL.DTO.Payment
         public readonly string Currency = "EGP";
         public readonly string[] Items = Array.Empty<string>();
 
-        public OrderRegisterationDTO(string authToken, int price)
+        public OrderRegisterationDTO(string authToken, decimal price)
         {
             this.AuthToken = authToken;
             this.AmountCents = price;

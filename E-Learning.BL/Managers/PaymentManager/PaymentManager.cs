@@ -1,5 +1,7 @@
 ﻿using E_Learning.BL.DTO.Payment;
 using E_Learning.BL.Enums;
+using E_Learning.BL.Managers.CourseManager;
+using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -11,22 +13,26 @@ namespace E_Learning.BL.Managers.PaymentManager
     {
         private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICourseManager _courseManager;
         private OrderRegisterationDTO? OrderReguest;
         private PaymentKeyRequestDTO? PaymentKeyRequest;
 
-        public PaymentManager(IConfiguration configuration, IUnitOfWork unitOfWork)
+        public PaymentManager(IConfiguration configuration, IUnitOfWork unitOfWork, ICourseManager courseManager)
         {
             _configuration = configuration;
             _unitOfWork = unitOfWork;
+            _courseManager = courseManager;
         }
 
         /*------------------------------------------ Payment Methods -------------------------------------------*/
         // 1- Online Card
-        public async Task<BasePaymentResponseDTO<string>> GetOnlineCardIFrame(int price, int userId)
+        public async Task<BasePaymentResponseDTO<string>> GetOnlineCardIFrame(int userId)
         {
             var OnlineCardIFrameResponse = new BasePaymentResponseDTO<string>();
 
             string IFrame = "https://accept.paymob.com/api/acceptance/iframes/867405?payment_token=";
+
+            var price = _unitOfWork.CartRepository.GetCartTotalByUserId(userId);
 
             try
             {   var PaymentKeyResponse = await _getPaymentKeyByPaymentMethod(PaymentMethod.OnlineCard, price, userId);
@@ -49,9 +55,11 @@ namespace E_Learning.BL.Managers.PaymentManager
         }
 
         // 2- Mobile Wallet
-        public async Task<BasePaymentResponseDTO<string>> GetMoblieWalletUrl(int price, int userId, string walletMobileNumber)
+        public async Task<BasePaymentResponseDTO<string>> GetMoblieWalletUrl(int userId, string walletMobileNumber)
         {
             var MobileWalletUrlResponse = new BasePaymentResponseDTO<string>();
+
+            var price = _unitOfWork.CartRepository.GetCartTotalByUserId(userId);
 
             try
             {
@@ -110,6 +118,29 @@ namespace E_Learning.BL.Managers.PaymentManager
             }
         }
 
+        //public bool EnrollAfterPayment(int userId)
+        //{
+        //    var carts = _unitOfWork.CartRepository.GetCartItemsByUserId(userId);
+        //    foreach (var cart in carts)
+        //    {
+        //        var enrollment = new Enrollment
+        //        {
+        //            UserId = userId,
+        //            CourseId = cart.CourseId,
+        //            EnrollmentDate = DateTime.UtcNow,
+        //            ProgressPercentage = 0,
+        //            CompletedLessons = 0
+        //        };
+        //        _unitOfWork.EnrollmentRepository.AddEnrollment(enrollment);
+        //        _unitOfWork.SaveChanges();
+
+        //        //if (!_courseManager.EnrollUserInCourse(userId, cart.CourseId)) return false;
+        //        //_unitOfWork.CartRepository.DeleteAllUserCartItems(userId);
+        //    }
+
+        //    return true;
+        //}
+
         /*------------------------------------- Payment Intention API Flow -------------------------------------*/
         // 1- Authentication Request
         private async Task<BasePaymentResponseDTO<string>> _getAuthenticationToken()
@@ -157,7 +188,7 @@ namespace E_Learning.BL.Managers.PaymentManager
         }
 
         // 2- Order Registration
-        private async Task<BasePaymentResponseDTO<string>> _createOrderAndGetOrderId(int price)
+        private async Task<BasePaymentResponseDTO<string>> _createOrderAndGetOrderId(decimal price)
         {
             var OrderResponse = new BasePaymentResponseDTO<string>();
 
@@ -215,7 +246,7 @@ namespace E_Learning.BL.Managers.PaymentManager
         }
 
         // 3- Payment Key
-        private async Task<BasePaymentResponseDTO<string>> _getPaymentKeyByPaymentMethod(PaymentMethod method, int price, int userId)
+        private async Task<BasePaymentResponseDTO<string>> _getPaymentKeyByPaymentMethod(PaymentMethod method, decimal price, int userId)
         {
             var PaymentKeyResponse = new BasePaymentResponseDTO<string>();
 

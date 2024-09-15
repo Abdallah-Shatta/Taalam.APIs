@@ -12,5 +12,6 @@ namespace E_Learning.DAL.Repositories.EnrollmentRepository
 
 
         void AddEnrollment(Enrollment enrollment);
+        Task<bool> IsStudentEnrolledAsync(int userId, int courseId);
     }
 }

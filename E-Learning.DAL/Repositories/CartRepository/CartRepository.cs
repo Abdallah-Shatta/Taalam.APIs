@@ -21,10 +21,23 @@ namespace E_Learning.DAL.Repositories.CartRepository
         {
             return _context.Carts.FirstOrDefault(c => c.UserId == userId && c.CourseId == courseId);
         }
-
         public decimal GetCartTotalByUserId(int userId)
         {
-            return _context.Carts.Where(c => c.UserId == userId).Sum(c => c.Course.Price);
+            // return _context.Carts.Where(c => c.UserId == userId).Sum(c => c.Course.Price);
+            return _context.Carts
+                   .Where(c => c.UserId == userId)
+                   .Sum(c => (decimal?)c.Course.Price) ?? 0;
+        }
+        public void DeleteAllUserCartItems (int userId)
+        {
+            var carts = _context.Carts.Where (c => c.UserId == userId);
+            foreach (var cart in carts)
+            {
+                _context.Carts.Remove(cart);
+            }
+            //added
+
+            _context.SaveChanges();
         }
 
         public bool CartItemExists(int userId, int courseId)

@@ -13,7 +13,7 @@ using E_Learning.DAL.Repositories.WishListRepository;
 
 namespace E_Learning.DAL.UnitOfWorkDP
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         /*------------------------------------------------------------------------*/
         IAnswerRepository AnswerRepository { get; }

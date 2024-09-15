@@ -120,12 +120,14 @@ namespace E_Learning.APIs
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateLifetime = true
                 };
-            }).AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+            })
+            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
             {
                 options.ClientId = googleClientId;
                 options.ClientSecret = googleClientSecret;
                 options.SignInScheme = IdentityConstants.ExternalScheme;
                 options.CallbackPath = new PathString("/external-login-callback");//call back 
+                                                                                  //           options.CallbackPath = new PathString("/callback");//call back 
                 options.Events = new OAuthEvents //de lma ta3mel login with google w law dost no f saf7et el login
                 {
                     OnRemoteFailure = context =>
@@ -149,6 +151,7 @@ namespace E_Learning.APIs
                 b.DefaultPolicy = new AuthorizationPolicyBuilder()
                 //IdentityConstants.ApplicationScheme is the cookie authentication
                 .RequireAuthenticatedUser().AddAuthenticationSchemes(IdentityConstants.ApplicationScheme, "jwt", GoogleDefaults.AuthenticationScheme).Build();
+                //.RequireAuthenticatedUser().AddAuthenticationSchemes(IdentityConstants.ApplicationScheme, "jwt").Build();
 
             });
 
