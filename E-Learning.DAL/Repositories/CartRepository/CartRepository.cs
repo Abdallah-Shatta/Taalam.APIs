@@ -39,5 +39,10 @@ namespace E_Learning.DAL.Repositories.CartRepository
 
             _context.SaveChanges();
         }
+
+        public bool CartItemExists(int userId, int courseId)
+        {
+            return _context.Carts.Any(c => c.UserId==userId && c.CourseId == courseId);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using E_Learning.BL.DTO.Cart;
 using E_Learning.BL.DTO.Course;
 using E_Learning.BL.DTO.User;
+using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,26 @@ namespace E_Learning.BL.Managers.CartManager
             };
         }
 
+
+        public bool AddToCart(AddToCartDTO cartItemDto)
+        {
+
+            var newCartItem = new Cart {
+                UserId = cartItemDto.UserId,
+                CourseId = cartItemDto.CourseId
+            };
+
+
+            _unitOfWork.CartRepository.Create(newCartItem);
+            _unitOfWork.SaveChanges();
+            return true;
+
+        }
+
+        public bool CartItemExists(AddToCartDTO cartItemDto)
+        {
+            return _unitOfWork.CartRepository.CartItemExists(cartItemDto.UserId, cartItemDto.CourseId);
+        }
 
 
     }
