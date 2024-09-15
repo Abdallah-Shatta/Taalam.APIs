@@ -66,7 +66,7 @@ namespace E_Learning.APIs.Controllers
             var result = _ratingManager.CreateRating(ratingDto);
             if (result)
             {
-                return Ok("Rating successfully created.");
+                return Ok(new{message= "Rating successfully created."});
             }
 
             return StatusCode(500, "An error occurred while creating the rating.");
@@ -105,7 +105,7 @@ namespace E_Learning.APIs.Controllers
             var result = _ratingManager.EditRating(ratingDto);
             if (result)
             {
-                return Ok("Rating successfully edited.");
+                return Ok(new { message = "Rating successfully edited." });
             }
 
             return StatusCode(500, "An error occurred while editing the rating.");
