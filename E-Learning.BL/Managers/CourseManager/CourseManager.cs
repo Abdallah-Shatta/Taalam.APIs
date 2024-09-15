@@ -40,7 +40,8 @@ namespace E_Learning.BL.Managers.CourseManager
                     Id = course.User.Id,
                     FName = course.User.FName,
                     LName = course.User.LName,
-                    Description = course.User.Description
+                    Description = course.User.Description,
+                    ProfilePicture = course.User.ProfilePicture!=null? course.User.ProfilePicture :null
 
                 },
 
