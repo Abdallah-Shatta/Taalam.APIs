@@ -20,5 +20,6 @@ namespace E_Learning.DAL.Repositories.UserRepository
         {
             return _context.Enrollments.Count(e => e.CourseId == id);
         }
+
     }
 }

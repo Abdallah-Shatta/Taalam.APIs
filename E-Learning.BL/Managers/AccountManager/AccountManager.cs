@@ -1,4 +1,6 @@
-﻿using E_Learning.BL.DTO.Mail;
+﻿using E_Learning.BL.DTO.Course;
+using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
+using E_Learning.BL.DTO.Mail;
 using E_Learning.BL.DTO.User;
 using E_Learning.BL.Enums;
 using E_Learning.BL.Managers.AuthenticationManager;
@@ -389,6 +391,25 @@ namespace E_Learning.BL.Managers.AccountManager
             return new string(password.OrderBy(x => random.Next()).ToArray());
         }
 
+        public IEnumerable<ReadCourseDTO> GetInstructorCourses (int id)
+        {
+            //var courses = _unitOfWork.CourseRepository.GetInstructorCourses(id).Select(c => c.)
+            return _unitOfWork.CourseRepository.GetInstructorCourses(id).Select(c => new ReadCourseDTO
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Description = c.Description,
+                CoverPicture = c.CoverPicture,
+                Price = (int)c.Price
+                //Duration = c.Duration,
+                //SectionsNo = c.SectionsNo,
+                //Rate = c.Rate,
+                //CreationDate = c.CreationDate,
+            });
+
+
+        }
+        
         public async Task<(bool Success, string Message)> approve(int id)
         {
             // Find the user by ID
@@ -417,6 +438,8 @@ namespace E_Learning.BL.Managers.AccountManager
 
 
 
+
+            
 
     }
 }

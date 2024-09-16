@@ -8,6 +8,7 @@ namespace E_Learning.BL.DTO.CourseDTO.CourseUploadDTO
 {
     public class UploadLessonDto
     {
+        //public int? Id { get; set; }
         public string LessonTitle { get; set; }
         public string LessonUrl { get; set; }
     }
