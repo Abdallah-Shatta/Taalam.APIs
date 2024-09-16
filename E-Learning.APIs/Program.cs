@@ -71,9 +71,9 @@ namespace E_Learning.APIs
             .AddEntityFrameworkStores<AppDbContext>();*/
 
             //de 3ashan el forget password da msh me5aly ay 7ad y login ela law el confirmedemail =true
-            /* builder.Services.Configure<IdentityOptions>(
-                opts => opts.SignIn.RequireConfirmedEmail = true
-                );*/
+            //builder.Services.Configure<IdentityOptions>(
+            //   opts => opts.SignIn.RequireConfirmedEmail = true
+            //   );
 
             /*------------------------------------------------------------------------*/
 

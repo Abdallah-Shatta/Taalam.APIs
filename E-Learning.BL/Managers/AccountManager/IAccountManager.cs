@@ -28,5 +28,7 @@ namespace E_Learning.BL.Managers.AccountManager
         Task<IdentityResult> RegisterUserWithGoogle(GoogleregisterDTO googleRegisterDTO);
 
         Task<AuthenticationResponseDTO> LoginWithGoogle(User user);
+
+        Task<(bool Success, string Message)> approve(int id);
     }
 }

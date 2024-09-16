@@ -284,6 +284,48 @@ namespace E_Learning.APIs.Controllers
 
         }
 
+        [HttpGet("approveuser/{id}")]
+        [Authorize]
+        public async Task<IActionResult> approveuser(int id)
+        {
+            
+            var result = await _accountManager.approve(id);
+
+            if (result.Success)
+            {
+                // Return success with 200 OK and a structured response
+                return Ok(new
+                {
+                    Success = true,
+                    Message = result.Message
+                });
+            }
+            else
+            {
+                // Determine the error and return the appropriate status code
+                if (result.Message.Contains("User not found"))
+                {
+                    // 404 Not Found for missing user
+                    return NotFound(new
+                    {
+                        Success = false,
+                        Message = result.Message
+                    });
+                }
+                else
+                {
+                    // 400 Bad Request for other issues
+                    return BadRequest(new
+                    {
+                        Success = false,
+                        Message = result.Message
+                    });
+                }
+            }
+        }
+
+
+
 
     }
 
