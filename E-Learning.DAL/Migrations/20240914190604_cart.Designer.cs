@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240914190604_cart")]
+    partial class cart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,33 +192,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 2,
                             Name = "Sporting"
                         });
-                });
-
-            modelBuilder.Entity("E_Learning.DAL.Models.CertificateOfCompletion", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("IssuedAy")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CertificatesOfCompletion", (string)null);
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.CompletedLesson", b =>
@@ -436,7 +412,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 10,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-HJM_i7rOg2yY9OgpVPYRLL4fYjA9CTfEoQ&s",
-
                             CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1319),
                             LessonsNo = 0,
                             Price = 0m,
@@ -450,7 +425,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 11,
                             CategoryId = 2,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtx7PjCp_KBWQZtHauOWMG2WiRpXxjpbYf3w&s",
-
                             CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1321),
                             LessonsNo = 0,
                             Price = 0m,
@@ -464,7 +438,6 @@ namespace E_Learning.DAL.Migrations
                             Id = 12,
                             CategoryId = 2,
                             CoverPicture = "https://static.vecteezy.com/system/resources/previews/024/700/836/non_2x/fitness-gym-training-social-media-timeline-cover-and-video-thumbnail-and-web-banner-design-free-vector.jpg",
-
                             CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1323),
                             LessonsNo = 0,
                             Price = 0m,
@@ -503,14 +476,12 @@ namespace E_Learning.DAL.Migrations
                         {
                             UserId = 3,
                             CourseId = 1,
-
                             EnrollmentDate = new DateTime(2024, 9, 14, 22, 6, 2, 557, DateTimeKind.Local).AddTicks(2029)
                         },
                         new
                         {
                             UserId = 4,
                             CourseId = 2,
-
                             EnrollmentDate = new DateTime(2024, 9, 14, 23, 6, 2, 557, DateTimeKind.Local).AddTicks(2047)
                         });
                 });
@@ -1040,7 +1011,6 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-
                             ConcurrencyStamp = "c44972fd-99b6-40cf-8f32-5b6b8a1deb7b",
                             Email = "AbdallahShatta@gmail.com",
                             EmailConfirmed = false,
@@ -1268,25 +1238,6 @@ namespace E_Learning.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("E_Learning.DAL.Models.CertificateOfCompletion", b =>
-                {
-                    b.HasOne("E_Learning.DAL.Models.Course", "Course")
-                        .WithMany("CertificatesOfCompletion")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("E_Learning.DAL.Models.User", "User")
-                        .WithMany("CertificatesOfCompletion")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("E_Learning.DAL.Models.CompletedLesson", b =>
                 {
                     b.HasOne("E_Learning.DAL.Models.Course", "Course")
@@ -1498,8 +1449,6 @@ namespace E_Learning.DAL.Migrations
                 {
                     b.Navigation("Carts");
 
-                    b.Navigation("CertificatesOfCompletion");
-
                     b.Navigation("Enrollments");
 
                     b.Navigation("Ratings");
@@ -1534,8 +1483,6 @@ namespace E_Learning.DAL.Migrations
             modelBuilder.Entity("E_Learning.DAL.Models.User", b =>
                 {
                     b.Navigation("CartItems");
-
-                    b.Navigation("CertificatesOfCompletion");
 
                     b.Navigation("CompletedLessonsList");
 
