@@ -15,6 +15,7 @@ using QuestPDF.Infrastructure;
 using QuestPDF.Helpers;
 using QuestPDF.Drawing;
 using Document = QuestPDF.Fluent.Document;
+using System;
 
 
 namespace E_Learning.BL.Managers.CourseManager
@@ -452,11 +453,12 @@ namespace E_Learning.BL.Managers.CourseManager
                     {
                         Id = c.Id,
                         Title = c.Title,
-                        InstructorName = (c.User != null) ? $"{c.User.FName} {c.User.LName}" : "null",
+                        InstructorName = (c.User != null)? $"{c.User.FName} {(string.IsNullOrEmpty(c.User.LName) ? "" : c.User.LName)}": "null",
                         InstructorInfo = c.User.Description,
                         Description = c.Description,
                         Price = c.Price,
                         Rate = c.Rate,
+                        Progress=c.Enrollments.FirstOrDefault(e => e.UserId == userId).ProgressPercentage,
                         CoverPicture = c.CoverPicture,
                         CategoryName = (c.Category != null) ? c.Category.Name : "null",
                         Duration = c.Duration,

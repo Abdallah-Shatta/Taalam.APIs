@@ -18,6 +18,7 @@ namespace E_Learning.DAL.ServicesExtension
             });
             /*------------------------------------------------------------------------*/
             var connectionString = configuration.GetConnectionString("Marwa");
+
           
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             /*------------------------------------------------------------------------*/
