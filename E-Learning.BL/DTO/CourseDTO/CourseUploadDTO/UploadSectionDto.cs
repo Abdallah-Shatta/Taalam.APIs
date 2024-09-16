@@ -10,6 +10,7 @@ namespace E_Learning.BL.DTO.CourseDTO.CourseUploadDTO
 {
     public class UploadSectionDto
     {
+        //public int? Id { get; set; }
         public string? SectionTitle { get; set; }
         public int NumberOfLessons { get; set; }
         public List<UploadLessonDto>? Lessons { get; set; }

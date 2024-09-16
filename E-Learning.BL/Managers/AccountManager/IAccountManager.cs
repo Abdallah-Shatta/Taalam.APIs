@@ -1,4 +1,6 @@
-﻿using E_Learning.BL.DTO.User;
+﻿using E_Learning.BL.DTO.Course;
+using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
+using E_Learning.BL.DTO.User;
 using E_Learning.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -29,6 +31,10 @@ namespace E_Learning.BL.Managers.AccountManager
 
         Task<AuthenticationResponseDTO> LoginWithGoogle(User user);
 
+
+        public IEnumerable<ReadCourseDTO> GetInstructorCourses(int id);
+
         Task<(bool Success, string Message)> approve(int id);
+
     }
 }

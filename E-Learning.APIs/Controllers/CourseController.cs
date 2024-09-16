@@ -305,5 +305,29 @@ namespace E_Learning.APIs.Controllers
             }
             return NotFound("No courses found for this user.");
         }
+
+
+        [HttpGet("GetCourseById/{courseId}")]
+        [AllowAnonymous]
+        public ActionResult<UploadCourseDTO> GetCourseById(int courseId)
+        {
+            UploadCourseDTO course = _courseManager.GetCourseById(courseId);
+            return Ok(course);
+        }
+
+        [HttpPut("editCourse")]
+        [AllowAnonymous]
+        public ActionResult editCourse(UploadCourseDTO courseDto)
+        {
+            (var success, var message) = _courseManager.EditCourse(courseDto);
+            if (success == true)
+            {
+                return Ok(new { message = message });
+            }
+            else
+            {
+                return BadRequest(new { message = message });
+            }
+        }
     }
 }

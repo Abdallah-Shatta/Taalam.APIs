@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Web;
 using Microsoft.AspNetCore.Authentication.Facebook;
+using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
+using E_Learning.BL.DTO.Course;
 
 namespace E_Learning.APIs.Controllers
 {
@@ -284,6 +286,16 @@ namespace E_Learning.APIs.Controllers
 
         }
 
+
+        [HttpGet("instructor-courses/{id}")]
+        public ActionResult<IEnumerable<ReadCourseDTO>> GetInstructorCourses(int id)
+        {
+            IEnumerable<ReadCourseDTO> InstructorCourses = _accountManager.GetInstructorCourses(id);
+            if (InstructorCourses == null)
+                return NotFound();
+            return Ok(InstructorCourses);
+        }
+
         [HttpGet("approveuser/{id}")]
         [Authorize]
         public async Task<IActionResult> approveuser(int id)
@@ -323,9 +335,6 @@ namespace E_Learning.APIs.Controllers
                 }
             }
         }
-
-
-
 
     }
 
