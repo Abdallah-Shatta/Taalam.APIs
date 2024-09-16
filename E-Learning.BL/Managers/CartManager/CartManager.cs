@@ -59,16 +59,19 @@ namespace E_Learning.BL.Managers.CartManager
 
         public bool AddToCart(AddToCartDTO cartItemDto)
         {
+            if(!_unitOfWork.EnrollmentRepository.IsStudentEnrolled(cartItemDto.UserId, cartItemDto.CourseId))
+            {
+                var newCartItem = new Cart {
+                    UserId = cartItemDto.UserId,
+                    CourseId = cartItemDto.CourseId
+                };
 
-            var newCartItem = new Cart {
-                UserId = cartItemDto.UserId,
-                CourseId = cartItemDto.CourseId
-            };
 
-
-            _unitOfWork.CartRepository.Create(newCartItem);
-            _unitOfWork.SaveChanges();
-            return true;
+                _unitOfWork.CartRepository.Create(newCartItem);
+                _unitOfWork.SaveChanges();
+                return true;
+            }
+            else return false;
 
         }
 

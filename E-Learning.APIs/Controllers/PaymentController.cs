@@ -80,7 +80,7 @@ namespace E_Learning.APIs.Controllers
                 {
                     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    using (var unitOfWork = _unitOfWork) // Assuming _unitOfWork is already instantiated
+                    using (var unitOfWork = _unitOfWork)
                     {
                         var carts = unitOfWork.CartRepository.GetCartItemsByUserId(int.Parse(userId));
                         foreach (var cart in carts)
@@ -111,7 +111,7 @@ namespace E_Learning.APIs.Controllers
             }
             else
             {
-                return BadRequest(new { Message = "Payment failed or was not approved" });
+                return Redirect($"http://localhost:4200/paymentapprove?success={success}");
             }
         }
     }
