@@ -118,6 +118,7 @@ namespace E_Learning.BL.Managers.PaymentManager
             }
         }
 
+        #region Test Enrollment
         //public bool EnrollAfterPayment(int userId)
         //{
         //    var carts = _unitOfWork.CartRepository.GetCartItemsByUserId(userId);
@@ -139,7 +140,8 @@ namespace E_Learning.BL.Managers.PaymentManager
         //    }
 
         //    return true;
-        //}
+        //} 
+        #endregion
 
         /*------------------------------------- Payment Intention API Flow -------------------------------------*/
         // 1- Authentication Request
