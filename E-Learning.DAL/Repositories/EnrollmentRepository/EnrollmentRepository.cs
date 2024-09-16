@@ -42,5 +42,22 @@ namespace E_Learning.DAL.Repositories.EnrollmentRepository
             return _context.Enrollments.Any(e => e.UserId == userId);
         }
 
+       public void UpdateEnrollment(Enrollment enrollment)
+        {
+            _context.Enrollments.Update(enrollment);
+
+        }
+
+        public bool IsEnrollmentComplete(int userId, int courseId)
+        {
+            return _context.Enrollments.Any(e => e.UserId == userId&&e.CourseId==courseId&&e.ProgressPercentage==100);
+        }
+
+        
+
+
+       
+
+
     }
 }

@@ -14,7 +14,7 @@ using System.Security.Claims;
 
 namespace E_Learning.APIs.Controllers
 {
-   
+
 
     public class CourseController : APIBaseController
     {
@@ -50,10 +50,10 @@ namespace E_Learning.APIs.Controllers
                 return Unauthorized();
             }
 
-            if (_courseManager.IsStudentEnrolled(userId, courseId)==false){
+            if (_courseManager.IsStudentEnrolled(userId, courseId) == false) {
                 return BadRequest("user is not enrolled in this course");
             }
-            
+
 
             var course = _courseManager.GetCourseContentForUser(userId, courseId);
             if (course == null)
@@ -75,7 +75,7 @@ namespace E_Learning.APIs.Controllers
 
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
             {
-                return Unauthorized(); 
+                return Unauthorized();
             }
             if (_courseManager.IsStudentEnrolled(userId, enrollRequest.CourseId))
             {
@@ -94,11 +94,11 @@ namespace E_Learning.APIs.Controllers
 
 
         [HttpPost("complete-lesson")]
-        public  IActionResult CompleteLesson([FromBody] CompleteLessonRequestDTO request)
+        public IActionResult CompleteLesson([FromBody] CompleteLessonRequestDTO request)
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return Unauthorized(); 
+                return Unauthorized();
             }
 
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -109,12 +109,12 @@ namespace E_Learning.APIs.Controllers
             }
 
 
-            if (_courseManager.IsStudentEnrolled(userId, request.CourseId)==false)
+            if (_courseManager.IsStudentEnrolled(userId, request.CourseId) == false)
             {
                 return BadRequest("User is not enrolled in course.");
             }
 
-            var result =  _courseManager.CompleteLesson(userId, request.CourseId, request.LessonId);
+            var result = _courseManager.CompleteLesson(userId, request.CourseId, request.LessonId);
             if (!result)
             {
                 return BadRequest("Failed to mark lesson as completed.");
@@ -131,7 +131,133 @@ namespace E_Learning.APIs.Controllers
             return Ok(claims);
         }
 
-        
+        [Authorize]
+        [HttpPost("createCert/{courseId}")]
+        public IActionResult CreateAPI(int courseId )
+        {
+            try
+            {
+
+                if (User.Identity==null ||!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized();
+            }
+                var isCertCreated = _courseManager.CreateCertificate(userId, courseId);
+                if (isCertCreated == false)
+                {
+                    return BadRequest();
+                }
+                return Ok(new { message = "cert created" });
+
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new {message= e.Message});
+            }
+        }
+        [HttpGet("generate-cert-pdf/{courseId}")]
+        public IActionResult GenerateCertificatePdf(int courseId)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized();
+            }
+
+            var certificateDto = _courseManager.GetCertificateDetails(userId, courseId);
+
+            if (certificateDto == null)
+            {
+                return NotFound();
+            }
+
+            var pdfBytes = _courseManager.GenerateCertificatePdf(certificateDto);
+
+            return File(pdfBytes, "application/pdf", $"Certificate_{userId}_{courseId}.pdf");
+        }
+
+        [Authorize]
+        [HttpGet("getOrCreateCert/{courseId}")]
+        public IActionResult GetOrCreateCertificate(int courseId)
+        {
+            try
+            {
+                // Ensure user is authenticated
+                if (!User.Identity.IsAuthenticated)
+                {
+                    return Unauthorized();
+                }
+
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+                {
+                    return Unauthorized();
+                }
+
+                // Check if the user is enrolled in the course
+                if (!_courseManager.IsStudentEnrolled(userId, courseId))
+                {
+                    return BadRequest(new { message = "User is not enrolled in this course." });
+                }
+
+                // Try to get the certificate details
+                var certificateDto = _courseManager.GetCertificateDetails(userId, courseId);
+
+                // If the certificate doesn't exist, create it
+                if (certificateDto == null)
+                {
+                    // Ensure the course is completed before creating a certificate
+                    if (!_courseManager.IsEnrollmentComplete(userId, courseId))
+                    {
+                        return BadRequest(new { message = "Course is not yet completed." });
+                    }
+
+                    // Create the certificate
+                    if (!_courseManager.CreateCertificate(userId, courseId))
+                    {
+                        return BadRequest(new { message = "Certificate could not be created." });
+                    }
+
+                    // Get the newly created certificate details
+                    certificateDto = _courseManager.GetCertificateDetails(userId, courseId);
+
+                    if (certificateDto == null)
+                    {
+                        return BadRequest(new { message = "Error retrieving newly created certificate." });
+                    }
+                }
+
+                // Generate the certificate PDF
+                var pdfBytes = _courseManager.GenerateCertificatePdf(certificateDto);
+
+                // Return the generated PDF as a file response
+                return File(pdfBytes, "application/pdf", $"Certificate_{userId}_{courseId}.pdf");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+
+
+
+
+
 
 
         /////////////////////////////////////////////////////////////////////////////

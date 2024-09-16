@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using QuestPDF.Infrastructure;
 
 
 namespace E_Learning.APIs
@@ -169,7 +170,7 @@ namespace E_Learning.APIs
             /* app.UseCors("MyPolicy");*/
             app.UseCors();
 
-
+            QuestPDF.Settings.License = LicenseType.Enterprise;
 
             app.UseAuthentication(); // da be5aly el backend e2ra el cookies w el jwt token
 
