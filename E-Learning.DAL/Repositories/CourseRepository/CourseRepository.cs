@@ -57,8 +57,37 @@ namespace E_Learning.DAL.Repositories.CourseRepository
         }
 
         
+        public void CreateCertificate(int userId, int courseId)
+        {
+            
+           var newCert = _context.CertificatesOfCompletion.Add(new CertificateOfCompletion
+            {
+                UserId = userId,
+                CourseId = courseId
+            });  
 
-        
+            
+
+
+        }
+
+        public CertificateOfCompletion? GetCertOfComp(int userId, int courseId)
+        {
+            return _context.CertificatesOfCompletion
+               .Include(c => c.User)   
+               .Include(c => c.Course) 
+               .FirstOrDefault(c => c.UserId == userId && c.CourseId == courseId);
+        }
+
+        public bool CertAlreadyExists(int userId, int courseId)
+        {
+            return _context.CertificatesOfCompletion.Any(c => c.UserId == userId && c.CourseId == courseId);
+
+            
+        }
+
+
+
 
 
 
@@ -70,7 +99,7 @@ namespace E_Learning.DAL.Repositories.CourseRepository
 
         public IEnumerable<Course> SearchCourses(string searchTerm)
         {
-            return _context.Courses.Include(c => c.User)
+            return _context.Courses.Include(c => c.User).Include(c => c.Category)
            .Where(c => c.Title.Contains(searchTerm) || c.Description.Contains(searchTerm));
         }
         public IEnumerable<Course> GetAllCoursesByUserId(int userId)
@@ -79,7 +108,6 @@ namespace E_Learning.DAL.Repositories.CourseRepository
                   .Include(c => c.Enrollments)
                   .Include(c => c.User)
                   .Include(c => c.Category)
-                  .Include(c => c.Ratings)
                   .Where(c => c.Enrollments.Any(e => e.UserId == userId))
                   .ToList();
         }

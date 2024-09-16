@@ -41,6 +41,18 @@ namespace E_Learning.APIs.Controllers
             return Ok(name);
         }
 
+
+        [HttpGet("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            // Call the account manager to sign out the user
+            await _accountManager.SignOutUserAsync();
+
+            HttpContext.Response.Cookies.Delete("taalam");
+            return NoContent();
+        }
+
+
         [HttpPost("Register")]
         public async Task<IActionResult> AccountRegister([FromBody] RegisterDTO registerDTO)
         {
@@ -209,12 +221,7 @@ namespace E_Learning.APIs.Controllers
             return Ok(!isRegistered);
         }
 
-        [HttpGet("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await _accountManager.SignOutUserAsync();
-            return NoContent();
-        }
+      
 
         [HttpPost("generate-new-jwt-token")]
         public async Task<IActionResult> GenerateNewAccessToken([FromBody] TokenModel tokenModel)
@@ -279,6 +286,7 @@ namespace E_Learning.APIs.Controllers
 
         }
 
+
         [HttpGet("instructor-courses/{id}")]
         public ActionResult<IEnumerable<ReadCourseDTO>> GetInstructorCourses(int id)
         {
@@ -287,6 +295,47 @@ namespace E_Learning.APIs.Controllers
                 return NotFound();
             return Ok(InstructorCourses);
         }
+
+        [HttpGet("approveuser/{id}")]
+        [Authorize]
+        public async Task<IActionResult> approveuser(int id)
+        {
+            
+            var result = await _accountManager.approve(id);
+
+            if (result.Success)
+            {
+                // Return success with 200 OK and a structured response
+                return Ok(new
+                {
+                    Success = true,
+                    Message = result.Message
+                });
+            }
+            else
+            {
+                // Determine the error and return the appropriate status code
+                if (result.Message.Contains("User not found"))
+                {
+                    // 404 Not Found for missing user
+                    return NotFound(new
+                    {
+                        Success = false,
+                        Message = result.Message
+                    });
+                }
+                else
+                {
+                    // 400 Bad Request for other issues
+                    return BadRequest(new
+                    {
+                        Success = false,
+                        Message = result.Message
+                    });
+                }
+            }
+        }
+
     }
 
 }

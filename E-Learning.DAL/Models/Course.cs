@@ -27,6 +27,8 @@ namespace E_Learning.DAL.Models
         public List<WishList>? WishLists { get; set; }
 
         public ICollection<Rating>? Ratings { get; set; }
+        public ICollection<CertificateOfCompletion>? CertificatesOfCompletion { get; set; }
+
 
 
     }

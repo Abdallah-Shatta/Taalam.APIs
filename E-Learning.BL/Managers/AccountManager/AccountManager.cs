@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -146,7 +147,8 @@ namespace E_Learning.BL.Managers.AccountManager
                     user.OwnedCourses,
                     user.Youtube,
                     user.CartItems,
-                    role = roles
+                    role = roles,
+                    user.EmailConfirmed
                 });
             }
 
@@ -392,9 +394,6 @@ namespace E_Learning.BL.Managers.AccountManager
         public IEnumerable<ReadCourseDTO> GetInstructorCourses (int id)
         {
             //var courses = _unitOfWork.CourseRepository.GetInstructorCourses(id).Select(c => c.)
-
-
-
             return _unitOfWork.CourseRepository.GetInstructorCourses(id).Select(c => new ReadCourseDTO
             {
                 Id = c.Id,
@@ -410,6 +409,37 @@ namespace E_Learning.BL.Managers.AccountManager
 
 
         }
+        
+        public async Task<(bool Success, string Message)> approve(int id)
+        {
+            // Find the user by ID
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return (false, "User not found.");
+            }
+
+            // Generate the email confirmation token
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            // Confirm the email
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return (true, "Email has been confirmed successfully.");
+            }
+            else
+            {
+                // Collect detailed errors if available
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                return (false, $"Error confirming email: {errors}");
+            }
+        }
+
+
+
+
+            
 
     }
 }

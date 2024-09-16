@@ -16,6 +16,7 @@ namespace E_Learning.APIs.Controllers
         }
 
         [HttpGet("Get-Instructor-Info/{id}")]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<InstructorDTO>> GetInstructorInfo(int id)
         {
             var instructorInfo = _userManager.GetInstructorInfo(id);
@@ -25,6 +26,7 @@ namespace E_Learning.APIs.Controllers
         }
 
         [HttpPut("Edit-User-Profile")]
+        
         public async Task<ActionResult<EditUserProfileDTO>> EditUserProfile([FromForm] EditUserProfileDTO editUserProfileDTO)
         {
             string scheme = Request.Scheme;

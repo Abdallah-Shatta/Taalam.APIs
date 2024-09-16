@@ -31,6 +31,10 @@ namespace E_Learning.BL.Managers.AccountManager
 
         Task<AuthenticationResponseDTO> LoginWithGoogle(User user);
 
+
         public IEnumerable<ReadCourseDTO> GetInstructorCourses(int id);
+
+        Task<(bool Success, string Message)> approve(int id);
+
     }
 }

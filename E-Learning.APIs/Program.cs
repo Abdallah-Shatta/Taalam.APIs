@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using QuestPDF.Infrastructure;
 
 
 namespace E_Learning.APIs
@@ -28,9 +29,9 @@ namespace E_Learning.APIs
 
             builder.Services.AddControllers(options =>
             {
-                //Authorization policy for authunticating all endpoints
-                //var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                //options.Filters.Add(new AuthorizeFilter(policy));
+                //Authorization policy for authunticating all endpoints 
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -53,7 +54,7 @@ namespace E_Learning.APIs
                 {
                     policyBuilder
                     .WithOrigins("http://localhost:5062", "http://localhost:4200")
-                    .WithHeaders("Authorization", "origin", "accept", "content-type")
+                    .AllowAnyHeader()
                     .WithMethods("GET", "POST", "PUT", "DELETE");
                 });
             });
@@ -70,10 +71,10 @@ namespace E_Learning.APIs
             /* builder.Services.AddIdentityApiEndpoints<User>()
             .AddEntityFrameworkStores<AppDbContext>();*/
 
-            //de 3ashan el forget password
-            /* builder.Services.Configure<IdentityOptions>(
-                opts => opts.SignIn.RequireConfirmedEmail = true
-                );*/
+            //de 3ashan el forget password da msh me5aly ay 7ad y login ela law el confirmedemail =true
+            //builder.Services.Configure<IdentityOptions>(
+            //   opts => opts.SignIn.RequireConfirmedEmail = true
+            //   );
 
             /*------------------------------------------------------------------------*/
 
@@ -108,7 +109,7 @@ namespace E_Learning.APIs
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  ///bearer
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer("jwt", options =>
+            .AddJwtBearer("jwt", options => //hna enta zawdt tareqa gededa l el authentication
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -120,13 +121,15 @@ namespace E_Learning.APIs
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateLifetime = true
                 };
-            }).AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+            })
+            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
             {
                 options.ClientId = googleClientId;
                 options.ClientSecret = googleClientSecret;
-                //   options.SignInScheme = IdentityConstants.ExternalScheme;
-                options.CallbackPath = new PathString("/external-login-callback");
-                options.Events = new OAuthEvents
+                options.SignInScheme = IdentityConstants.ExternalScheme;
+                options.CallbackPath = new PathString("/external-login-callback");//call back 
+                                                                                  //           options.CallbackPath = new PathString("/callback");//call back 
+                options.Events = new OAuthEvents //de lma ta3mel login with google w law dost no f saf7et el login
                 {
                     OnRemoteFailure = context =>
                     {
@@ -149,6 +152,7 @@ namespace E_Learning.APIs
                 b.DefaultPolicy = new AuthorizationPolicyBuilder()
                 //IdentityConstants.ApplicationScheme is the cookie authentication
                 .RequireAuthenticatedUser().AddAuthenticationSchemes(IdentityConstants.ApplicationScheme, "jwt", GoogleDefaults.AuthenticationScheme).Build();
+                //.RequireAuthenticatedUser().AddAuthenticationSchemes(IdentityConstants.ApplicationScheme, "jwt").Build();
 
             });
 
@@ -169,11 +173,11 @@ namespace E_Learning.APIs
             /* app.UseCors("MyPolicy");*/
             app.UseCors();
 
+            QuestPDF.Settings.License = LicenseType.Enterprise;
 
+            app.UseAuthentication(); // da be5aly el backend e2ra el cookies w el jwt token
 
-            app.UseAuthentication();
-
-            app.UseAuthorization();
+            app.UseAuthorization(); 
 
             app.MapControllers();
 

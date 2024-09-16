@@ -29,6 +29,8 @@ namespace E_Learning.DAL.Models
 
         public ICollection<Rating>? Ratings { get; set; }
         public ICollection<CompletedLesson>? CompletedLessonsList { get; set; }
+        public ICollection<CertificateOfCompletion>? CertificatesOfCompletion { get; set; }
+
 
 
     }

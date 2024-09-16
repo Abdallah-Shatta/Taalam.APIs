@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240916023811_add cert")]
+    partial class addcert
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,6 +147,9 @@ namespace E_Learning.DAL.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.HasKey("UserId", "CourseId");
 
                     b.HasIndex("CourseId");
@@ -154,12 +160,14 @@ namespace E_Learning.DAL.Migrations
                         new
                         {
                             UserId = 3,
-                            CourseId = 3
+                            CourseId = 3,
+                            Id = 0
                         },
                         new
                         {
                             UserId = 4,
-                            CourseId = 4
+                            CourseId = 4,
+                            Id = 0
                         });
                 });
 
@@ -319,7 +327,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 1,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvJBvVedFjpONzC1ZOR-YSWauBp9ZKK6ydA&s",
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1249),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(822),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 1m,
@@ -332,7 +340,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 2,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2o9_OmdunGnBKDIiSGo3uLYvA8vySqQ-M9fyVT_nys9HMMbZJv8cU8YtPkPbexgrf3J8&usqp=CAU",
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1300),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(878),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 2m,
@@ -345,7 +353,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 3,
                             CategoryId = 2,
                             CoverPicture = "https://dynamic.brandcrowd.com/template/preview/design/90728fda-b283-4797-973e-9a0775dec439?v=4&designTemplateVersion=5&size=design-preview-standalone-1x",
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1303),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(880),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 4m,
@@ -358,7 +366,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 4,
                             CategoryId = 2,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo1cHnjZlK64h9Pc5OvWCYfYWYexByKhPpeg&s",
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1306),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(882),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 2m,
@@ -371,7 +379,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 5,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCmO_j4YW82XwWIM-_Fo6afxyuN2pSGoZMBQ&s",
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1308),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(883),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 2m,
@@ -384,7 +392,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 6,
                             CategoryId = 1,
                             CoverPicture = "https://d1jnx9ba8s6j9r.cloudfront.net/imgver.1551437392/img/co_img_1539_1633434090.png",
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1310),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(914),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 5m,
@@ -397,7 +405,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 7,
                             CategoryId = 1,
                             CoverPicture = "https://static.gunnarpeipman.com/wp-content/uploads/2019/12/ef-core-featured.png",
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1313),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(916),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 4m,
@@ -410,7 +418,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 8,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKIa50KjBUhvtvuMbOaL_QtJrzstWIQA3YSg&s",
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1315),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(917),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 5m,
@@ -423,7 +431,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 9,
                             CategoryId = 1,
                             CoverPicture = "https://www.construx.com/wp-content/uploads/2018/08/design-pattern-essentials-course-image.jpg",
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1317),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(919),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 3m,
@@ -436,8 +444,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 10,
                             CategoryId = 1,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-HJM_i7rOg2yY9OgpVPYRLL4fYjA9CTfEoQ&s",
-
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1319),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(920),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 1m,
@@ -450,8 +457,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 11,
                             CategoryId = 2,
                             CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtx7PjCp_KBWQZtHauOWMG2WiRpXxjpbYf3w&s",
-
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1321),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(922),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 4m,
@@ -464,8 +470,7 @@ namespace E_Learning.DAL.Migrations
                             Id = 12,
                             CategoryId = 2,
                             CoverPicture = "https://static.vecteezy.com/system/resources/previews/024/700/836/non_2x/fitness-gym-training-social-media-timeline-cover-and-video-thumbnail-and-web-banner-design-free-vector.jpg",
-
-                            CreationDate = new DateTime(2024, 9, 14, 22, 6, 2, 556, DateTimeKind.Local).AddTicks(1323),
+                            CreationDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(923),
                             LessonsNo = 0,
                             Price = 0m,
                             Rate = 1m,
@@ -503,15 +508,13 @@ namespace E_Learning.DAL.Migrations
                         {
                             UserId = 3,
                             CourseId = 1,
-
-                            EnrollmentDate = new DateTime(2024, 9, 14, 22, 6, 2, 557, DateTimeKind.Local).AddTicks(2029)
+                            EnrollmentDate = new DateTime(2024, 9, 16, 5, 38, 10, 887, DateTimeKind.Local).AddTicks(7500)
                         },
                         new
                         {
                             UserId = 4,
                             CourseId = 2,
-
-                            EnrollmentDate = new DateTime(2024, 9, 14, 23, 6, 2, 557, DateTimeKind.Local).AddTicks(2047)
+                            EnrollmentDate = new DateTime(2024, 9, 16, 6, 38, 10, 887, DateTimeKind.Local).AddTicks(7516)
                         });
                 });
 
@@ -1040,8 +1043,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-
-                            ConcurrencyStamp = "c44972fd-99b6-40cf-8f32-5b6b8a1deb7b",
+                            ConcurrencyStamp = "f34fc4aa-fe52-4a05-a61c-0c2e38bf5fa9",
                             Email = "AbdallahShatta@gmail.com",
                             EmailConfirmed = false,
                             FName = "Abdallah",
@@ -1058,7 +1060,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "abc50908-cc36-4725-a4c3-335837f8e92c",
+                            ConcurrencyStamp = "3a68d5b0-b04e-4c52-8a51-ca59d10ae6d7",
                             Email = "MohamedErbahim@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohamed",
@@ -1075,7 +1077,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "09b9d887-8637-46cd-8dd7-446716676a3c",
+                            ConcurrencyStamp = "e9fda075-d9f5-4706-a782-3705703e55c5",
                             Email = "MohsemTayseer@gmail.com",
                             EmailConfirmed = false,
                             FName = "Mohsen",
@@ -1090,7 +1092,7 @@ namespace E_Learning.DAL.Migrations
                         {
                             Id = 4,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7e27a56f-74ff-48db-902c-a12ea21bd15b",
+                            ConcurrencyStamp = "160d3456-cae4-4be2-bc53-e0b5e018becf",
                             Email = "MarwaElkasaby@gmail.com",
                             EmailConfirmed = false,
                             FName = "Marwa",

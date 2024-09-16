@@ -4,12 +4,13 @@ using E_Learning.BL.Managers.CartManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace E_Learning.APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+
     public class CartController : APIBaseController
     {
         private readonly ICartManager _cartManager;
@@ -20,6 +21,7 @@ namespace E_Learning.APIs.Controllers
         }
 
         [HttpGet("GetCartItems")]
+
         public ActionResult<IEnumerable<CourseDTO>> GetCartItems(int userId)
         {
             var cartItems = _cartManager.GetCartItems(userId);
@@ -40,6 +42,45 @@ namespace E_Learning.APIs.Controllers
             var total = _cartManager.GetCartTotal(userId);
             return Ok(total);
         }
+
+        [HttpPost("AddItemToUserCart")]
+        public IActionResult AddCartItem([FromBody] AddToCartDTO cartItemDto)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized();
+            }
+
+            cartItemDto.UserId = userId;
+
+            if (_cartManager.CartItemExists(cartItemDto))
+            {
+                return BadRequest("course is already in cart");
+            }
+
+            try
+            {
+               var addedToCart= _cartManager.AddToCart(cartItemDto);
+                if (addedToCart == false) {
+                    return BadRequest("course is already in cart");
+
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(new {message= "course added to cart" });
+        }
+
 
 
     }
