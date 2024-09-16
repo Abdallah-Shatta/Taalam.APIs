@@ -27,6 +27,8 @@ namespace E_Learning.DAL.Data.Context
         public DbSet<CompletedLesson> CompletedLessons  { get; set; }
         public DbSet<CertificateOfCompletion> CertificatesOfCompletion { get; set; }
 
+        public DbSet<Announcement> Announcements { get; set; }
+
         /*------------------------------------------------------------------------*/
         // Ctor
         public AppDbContext(DbContextOptions options) : base(options) { }
