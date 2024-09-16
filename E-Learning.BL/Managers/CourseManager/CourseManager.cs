@@ -1,4 +1,5 @@
 ﻿using E_Learning.BL.DTO.Course;
+using E_Learning.BL.DTO.CourseDTO.CertDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseContentDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseSectionInfoDTO.CourseLessonDTO;
@@ -8,9 +9,13 @@ using E_Learning.BL.DTO.CourseDTO.InstructorInfoDTO;
 using E_Learning.BL.DTO.User;
 using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
-using Microsoft.AspNetCore.Authorization;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
+using System.Reflection.Metadata;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
+using QuestPDF.Helpers;
+using QuestPDF.Drawing;
+using Document = QuestPDF.Fluent.Document;
+
 
 namespace E_Learning.BL.Managers.CourseManager
 {
@@ -96,7 +101,6 @@ namespace E_Learning.BL.Managers.CourseManager
             int totalLessons = course.Sections?.Sum(section => section.Lessons.Count) ?? 0;
             int completedLessonsCount = completedLessonIds.Count;
 
-            decimal progressPercentage = totalLessons > 0 ? (decimal)completedLessonsCount / totalLessons * 100 : 0;
             ReadCourseContentDTO couresResult = new ReadCourseContentDTO
             {
                 Id = course.Id,
@@ -130,7 +134,7 @@ namespace E_Learning.BL.Managers.CourseManager
 
                 StudentEnrollment = new CourseEnrollmentInfoDTO
                 {
-                    ProgressPercentage = progressPercentage,
+                    ProgressPercentage = ennrollment.ProgressPercentage,
                     CompletedLessons = completedLessonsCount,
                     EnrollmentDate = ennrollment.EnrollmentDate,
                 }
@@ -189,6 +193,7 @@ namespace E_Learning.BL.Managers.CourseManager
         }
 
 
+
         public  bool CompleteLesson(int userId, int courseId, int lessonId)
         {
 
@@ -204,16 +209,47 @@ namespace E_Learning.BL.Managers.CourseManager
             };
 
             _unitOfWork.LessonRepository.MarkLessonAsComplete(userId, lessonId, courseId);
+            var completedLessonIds = _unitOfWork.CourseRepository.GetCompletedLessonIdsForUserAndCourse(userId, courseId);
+            var totalLessons = _unitOfWork.LessonRepository.GetTotalLessonsForCourse(courseId);
+            int completedLessonsCount = completedLessonIds.Count;
 
-            //// Update progress
-            //var totalLessons = _unitOfWork.LessonRepository.GetTotalLessons(courseId);
-            //var completedLessonsCount = _unitOfWork.CompletedLessonRepository.GetCompletedLessonsCount(userId, courseId);
-            //var progressPercentage = (decimal)completedLessonsCount / totalLessons * 100;
+            decimal progressPercentage = totalLessons > 0 ? (decimal)completedLessonsCount / totalLessons * 100 : 0;
+
+            enrollment.ProgressPercentage = progressPercentage;
+            _unitOfWork.EnrollmentRepository.Update(enrollment);
+
 
             _unitOfWork.SaveChanges();
             return true;
 
         }
+
+        public bool CreateCertificate(int userId, int courseId)
+        {
+            if (_unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId,courseId)==false)
+            {
+                return false;
+            }
+            if (_unitOfWork.EnrollmentRepository.IsEnrollmentComplete(userId,courseId) == false)
+            {
+                return false;
+            }
+
+            if (_unitOfWork.CourseRepository.CertAlreadyExists(userId, courseId))
+            {
+                return false;
+            }
+
+            _unitOfWork.CourseRepository.CreateCertificate(userId, courseId);
+            _unitOfWork.SaveChanges();
+            return true;
+        }
+
+        public bool IsEnrollmentComplete(int userId, int courseId) {
+            return _unitOfWork.EnrollmentRepository.IsEnrollmentComplete(userId, courseId);
+                
+       }
+
 
 
         public IEnumerable<ReadCourseDTO> SearchCourses(string searchTerm)
@@ -233,6 +269,122 @@ namespace E_Learning.BL.Managers.CourseManager
 
                 });
         }
+
+        public CertificateOfCompletionDto? GetCertificateDetails(int userId, int courseId)
+        {
+            var certificate = _unitOfWork.CourseRepository.GetCertOfComp(userId, courseId);
+
+            if (certificate == null)
+            {
+                return null;
+            }
+
+            return new CertificateOfCompletionDto
+            {
+                Id = certificate.Id,
+                IssuedAy = certificate.IssuedAy,
+                User = new ReadCourseInstructorInfoDTO
+                {
+                    Id = certificate.User.Id,
+                    FName = certificate.User.FName,
+                    LName = certificate.User.LName
+                },
+                Course = new ReadOneCourseDetailsDto
+                {
+                    Id = certificate.Course.Id,
+                    Title = certificate.Course.Title
+                }
+            };
+        }
+
+
+
+
+
+        public byte[] GenerateCertificatePdf(CertificateOfCompletionDto certificateDto)
+        {
+            // Define the PDF document using QuestPDF
+            var document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4.Landscape());
+                    page.Margin(50);
+                    page.Background(Colors.White);
+                    page.DefaultTextStyle(x => x.FontSize(20));
+
+                    // Header with certificate title
+                    page.Header()
+                        .AlignCenter()
+                        .Text("Certificate of Completion")
+                        .FontSize(42)
+                        .SemiBold()
+                        .FontColor(Colors.Blue.Medium)
+                        .Underline(); 
+
+                    page.Content().PaddingVertical(40).Column(column =>
+                    {
+                        column.Spacing(20);
+
+                        column.Item().AlignCenter().Text("Taalam Academy")
+                            .FontSize(28)
+                            .Bold()
+                            .FontColor(Colors.Blue.Darken3); // Mocked logo text
+
+                        var fullName = $"{certificateDto.User.FName} {certificateDto.User.LName}";
+                        column.Item().AlignCenter().Text($"This certifies that {fullName}")
+                            .FontSize(28)
+                            .Bold()
+                            .FontColor(Colors.Black);
+
+                        column.Item().AlignCenter().Text($"has successfully completed the course:")
+                            .FontSize(22)
+                            .FontColor(Colors.Black);
+
+                        column.Item().AlignCenter().Text($"{certificateDto.Course.Title}")
+                            .FontSize(32)
+                            .Bold()
+                            .FontColor(Colors.Green.Medium);
+
+                        
+
+                        column.Item().AlignCenter().Text($"Date of Issuance: {certificateDto.IssuedAy.ToString("MMMM dd, yyyy")}")
+                            .FontSize(20)
+                            .FontColor(Colors.Black);
+
+                       
+
+                        //var verificationUrl = $"http://localhost:4000/cert/ver/{certificateDto.Id}";
+                        //column.Item().AlignCenter().Text($"Verify this certificate: {verificationUrl}")
+                        //    .FontSize(16)
+                        //    .FontColor(Colors.Blue.Darken2)
+                        //    .Underline();
+                    });
+
+                    // Footer with academy name and certificate ID
+                    page.Footer()
+                        .AlignCenter()
+                        .Text(txt =>
+                        {
+                            txt.Span("Taalam Academy")
+                                .FontSize(12)
+                                .SemiBold();
+                            txt.Line($" | Certificate ID: {certificateDto.Id}")
+                                .FontSize(12)
+                                .FontColor(Colors.Grey.Medium);
+                        });
+                });
+            });
+
+            // Generate the PDF and return it as a byte array
+            using (var memoryStream = new MemoryStream())
+            {
+                document.GeneratePdf(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+
+
 
         public IEnumerable<ReadCourseDTO> GetCoursesByCategoty(int id)
         {

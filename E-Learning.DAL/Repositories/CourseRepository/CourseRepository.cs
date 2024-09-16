@@ -56,8 +56,37 @@ namespace E_Learning.DAL.Repositories.CourseRepository
         }
 
         
+        public void CreateCertificate(int userId, int courseId)
+        {
+            
+           var newCert = _context.CertificatesOfCompletion.Add(new CertificateOfCompletion
+            {
+                UserId = userId,
+                CourseId = courseId
+            });  
 
-        
+            
+
+
+        }
+
+        public CertificateOfCompletion? GetCertOfComp(int userId, int courseId)
+        {
+            return _context.CertificatesOfCompletion
+               .Include(c => c.User)   
+               .Include(c => c.Course) 
+               .FirstOrDefault(c => c.UserId == userId && c.CourseId == courseId);
+        }
+
+        public bool CertAlreadyExists(int userId, int courseId)
+        {
+            return _context.CertificatesOfCompletion.Any(c => c.UserId == userId && c.CourseId == courseId);
+
+            
+        }
+
+
+
 
 
 

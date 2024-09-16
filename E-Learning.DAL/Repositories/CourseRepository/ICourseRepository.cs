@@ -1,5 +1,6 @@
 ﻿using E_Learning.DAL.Models;
 using E_Learning.DAL.Repositories.GenericRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Learning.DAL.Repositories.CourseRepository
 {
@@ -13,5 +14,13 @@ namespace E_Learning.DAL.Repositories.CourseRepository
         IEnumerable<Course> GetAllCourses();
         IEnumerable<Course> SearchCourses(string searchTerm);
         IEnumerable<Course> GetAllCoursesByUserId(int id);
+
+
+        public void CreateCertificate(int userId, int courseId);
+
+        public bool CertAlreadyExists(int userId, int courseId);
+        public CertificateOfCompletion? GetCertOfComp(int userId, int courseId);
+
+
     }
 }
