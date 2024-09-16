@@ -1,4 +1,5 @@
 ﻿using E_Learning.BL.DTO.Course;
+using E_Learning.BL.DTO.CourseDTO.CertDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseContentDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
 using E_Learning.DAL.Models;
@@ -24,5 +25,12 @@ namespace E_Learning.BL.Managers.CourseManager
 
         (bool success, string message) UploadCourse(UploadCourseDTO uploadCourse);
         IEnumerable<EnrolledCourse> GetCoursesByUserId(int id);
+        bool CreateCertificate(int userId, int courseId);
+        byte[] GenerateCertificatePdf(CertificateOfCompletionDto certificateDto);
+        CertificateOfCompletionDto? GetCertificateDetails(int userId, int courseId);
+
+        bool IsEnrollmentComplete(int userId, int courseId);
+
     }
+
 }

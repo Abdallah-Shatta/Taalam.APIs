@@ -10,7 +10,10 @@ namespace E_Learning.DAL.Repositories.LessonRepository
         bool MarkLessonAsNotComplete(int userId, int lessonId);
 
         bool IsLessonCompleted(int lessonId, int userId);
-        
+
+        public int GetTotalLessonsForCourse(int courseId);
+
+
 
     }
 }
