@@ -2,6 +2,7 @@
 using E_Learning.DAL.Models;
 using E_Learning.DAL.Repositories.GenericRepository;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace E_Learning.DAL.Repositories.CourseRepository
 {
@@ -81,6 +82,16 @@ namespace E_Learning.DAL.Repositories.CourseRepository
                   .Include(c => c.Ratings)
                   .Where(c => c.Enrollments.Any(e => e.UserId == userId))
                   .ToList();
+        }
+
+        public IEnumerable<Course> GetInstructorCourses(int id)
+        {
+            return _context.Courses.Where(c => c.UserId == id);
+        }
+
+        public Course GetCourseById(int id)
+        {
+            return _context.Courses.Include(c=>c.Category).Include(c=>c.Sections).ThenInclude(l =>l.Lessons).FirstOrDefault(c => c.Id == id);
         }
     }
 }

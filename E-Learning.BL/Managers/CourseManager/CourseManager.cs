@@ -311,5 +311,102 @@ namespace E_Learning.BL.Managers.CourseManager
             return Enumerable.Empty<EnrolledCourse>();
         }
 
+        public UploadCourseDTO GetCourseById(int id)
+        {
+            Course courseFromDb = _unitOfWork.CourseRepository.GetCourseById(id);
+            UploadCourseDTO courseDTO = new UploadCourseDTO()
+            {
+                UserId = courseFromDb.UserId,
+                Title = courseFromDb.Title,
+                Description = courseFromDb.Description,
+                Duration = courseFromDb.Duration,
+                CourseCategory = courseFromDb.Category?.Name,
+                CoverPicture = courseFromDb.CoverPicture,
+                Price = courseFromDb.Price,
+                SectionsNo = courseFromDb.SectionsNo,
+                Sections = courseFromDb.Sections?.Select(s => new UploadSectionDto()
+                {
+                    
+                    SectionTitle = s.Title,
+                    NumberOfLessons = s.LessonsNo,
+                    Lessons = s.Lessons?.Select(l => new UploadLessonDto()
+                    {
+                        LessonTitle = l.Title,
+                        LessonUrl = l.Content
+                    }).ToList(),
+                }).ToList()
+            };
+            return courseDTO;
+        }
+
+        public (bool success, string message) EditCourse(UploadCourseDTO editCourse)
+        {
+            Course courseFromDb = _unitOfWork.CourseRepository.GetCourseById((int)editCourse.CourseId);
+            courseFromDb.Title = editCourse.Title;
+            courseFromDb.Description = editCourse.Description;
+            courseFromDb.Duration = editCourse.Duration;
+            courseFromDb.CategoryId = _unitOfWork.CategoryRepository.GetCategoryIdByName(editCourse.CourseCategory);
+            courseFromDb.CoverPicture = editCourse.CoverPicture;
+            courseFromDb.Price = editCourse.Price;
+            courseFromDb.UpdatedDate = DateTime.Now;
+            courseFromDb.SectionsNo = editCourse.SectionsNo;
+            foreach (var sectionDto in editCourse.Sections)
+            {
+                var existingSection = courseFromDb.Sections
+                    .FirstOrDefault(s => s.Title == sectionDto.SectionTitle);
+
+                if (existingSection != null)
+                {
+                    // Update the existing section
+                    existingSection.Title = sectionDto.SectionTitle;
+                    existingSection.LessonsNo = sectionDto.NumberOfLessons;
+
+                    // Update or add lessons within the section
+                    foreach (var lessonDto in sectionDto.Lessons)
+                    {
+                        var existingLesson = existingSection.Lessons
+                            .FirstOrDefault(l => l.Title == lessonDto.LessonTitle);
+
+                        if (existingLesson != null)
+                        {
+                            // Update the existing lesson
+                            existingLesson.Title = lessonDto.LessonTitle;
+                            existingLesson.Content = lessonDto.LessonUrl; // Assuming LessonUrl is stored as Content
+                        }
+                        else
+                        {
+                            // Add a new lesson
+                            var newLesson = new Lesson
+                            {
+                                Title = lessonDto.LessonTitle,
+                                Content = lessonDto.LessonUrl,
+                                SectionId = existingSection.Id
+                            };
+                            existingSection.Lessons.Add(newLesson);
+                        }
+                    }
+                }
+                else
+                {
+                    // Add a new section
+                    var newSection = new Section
+                    {
+                        Title = sectionDto.SectionTitle,
+                        LessonsNo = sectionDto.NumberOfLessons,
+                        CourseId = courseFromDb.Id,
+                        //SectionNumber = courseFromDb.Sections.Count + 1, // Assuming auto increment for new sections
+                        Lessons = sectionDto.Lessons.Select(l => new Lesson
+                        {
+                            Title = l.LessonTitle,
+                            Content = l.LessonUrl
+                        }).ToList()
+                    };
+                    courseFromDb.Sections.Add(newSection);
+                }
+            }
+            _unitOfWork.SaveChanges();
+            return (true, "Course Updated Successfully");
+        }
+
     }
 }

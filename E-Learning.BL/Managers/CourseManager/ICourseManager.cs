@@ -24,5 +24,8 @@ namespace E_Learning.BL.Managers.CourseManager
 
         (bool success, string message) UploadCourse(UploadCourseDTO uploadCourse);
         IEnumerable<EnrolledCourse> GetCoursesByUserId(int id);
+        UploadCourseDTO GetCourseById(int id);
+
+        (bool success, string message) EditCourse(UploadCourseDTO uploadCourse);
     }
 }
