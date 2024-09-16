@@ -57,5 +57,15 @@ namespace E_Learning.DAL.Repositories.LessonRepository
             return _context.CompletedLessons.Any(l => l.UserId == userId && l.LessonId == lessonId);
         }
 
+        public int GetTotalLessonsForCourse(int courseId)
+        {
+            var course = _context.Courses
+                .Include(c => c.Sections)
+                .ThenInclude(s => s.Lessons)
+                .FirstOrDefault(c => c.Id == courseId);
+
+            return course?.Sections.Sum(section => section.Lessons.Count) ?? 0;
+        }
+
     }
 }
