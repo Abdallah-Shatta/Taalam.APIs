@@ -12,6 +12,7 @@ namespace E_Learning.DAL.Data.Configurations
         {
             builder.ToTable("CertificatesOfCompletion");
 
+
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Id)
             .HasDefaultValueSql("NEWID()"); 
@@ -27,7 +28,11 @@ namespace E_Learning.DAL.Data.Configurations
             builder.HasOne(c => c.Course)
                 .WithMany(co => co.CertificatesOfCompletion)
                 .HasForeignKey(c => c.CourseId)
-                .OnDelete(DeleteBehavior.ClientCascade); 
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            //soft delete
+            builder.HasQueryFilter(c => !c.Course.IsDeleted);
+
 
 
 

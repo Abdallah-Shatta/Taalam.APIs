@@ -15,6 +15,7 @@ using QuestPDF.Infrastructure;
 using QuestPDF.Helpers;
 using QuestPDF.Drawing;
 using Document = QuestPDF.Fluent.Document;
+using E_Learning.BL.DTO.CourseAdminDTO;
 using System;
 
 
@@ -22,7 +23,7 @@ namespace E_Learning.BL.Managers.CourseManager
 {
     public class CourseManager : ICourseManager
     {
-
+            
         private readonly IUnitOfWork _unitOfWork;
 
         public CourseManager(IUnitOfWork unitOfWork)
@@ -145,11 +146,58 @@ namespace E_Learning.BL.Managers.CourseManager
         }
 
         public bool IsStudentEnrolled(int userId, int courseId)
+
         {
             return _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId);
         }
 
-        
+
+
+
+
+        public PaginatedCourseResponseDTO GetPaginatedCourses(string searchTerm, int page, int pageSize, string sortBy, string sortOrder)
+            {
+                
+                int totalCourses;
+            searchTerm = string.IsNullOrWhiteSpace(searchTerm) ? null : searchTerm;
+            var courses = _unitOfWork.CourseRepository.GetPaginatedCourses(searchTerm, page, pageSize, sortBy, sortOrder, out totalCourses);
+
+                if (courses == null || !courses.Any())
+                {
+                return null;
+                }
+
+                // Map courses to DTO manually
+                var courseDtos = courses.Select(course => new CourseAdminDTO
+                {
+                    Id = course.Id,
+                    Title = course.Title,
+                    Description = course.Description,
+                    CategoryName = course.Category?.Name,
+                    InstructorName = course.User.FName + (course.User.LName != null ? " " + course.User.LName : " "),
+
+                    EnrollmentCount = course.Enrollments.Count, // Number of enrollments
+                    CreationDate = course.CreationDate
+                }).ToList();
+
+                // Prepare paginated response
+                return new PaginatedCourseResponseDTO
+                {
+                    Courses = courseDtos,
+                    TotalCourses = totalCourses,
+                    Page = page,
+                    PageSize = pageSize
+                };
+            }
+
+
+        public void DeleteCourse(int courseId)
+        {
+            _unitOfWork.CourseRepository.DeleteCourse(courseId);
+                
+        }
+
+
 
         ////////////////////////////////////////////////////////////////////////////////
         public IEnumerable<ReadCourseDTO> GetAllCourses()

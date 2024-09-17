@@ -12,6 +12,9 @@ namespace E_Learning.DAL.Data.Configurations
             builder.Property(l => l.Content).IsRequired();
             builder.HasOne(l => l.Section).WithMany(s => s.Lessons).HasForeignKey(l => l.SectionId);
 
+            builder.HasQueryFilter(l => l.Section.Course.IsDeleted==false);
+
+
             ////Data Seeding
             builder.HasData(
 
