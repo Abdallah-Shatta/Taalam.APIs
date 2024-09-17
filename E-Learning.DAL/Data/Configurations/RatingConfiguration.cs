@@ -1,6 +1,7 @@
 ﻿using E_Learning.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace E_Learning.DAL.Data.Configurations
 {
@@ -20,7 +21,9 @@ namespace E_Learning.DAL.Data.Configurations
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(r => r.Description)
-                   .HasMaxLength(500);
+            .HasMaxLength(500);
+
+            builder.HasQueryFilter(r => !r.Course.IsDeleted);
 
             builder.HasData(
                 new Rating

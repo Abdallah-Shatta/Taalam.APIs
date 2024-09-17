@@ -29,6 +29,8 @@ namespace E_Learning.DAL.Models
         public ICollection<Rating>? Ratings { get; set; }
         public ICollection<CertificateOfCompletion>? CertificatesOfCompletion { get; set; }
 
+        public bool IsDeleted { get; set; } // Soft delete flag
+
 
 
     }

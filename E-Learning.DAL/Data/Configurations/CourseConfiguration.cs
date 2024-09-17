@@ -1,6 +1,7 @@
 ﻿using E_Learning.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace E_Learning.DAL.Data.Configurations
 {
@@ -8,10 +9,13 @@ namespace E_Learning.DAL.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {
-
             builder.HasOne(c => c.User).WithMany(i => i.OwnedCourses).HasForeignKey(c => c.UserId);
             builder.Property(c => c.Title).IsRequired().HasMaxLength(50);
             builder.Property(c => c.Price).IsRequired();
+
+            //soft delete
+            builder.HasQueryFilter(c => !c.IsDeleted);
+
 
             ////Data Seeding
             builder.HasData(
