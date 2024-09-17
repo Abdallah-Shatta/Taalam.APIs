@@ -1,11 +1,6 @@
 ﻿using E_Learning.BL.DTO.Cart;
 using E_Learning.BL.DTO.Course;
-using E_Learning.BL.DTO.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using E_Learning.BL.DTO.WishList;
 
 namespace E_Learning.BL.Managers.WishListManager
 {
@@ -13,5 +8,11 @@ namespace E_Learning.BL.Managers.WishListManager
     {
         IEnumerable<ReadCourseDTO> GetWishListItems(int userId);
         IEnumerable<ReadCourseDTO>  RemoveItemFromWishList(int userId, int courseId);
+
+        public bool WishListItemExists(AddToWishListDTO wishListDTO);
+            
+        public bool AddToWishList(AddToWishListDTO cartItemDto);
+
+
     }
 }
