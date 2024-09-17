@@ -26,5 +26,11 @@ namespace E_Learning.DAL.Repositories.WishListRepository
             return _context.WishList.FirstOrDefault(c => c.UserId == userId && c.CourseId == courseId);
         }
 
+        public bool WishListITemExists(int userId, int courseId)
+        {
+            return _context.WishList.Any(c => c.UserId == userId && c.CourseId == courseId);
+        }
+
+
     }
 }

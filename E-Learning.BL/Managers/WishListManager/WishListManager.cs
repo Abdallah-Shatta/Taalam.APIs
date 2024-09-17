@@ -1,12 +1,9 @@
 ﻿using E_Learning.BL.DTO.Course;
 using E_Learning.BL.DTO.User;
-using E_Learning.DAL.Data.Context;
+using E_Learning.BL.DTO.WishList;
+using E_Learning.DAL.Models;
 using E_Learning.DAL.UnitOfWorkDP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace E_Learning.BL.Managers.WishListManager
 {
@@ -41,5 +38,30 @@ namespace E_Learning.BL.Managers.WishListManager
             }
             return GetWishListItems(userId);
         }
+
+        public bool AddToWishList(AddToWishListDTO cartItemDto)
+        {
+            if (!_unitOfWork.EnrollmentRepository.IsStudentEnrolled(cartItemDto.UserId, cartItemDto.CourseId))
+            {
+                var newWishListItem = new WishList
+                {
+                    UserId = cartItemDto.UserId,
+                    CourseId = cartItemDto.CourseId
+                };
+
+
+                _unitOfWork.WishListRepository.Create(newWishListItem);
+                _unitOfWork.SaveChanges();
+                return true;
+            }
+            else return false;
+
+        }
+
+        public bool WishListItemExists(AddToWishListDTO wishListDTO)
+        {
+            return _unitOfWork.WishListRepository.WishListITemExists(wishListDTO.UserId, wishListDTO.CourseId);
+        }
+
     }
 }
