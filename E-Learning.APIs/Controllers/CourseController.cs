@@ -11,6 +11,7 @@ using E_Learning.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using EllipticCurve;
 
 namespace E_Learning.APIs.Controllers
 {
@@ -253,10 +254,46 @@ namespace E_Learning.APIs.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("admin/GetPaginatedCourses")]
+        public IActionResult GetPaginatedCourses(
+         [FromQuery] string? searchTerm = null,
+         [FromQuery] int page = 1,
+         [FromQuery] int pageSize = 10,
+         [FromQuery] string sortBy = "title",
+         [FromQuery] string sortOrder = "asc")
+        {
+            try
+            {
+                var paginatedCourses = _courseManager.GetPaginatedCourses(searchTerm, page, pageSize, sortBy, sortOrder);
+                if (paginatedCourses == null)
+                {
+                    return NotFound();
+                }
+                return Ok(paginatedCourses);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
 
+        [HttpDelete("admin/DeleteCourse/{courseId}")]
+        [AllowAnonymous]
 
-
+        public IActionResult DeleteCourse(int courseId)
+        {
+            try
+            {
+                _courseManager.DeleteCourse(courseId);
+                return Ok(new { message = "Course deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
 
 
