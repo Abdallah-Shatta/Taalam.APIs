@@ -12,5 +12,6 @@ namespace E_Learning.BL.DTO.User
         public decimal Price { get; set; }
         [Column(TypeName = "decimal(2,1)")]
         public decimal? Rate { get; set; }
+        public string? Category { get; set; }
     }
 }
