@@ -60,7 +60,9 @@ namespace E_Learning.BL.Managers.CategoryManager
                     CoverPicture = c.CoverPicture,
                     Description = c.Description,
                     Price = c.Price,
-                    Rate = c.Rate
+                    Rate = c.Rate,
+                    Category=c.Category.Name
+                
                 }).ToList()
             };
             return InstructorInfo;
