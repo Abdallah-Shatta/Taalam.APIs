@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using QuestPDF.Infrastructure;
 
 
+
 namespace E_Learning.APIs
 {
     public class Program
@@ -55,7 +56,8 @@ namespace E_Learning.APIs
                     policyBuilder
                     .WithOrigins("http://localhost:5062", "http://localhost:4200")
                     .AllowAnyHeader()
-                    .WithMethods("GET", "POST", "PUT", "DELETE");
+                    .WithMethods("GET", "POST", "PUT", "DELETE")
+                    .AllowCredentials();
                 });
             });
 
@@ -90,12 +92,12 @@ namespace E_Learning.APIs
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 // Set cookie expiration time
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.ExpireTimeSpan = TimeSpan.FromDays(7);
 
 
                 options.Cookie.Name = "taalam";
                 options.Cookie.HttpOnly = true;
-                options.Cookie.SameSite = SameSiteMode.Lax;
+                options.Cookie.SameSite = SameSiteMode.Lax;// Ensure cookies are sent during redirects 
 
                 // Configure other options as needed
             });

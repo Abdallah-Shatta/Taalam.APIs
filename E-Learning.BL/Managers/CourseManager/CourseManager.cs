@@ -15,8 +15,8 @@ using QuestPDF.Infrastructure;
 using QuestPDF.Helpers;
 using QuestPDF.Drawing;
 using Document = QuestPDF.Fluent.Document;
-using E_Learning.DAL.Repositories.CourseRepository;
 using E_Learning.BL.DTO.CourseAdminDTO;
+using System;
 
 
 namespace E_Learning.BL.Managers.CourseManager
@@ -501,11 +501,12 @@ namespace E_Learning.BL.Managers.CourseManager
                     {
                         Id = c.Id,
                         Title = c.Title,
-                        InstructorName = (c.User != null) ? $"{c.User.FName} {c.User.LName}" : "null",
+                        InstructorName = (c.User != null)? $"{c.User.FName} {(string.IsNullOrEmpty(c.User.LName) ? "" : c.User.LName)}": "null",
                         InstructorInfo = c.User.Description,
                         Description = c.Description,
                         Price = c.Price,
                         Rate = c.Rate,
+                        Progress=c.Enrollments.FirstOrDefault(e => e.UserId == userId).ProgressPercentage,
                         CoverPicture = c.CoverPicture,
                         CategoryName = (c.Category != null) ? c.Category.Name : "null",
                         Duration = c.Duration,
@@ -525,15 +526,16 @@ namespace E_Learning.BL.Managers.CourseManager
                 Duration = courseFromDb.Duration,
                 CourseCategory = courseFromDb.Category?.Name,
                 CoverPicture = courseFromDb.CoverPicture,
-                Price = courseFromDb.Price,
+                Price = (int)courseFromDb.Price,
                 SectionsNo = courseFromDb.SectionsNo,
                 Sections = courseFromDb.Sections?.Select(s => new UploadSectionDto()
                 {
-                    
+                    SectionId = s.Id,
                     SectionTitle = s.Title,
                     NumberOfLessons = s.LessonsNo,
                     Lessons = s.Lessons?.Select(l => new UploadLessonDto()
                     {
+                        LessonId = l.Id,
                         LessonTitle = l.Title,
                         LessonUrl = l.Content
                     }).ToList(),
@@ -552,11 +554,79 @@ namespace E_Learning.BL.Managers.CourseManager
             courseFromDb.CoverPicture = editCourse.CoverPicture;
             courseFromDb.Price = editCourse.Price;
             courseFromDb.UpdatedDate = DateTime.Now;
-            courseFromDb.SectionsNo = editCourse.SectionsNo;
+            //foreach (var sectionDto in editCourse.Sections)
+            //{
+            //    var existingSection = courseFromDb.Sections
+            //        .FirstOrDefault(s => s.Id == sectionDto.SectionId);
+
+            //    if (existingSection != null)
+            //    {
+            //        // Update the existing section
+            //        existingSection.Title = sectionDto.SectionTitle;
+            //        existingSection.LessonsNo = sectionDto.NumberOfLessons;
+
+            //        // Update or add lessons within the section
+            //        foreach (var lessonDto in sectionDto.Lessons)
+            //        {
+            //            var existingLesson = existingSection.Lessons
+            //                .FirstOrDefault(l => l.Id == lessonDto.LessonId);
+
+            //            if (existingLesson != null)
+            //            {
+            //                // Update the existing lesson
+            //                existingLesson.Title = lessonDto.LessonTitle;
+            //                existingLesson.Content = lessonDto.LessonUrl; // Assuming LessonUrl is stored as Content
+            //            }
+            //            else
+            //            {
+            //                // Add a new lesson
+            //                var newLesson = new Lesson
+            //                {
+            //                    Title = lessonDto.LessonTitle,
+            //                    Content = lessonDto.LessonUrl,
+            //                    SectionId = existingSection.Id
+            //                };
+            //                existingSection.Lessons.Add(newLesson);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        // Add a new section
+            //        var newSection = new Section
+            //        {
+            //            Title = sectionDto.SectionTitle,
+            //            LessonsNo = sectionDto.NumberOfLessons,
+            //            CourseId = courseFromDb.Id,
+            //            //SectionNumber = courseFromDb.Sections.Count + 1, // Assuming auto increment for new sections
+            //            Lessons = sectionDto.Lessons.Select(l => new Lesson
+            //            {
+            //                Title = l.LessonTitle,
+            //                Content = l.LessonUrl
+            //            }).ToList()
+            //        };
+            //        courseFromDb.Sections.Add(newSection);
+            //    }
+            //}
+
+            // Get the list of section IDs coming from the request
+            var sectionIdsFromRequest = editCourse.Sections.Select(s => s.SectionId).ToList();
+
+            // Remove sections that are in the database but not in the request
+            var sectionsToRemove = courseFromDb.Sections
+                .Where(s => !sectionIdsFromRequest.Contains(s.Id))
+                .ToList();
+
+            foreach (var sectionToRemove in sectionsToRemove)
+            {
+                courseFromDb.Sections.Remove(sectionToRemove);
+            }
+
+            // Update existing sections and lessons, or add new ones
             foreach (var sectionDto in editCourse.Sections)
             {
                 var existingSection = courseFromDb.Sections
-                    .FirstOrDefault(s => s.Title == sectionDto.SectionTitle);
+                    .FirstOrDefault(s => s.Id == sectionDto.SectionId);
 
                 if (existingSection != null)
                 {
@@ -564,11 +634,24 @@ namespace E_Learning.BL.Managers.CourseManager
                     existingSection.Title = sectionDto.SectionTitle;
                     existingSection.LessonsNo = sectionDto.NumberOfLessons;
 
-                    // Update or add lessons within the section
+                    // Get the list of lesson IDs from the request for this section
+                    var lessonIdsFromRequest = sectionDto.Lessons.Select(l => l.LessonId).ToList();
+
+                    // Remove lessons that are in the database but not in the request
+                    var lessonsToRemove = existingSection.Lessons
+                        .Where(l => !lessonIdsFromRequest.Contains(l.Id))
+                        .ToList();
+
+                    foreach (var lessonToRemove in lessonsToRemove)
+                    {
+                        existingSection.Lessons.Remove(lessonToRemove);
+                    }
+
+                    // Update or add lessons
                     foreach (var lessonDto in sectionDto.Lessons)
                     {
                         var existingLesson = existingSection.Lessons
-                            .FirstOrDefault(l => l.Title == lessonDto.LessonTitle);
+                            .FirstOrDefault(l => l.Id == lessonDto.LessonId);
 
                         if (existingLesson != null)
                         {
@@ -597,7 +680,6 @@ namespace E_Learning.BL.Managers.CourseManager
                         Title = sectionDto.SectionTitle,
                         LessonsNo = sectionDto.NumberOfLessons,
                         CourseId = courseFromDb.Id,
-                        //SectionNumber = courseFromDb.Sections.Count + 1, // Assuming auto increment for new sections
                         Lessons = sectionDto.Lessons.Select(l => new Lesson
                         {
                             Title = l.LessonTitle,
@@ -607,9 +689,11 @@ namespace E_Learning.BL.Managers.CourseManager
                     courseFromDb.Sections.Add(newSection);
                 }
             }
+
+
+            courseFromDb.SectionsNo = editCourse.SectionsNo;
             _unitOfWork.SaveChanges();
             return (true, "Course Updated Successfully");
         }
-
     }
 }
