@@ -437,7 +437,24 @@ namespace E_Learning.BL.Managers.AccountManager
         }
 
 
+        public async Task<IdentityResult> deleteuser(int id)
+        {
+            // Find user by ID, convert the integer ID to a string if necessary
+            var user = await _userManager.FindByIdAsync(id.ToString());
 
+            // Check if the user exists
+            if (user == null)
+            {
+                // Return a failure result if the user was not found
+                return IdentityResult.Failed(new IdentityError { Description = $"User with ID {id} not found." });
+            }
+
+            // Try to delete the user
+            IdentityResult result = await _userManager.DeleteAsync(user);
+           
+            // Return the result of the delete operation (Success or Failed)
+            return result;
+        }
 
             
 
