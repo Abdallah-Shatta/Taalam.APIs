@@ -361,7 +361,7 @@ namespace E_Learning.BL.Managers.AccountManager
             user.RefreshTokenExpirationDateTime = authenticationResponse.RefreshTokenExpirationDateTime;
 
             await _userManager.UpdateAsync(user);  // Save refresh token details
-
+            await _signInManager.SignInAsync(user, isPersistent: true);
             return authenticationResponse;
         }
 
