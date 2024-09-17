@@ -12,5 +12,7 @@ namespace E_Learning.DAL.Repositories.WishListRepository
     {
         IEnumerable<WishList> GetWishListItemsByUserId(int userId);
         WishList? GetWishListItem(int userId, int courseId);
+        public bool WishListITemExists(int userId, int courseId);
+
     }
 }
