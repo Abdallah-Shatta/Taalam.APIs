@@ -8,10 +8,10 @@ namespace E_Learning.DAL.Data.Configurations
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Category> builder)
         {
             //Data Seeding
-            builder.HasData(
-                new Category { Id = 1, Name = "Programming" },
-                new Category { Id = 2, Name = "Sporting" }
-            );
+            //builder.HasData(
+            //    new Category { Id = 1, Name = "Programming" },
+            //    new Category { Id = 2, Name = "Sporting" }
+            //);
         }
     }
 }

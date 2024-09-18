@@ -15,10 +15,10 @@ namespace E_Learning.DAL.Data.Configurations
             //soft delete
             builder.HasQueryFilter(e => e.Course == null || !e.Course.IsDeleted);
             //Data Seeding
-            builder.HasData(
-                new Cart { CourseId = 3, UserId = 3 },
-                new Cart { CourseId = 4, UserId = 4 }
-                );
+            //builder.HasData(
+            //    new Cart { CourseId = 3, UserId = 3 },
+            //    new Cart { CourseId = 4, UserId = 4 }
+            //    );
 
         }
     }

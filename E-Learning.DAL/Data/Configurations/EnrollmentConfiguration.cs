@@ -15,10 +15,10 @@ namespace E_Learning.DAL.Data.Configurations
             //soft delete
             builder.HasQueryFilter(e => e.Course == null || !e.Course.IsDeleted);
             //Data Seeding
-            builder.HasData(
-                new Enrollment { CourseId = 1, UserId = 3, EnrollmentDate = DateTime.Now },
-                new Enrollment { CourseId = 2, UserId = 4, EnrollmentDate = DateTime.Now.AddHours(1) }
-                );
+            //builder.HasData(
+            //    new Enrollment { CourseId = 1, UserId = 3, EnrollmentDate = DateTime.Now },
+            //    new Enrollment { CourseId = 2, UserId = 4, EnrollmentDate = DateTime.Now.AddHours(1) }
+            //    );
         }
     }
 }
