@@ -24,7 +24,9 @@ namespace E_Learning.APIs.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<ReadCategoryDto>> GetAll()
         {
-            var categories = _categoryManager.GetAll();
+            string scheme = Request.Scheme;
+            string host = Request.Host.Value;
+            var categories = _categoryManager.GetAll(scheme, host);
             return Ok(categories);
         }
         /*------------------------------------------------------------------------*/
@@ -39,34 +41,33 @@ namespace E_Learning.APIs.Controllers
             return Ok(category);
         }
         /*------------------------------------------------------------------------*/
-        //[HttpPost]
-        //public ActionResult CreateCategory([FromBody] CreateCategoryDto createCategoryDto)
-        //{
-        //    if(createCategoryDto != null)
-        //    {
-        //        _categoryManager.CreateCategory(createCategoryDto);
-        //        return Ok(new { Message = "Category Creation Succeded" });
-        //    }
-        //    return BadRequest(ModelState);
-        //}
+        [HttpPost]
+        public ActionResult CreateCategory([FromForm] CreateCategoryDto createCategoryDto)
+        {
+            
+            _categoryManager.CreateCategory(createCategoryDto);
+            return Ok(new { Message = "Category Creation Succeded" });
+            //}
+            //return BadRequest(ModelState);
+        }
 
         /*------------------------------------------------------------------------*/
-        //[HttpPut]
-        //public ActionResult<Category> UpdateCategory(int id,[FromBody] CreateCategoryDto createCategoryDto)
-        //{
-        //    if(createCategoryDto != null)
-        //    {
-        //        _categoryManager.UpdateCategory(id, createCategoryDto);
-        //        return Ok();
-        //    }
-        //    return BadRequest(ModelState);
-        //}
+        [HttpPut]
+        public ActionResult UpdateCategory(int id, [FromForm] CreateCategoryDto createCategoryDto)
+        {
+            if (createCategoryDto != null)
+            {
+                _categoryManager.UpdateCategory(id, createCategoryDto);
+                return Ok();
+            }
+            return BadRequest(ModelState);
+        }
 
         /*------------------------------------------------------------------------*/
-        //[HttpDelete]
-        //public void DeleteCategory(int id)
-        //{
-        //    _categoryManager.DeleteCategory(id);
-        //}
+        [HttpDelete("{id}")]
+        public void DeleteCategory(int id)
+        {
+            _categoryManager.DeleteCategory(id);
+        }
     }
 }

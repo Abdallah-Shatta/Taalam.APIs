@@ -17,13 +17,14 @@ namespace E_Learning.BL.Managers.CategoryManager
             _unitOfWork = unitOfWork;
         }
         /*------------------------------------------------------------------------*/
-        public IEnumerable<ReadCategoryDto> GetAll()
+        public IEnumerable<ReadCategoryDto> GetAll(string scheme, string host)
         {
             var categories = _unitOfWork.CategoryRepository.GetAll();
             var _categories = categories.Select(category => new ReadCategoryDto
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                Image = $"{scheme}://{host}{category.Image}"
             });
             return _categories;
         }
@@ -69,31 +70,76 @@ namespace E_Learning.BL.Managers.CategoryManager
             return null!;
         }
         /*------------------------------------------------------------------------*/
-        //public void UpdateCategory(int id, CreateCategoryDto createCategoryDto)
-        //{
-        //    Category? category = _unitOfWork.CategoryRepository.GetById(id);
-        //    if (category != null)
-        //    {
-        //        category.Name = createCategoryDto.Name;
-        //        _unitOfWork.SaveChanges();
-        //    }
-        //}
+        public void UpdateCategory(int id, CreateCategoryDto createCategoryDto)
+        {
+            Category? category = _unitOfWork.CategoryRepository.GetById(id);
+            category.Name = createCategoryDto.Name;
+            // Create a unique file name for the image using Guid
+            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(createCategoryDto.Image.FileName);
+            // Set the path to save the image in wwwroot/images folder
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", uniqueFileName);
+            // Create the directory if it doesn't exist
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images"));
+            }
+            // Save the image to the path
+            using (var stream = new FileStream(imagePath, FileMode.Create))
+            {
+                createCategoryDto.Image.CopyTo(stream);
+            }
+            category.Image = $"/images/{uniqueFileName}";
+            _unitOfWork.SaveChanges();
+        }
         /*------------------------------------------------------------------------*/
-        //public void CreateCategory(CreateCategoryDto createCategoryDto)
-        //{
-        //    Category category = new Category() { Name = createCategoryDto.Name };
-        //    _unitOfWork.CategoryRepository.Create(category);
-        //    _unitOfWork.SaveChanges();
-        //}
+        public void CreateCategory(CreateCategoryDto createCategoryDto)
+        {
+            // Check if an image was uploaded
+            if (createCategoryDto.Image != null)
+            {
+                // Create a unique file name for the image using Guid
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(createCategoryDto.Image.FileName);
+
+                // Set the path to save the image in wwwroot/images folder
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", uniqueFileName);
+
+                // Create the directory if it doesn't exist
+                if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images")))
+                {
+                    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images"));
+                }
+
+                // Save the image to the path
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    createCategoryDto.Image.CopyTo(stream);
+                }
+
+                // Create a new Category entity to save to the database
+                var category = new Category
+                {
+                    Name = createCategoryDto.Name,
+                    Image = $"/images/{uniqueFileName}"  // Store the relative path in the database
+                };
+
+                // Use the repository to save the new category in the database
+                _unitOfWork.CategoryRepository.Create(category);
+                _unitOfWork.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Image is required for creating a category.");
+            }
+        }
         /*------------------------------------------------------------------------*/
-        //public void DeleteCategory(int id)
-        //{
-        //    Category? category = _unitOfWork.CategoryRepository.GetById(id);
-        //    if (category != null)
-        //    {
-        //        _unitOfWork.CategoryRepository.Delete(category);
-        //        _unitOfWork.SaveChanges();
-        //    }
-        //}
+        public void DeleteCategory(int id)
+        {
+            Category? category = _unitOfWork.CategoryRepository.GetById(id);
+            if (category != null)
+            {
+                _unitOfWork.CategoryRepository.Delete(category);
+                _unitOfWork.SaveChanges();
+            }
+        }
     }
 }
