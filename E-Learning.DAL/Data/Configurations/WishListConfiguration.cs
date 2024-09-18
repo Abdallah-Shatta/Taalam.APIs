@@ -22,10 +22,10 @@ namespace E_Learning.DAL.Data.Configurations
 
 
             //Data Seeding
-            builder.HasData([
-                new WishList { CourseId = 3, UserId = 1 },
-                new WishList { CourseId = 4, UserId = 2 }
-            ]);
+            //builder.HasData([
+            //    new WishList { CourseId = 3, UserId = 1 },
+            //    new WishList { CourseId = 4, UserId = 2 }
+            //]);
 
         }
     }

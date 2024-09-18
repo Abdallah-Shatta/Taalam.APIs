@@ -14,12 +14,12 @@ namespace E_Learning.DAL.Data.Configurations
 
             builder.HasQueryFilter(s => !s.Course.IsDeleted);
             ////Data Seeding
-            builder.HasData(new Section { Id = 1, CourseId = 1, SectionNumber=1, Title = "intro", LessonsNo = 3 },
-                            new Section { Id = 2, CourseId = 1, SectionNumber=2, Title = "OOP", LessonsNo = 5 },
-                            new Section { Id = 3, CourseId = 2, SectionNumber =1, Title = "Binary search", LessonsNo = 3 },
-                            new Section { Id = 4, CourseId = 3, SectionNumber=1, Title = "Nutrition", LessonsNo = 4 },
-                            new Section { Id = 5, CourseId = 4, SectionNumber=1, Title = "General", LessonsNo = 3 }
-                );
+            //builder.HasData(new Section { Id = 1, CourseId = 1, SectionNumber=1, Title = "intro", LessonsNo = 3 },
+            //                new Section { Id = 2, CourseId = 1, SectionNumber=2, Title = "OOP", LessonsNo = 5 },
+            //                new Section { Id = 3, CourseId = 2, SectionNumber =1, Title = "Binary search", LessonsNo = 3 },
+            //                new Section { Id = 4, CourseId = 3, SectionNumber=1, Title = "Nutrition", LessonsNo = 4 },
+            //                new Section { Id = 5, CourseId = 4, SectionNumber=1, Title = "General", LessonsNo = 3 }
+            //    );
 
         }
     }
