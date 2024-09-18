@@ -36,5 +36,7 @@ namespace E_Learning.BL.Managers.AccountManager
 
         Task<(bool Success, string Message)> approve(int id);
 
+        Task<IdentityResult> deleteuser(int id);
+
     }
 }

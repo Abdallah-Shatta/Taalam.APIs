@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918094838_CategoryImage")]
+    partial class CategoryImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,6 +68,98 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Body = "option1",
+                            QuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Body = "option2",
+                            QuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Body = "option3",
+                            QuestionId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Body = "option1",
+                            QuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Body = "option2",
+                            QuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Body = "option3",
+                            QuestionId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Body = "option1",
+                            QuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Body = "option2",
+                            QuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Body = "option3",
+                            QuestionId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Body = "option1",
+                            QuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Body = "option2",
+                            QuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Body = "option3",
+                            QuestionId = 4
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Body = "option1",
+                            QuestionId = 5
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Body = "option2",
+                            QuestionId = 5
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Body = "option3",
+                            QuestionId = 5
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Cart", b =>
@@ -80,6 +175,18 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Carts");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 3,
+                            CourseId = 3
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            CourseId = 4
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Category", b =>
@@ -99,6 +206,18 @@ namespace E_Learning.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Programming"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Sporting"
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.CertificateOfCompletion", b =>
@@ -226,6 +345,175 @@ namespace E_Learning.DAL.Migrations
 
                     b.ToTable("Courses");
 
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvJBvVedFjpONzC1ZOR-YSWauBp9ZKK6ydA&s",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8610),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 1m,
+                            SectionsNo = 0,
+                            Title = "C# From Zero To SuperHero",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2o9_OmdunGnBKDIiSGo3uLYvA8vySqQ-M9fyVT_nys9HMMbZJv8cU8YtPkPbexgrf3J8&usqp=CAU",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8697),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 2m,
+                            SectionsNo = 0,
+                            Title = "Data Strcutre",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            CoverPicture = "https://dynamic.brandcrowd.com/template/preview/design/90728fda-b283-4797-973e-9a0775dec439?v=4&designTemplateVersion=5&size=design-preview-standalone-1x",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8702),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 4m,
+                            SectionsNo = 0,
+                            Title = "Diet",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo1cHnjZlK64h9Pc5OvWCYfYWYexByKhPpeg&s",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8706),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 2m,
+                            SectionsNo = 0,
+                            Title = "GYM",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 1,
+                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCmO_j4YW82XwWIM-_Fo6afxyuN2pSGoZMBQ&s",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8710),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 2m,
+                            SectionsNo = 0,
+                            Title = "Alogrithms",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 1,
+                            CoverPicture = "https://d1jnx9ba8s6j9r.cloudfront.net/imgver.1551437392/img/co_img_1539_1633434090.png",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8713),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 5m,
+                            SectionsNo = 0,
+                            Title = "Introduction to C++",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 1,
+                            CoverPicture = "https://static.gunnarpeipman.com/wp-content/uploads/2019/12/ef-core-featured.png",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8717),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 4m,
+                            SectionsNo = 0,
+                            Title = "EF Core",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 1,
+                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKIa50KjBUhvtvuMbOaL_QtJrzstWIQA3YSg&s",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8721),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 5m,
+                            SectionsNo = 0,
+                            Title = "Database Using SQL Server",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryId = 1,
+                            CoverPicture = "https://www.construx.com/wp-content/uploads/2018/08/design-pattern-essentials-course-image.jpg",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8725),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 3m,
+                            SectionsNo = 0,
+                            Title = "Design Pattern",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoryId = 1,
+                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-HJM_i7rOg2yY9OgpVPYRLL4fYjA9CTfEoQ&s",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8729),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 1m,
+                            SectionsNo = 0,
+                            Title = "SOLID Principle",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CategoryId = 2,
+                            CoverPicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtx7PjCp_KBWQZtHauOWMG2WiRpXxjpbYf3w&s",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8734),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 4m,
+                            SectionsNo = 0,
+                            Title = "How To Train",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CategoryId = 2,
+                            CoverPicture = "https://static.vecteezy.com/system/resources/previews/024/700/836/non_2x/fitness-gym-training-social-media-timeline-cover-and-video-thumbnail-and-web-banner-design-free-vector.jpg",
+                            CreationDate = new DateTime(2024, 9, 18, 12, 48, 33, 509, DateTimeKind.Local).AddTicks(8738),
+                            IsDeleted = false,
+                            LessonsNo = 0,
+                            Price = 0m,
+                            Rate = 1m,
+                            SectionsNo = 0,
+                            Title = "Life Coach",
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Enrollment", b =>
@@ -251,6 +539,19 @@ namespace E_Learning.DAL.Migrations
 
                     b.ToTable("Enrollments");
 
+                    b.HasData(
+                        new
+                        {
+                            UserId = 3,
+                            CourseId = 1,
+                            EnrollmentDate = new DateTime(2024, 9, 18, 12, 48, 33, 512, DateTimeKind.Local).AddTicks(1745)
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            CourseId = 2,
+                            EnrollmentDate = new DateTime(2024, 9, 18, 13, 48, 33, 512, DateTimeKind.Local).AddTicks(1832)
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Lesson", b =>
@@ -281,6 +582,99 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("SectionId");
 
                     b.ToTable("Lessons");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                            SectionId = 1,
+                            Title = "orientation"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                            SectionId = 1,
+                            Title = "introduction"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                            SectionId = 2,
+                            Title = "Encapsulation"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+                            SectionId = 2,
+                            Title = "inheritance"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+                            SectionId = 2,
+                            Title = "abstraction"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+                            SectionId = 2,
+                            Title = "polymorphism"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+                            SectionId = 3,
+                            Title = "introduction"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+                            SectionId = 3,
+                            Title = "Binary tree"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
+                            SectionId = 4,
+                            Title = "introduction"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+                            SectionId = 4,
+                            Title = "hum ya gamal"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                            SectionId = 4,
+                            Title = "calories"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                            SectionId = 5,
+                            Title = "3ash ya wa7sh"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Content = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                            SectionId = 5,
+                            Title = "el3ab sa7"
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Question", b =>
@@ -306,6 +700,43 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("QuizId");
 
                     b.ToTable("Questions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Body = "Question1",
+                            ModelAnswer = 1,
+                            QuizId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Body = "Question2",
+                            ModelAnswer = 2,
+                            QuizId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Body = "Question3",
+                            ModelAnswer = 3,
+                            QuizId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Body = "Question4",
+                            ModelAnswer = 2,
+                            QuizId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Body = "Question5",
+                            ModelAnswer = 1,
+                            QuizId = 5
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Quiz", b =>
@@ -331,6 +762,43 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("SectionId");
 
                     b.ToTable("Quizzes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Grade = 0,
+                            SectionId = 1,
+                            Title = "Quiz1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Grade = 0,
+                            SectionId = 2,
+                            Title = "Quiz2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Grade = 0,
+                            SectionId = 3,
+                            Title = "Quiz3"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Grade = 0,
+                            SectionId = 4,
+                            Title = "Quiz4"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Grade = 0,
+                            SectionId = 5,
+                            Title = "Quiz5"
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Rating", b =>
@@ -361,6 +829,48 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Rating");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CourseId = 1,
+                            Description = "Excellent course! Very well structured and informative.",
+                            UserId = 1,
+                            Value = 5
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CourseId = 2,
+                            Description = "Good course, but could use more examples.",
+                            UserId = 1,
+                            Value = 4
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CourseId = 3,
+                            Description = "Average course. The content was somewhat basic.",
+                            UserId = 2,
+                            Value = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CourseId = 4,
+                            Description = "Great content, but the pace was a bit fast.",
+                            UserId = 3,
+                            Value = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CourseId = 5,
+                            Description = "Not very helpful. The material was outdated.",
+                            UserId = 4,
+                            Value = 2
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Role", b =>
@@ -420,6 +930,48 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Sections");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CourseId = 1,
+                            LessonsNo = 3,
+                            SectionNumber = 1,
+                            Title = "intro"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CourseId = 1,
+                            LessonsNo = 5,
+                            SectionNumber = 2,
+                            Title = "OOP"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CourseId = 2,
+                            LessonsNo = 3,
+                            SectionNumber = 1,
+                            Title = "Binary search"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CourseId = 3,
+                            LessonsNo = 4,
+                            SectionNumber = 1,
+                            Title = "Nutrition"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CourseId = 4,
+                            LessonsNo = 3,
+                            SectionNumber = 1,
+                            Title = "General"
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.User", b =>
@@ -522,6 +1074,71 @@ namespace E_Learning.DAL.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a6e24772-8e01-4eea-a6a0-738a5be9b3bb",
+                            Email = "AbdallahShatta@gmail.com",
+                            EmailConfirmed = false,
+                            FName = "Abdallah",
+                            Facebook = "https://www.facebook.com/abdalah.shatta",
+                            LName = "Shatta",
+                            Linkedin = "https://www.linkedin.com/in/abdallah-shatta55/",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            ProfilePicture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAM-SBzUfYOMhwc0o76MpvR7N4Yi43lcYt5g&s",
+                            RefreshTokenExpirationDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "44f2c1f4-df3a-4836-80ec-36a644ca3f5e",
+                            Email = "MohamedErbahim@gmail.com",
+                            EmailConfirmed = false,
+                            FName = "Mohamed",
+                            Facebook = "https://www.facebook.com/mido.ebrahim.9699/",
+                            LName = "Ebrahim",
+                            Linkedin = "https://www.linkedin.com/in/mohamed-abdelslam210/",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            ProfilePicture = "https://pbs.twimg.com/profile_images/1745781333400399872/MN7Wm4Ya_400x400.jpg",
+                            RefreshTokenExpirationDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8af72d4f-ca57-4cd3-85da-16f012bd07dc",
+                            Email = "MohsemTayseer@gmail.com",
+                            EmailConfirmed = false,
+                            FName = "Mohsen",
+                            LName = "Tayseer",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            ProfilePicture = "",
+                            RefreshTokenExpirationDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e00faeca-dda5-437c-8515-56117301e1fd",
+                            Email = "MarwaElkasaby@gmail.com",
+                            EmailConfirmed = false,
+                            FName = "Marwa",
+                            LName = "Elkasaby",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            ProfilePicture = "",
+                            RefreshTokenExpirationDateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TwoFactorEnabled = false
+                        });
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.WishList", b =>
@@ -540,6 +1157,20 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("WishList");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            CourseId = 3,
+                            Id = 0
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            CourseId = 4,
+                            Id = 0
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

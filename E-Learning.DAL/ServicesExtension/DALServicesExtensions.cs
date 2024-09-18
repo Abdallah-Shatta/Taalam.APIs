@@ -17,6 +17,7 @@ namespace E_Learning.DAL.ServicesExtension
                 loggingBuilder.AddDebug();
             });
             /*------------------------------------------------------------------------*/
+
             var connectionString = configuration.GetConnectionString("taalam");
 
           

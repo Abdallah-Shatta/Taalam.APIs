@@ -1,4 +1,5 @@
-﻿using E_Learning.DAL.Repositories.AnswerRepository;
+﻿using E_Learning.DAL.Repositories.AnnouncementRepository;
+using E_Learning.DAL.Repositories.AnswerRepository;
 using E_Learning.DAL.Repositories.CartRepository;
 using E_Learning.DAL.Repositories.CategoryRepository;
 using E_Learning.DAL.Repositories.CourseRepository;
@@ -28,6 +29,8 @@ namespace E_Learning.DAL.UnitOfWorkDP
         IUserRepository UserRepository { get; }
         IWishListRepository WishListRepository { get; }
         IRatingRepository RatingRepository { get; }
+
+        IAnnouncementRepository AnnouncementRepository { get; }
         /*------------------------------------------------------------------------*/
         void SaveChanges();
         /*------------------------------------------------------------------------*/

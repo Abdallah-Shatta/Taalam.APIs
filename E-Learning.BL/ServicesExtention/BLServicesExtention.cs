@@ -12,6 +12,7 @@ using E_Learning.BL.Managers.CartManager;
 using E_Learning.BL.Managers.WishListManager;
 using E_Learning.BL.Managers.RatingManager;
 using E_Learning.BL.Managers.PaymentManager;
+using E_Learning.BL.Managers.AnnouncementManager;
 
 namespace E_Learning.BL.ServicesExtention
 {
@@ -26,7 +27,7 @@ namespace E_Learning.BL.ServicesExtention
             services.AddScoped<IRatingManager, RatingManager>();
             services.AddScoped<IPaymentManager, PaymentManager>();
 
-
+            services.AddScoped<IAnnouncementManager , AnnouncementManager>();   
             services.AddScoped<IUserManager, UserManager>();
             services.AddTransient<IJwtManager, JwtManager>();
             services.AddTransient<IAccountManager,AccountManager>();
