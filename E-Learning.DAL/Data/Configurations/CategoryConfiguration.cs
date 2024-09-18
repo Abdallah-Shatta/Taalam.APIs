@@ -10,8 +10,7 @@ namespace E_Learning.DAL.Data.Configurations
             //Data Seeding
             builder.HasData(
                 new Category { Id = 1, Name = "Programming" },
-                new Category { Id = 2, Name = "Health & Fitness" },
-                new Category { Id = 3, Name = "AI" }
+                new Category { Id = 2, Name = "Sporting" }
             );
         }
     }
