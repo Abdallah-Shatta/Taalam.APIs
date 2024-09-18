@@ -37,8 +37,10 @@ namespace E_Learning.BL.Managers.CourseManager
 
         bool IsEnrollmentComplete(int userId, int courseId);
 
+
         PaginatedCourseResponseDTO GetPaginatedCourses(string searchTerm, int page, int pageSize, string sortBy, string sortOrder);
         public void DeleteCourse(int courseId);
+
 
 
 
