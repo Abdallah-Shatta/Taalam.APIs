@@ -36,6 +36,8 @@ namespace E_Learning.BL.Managers.CourseManager
 
         bool IsEnrollmentComplete(int userId, int courseId);
 
+        
+
 
     }
 

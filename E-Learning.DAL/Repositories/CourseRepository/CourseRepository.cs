@@ -121,5 +121,12 @@ namespace E_Learning.DAL.Repositories.CourseRepository
         {
             return _context.Courses.Include(c=>c.Category).Include(c=>c.Sections).ThenInclude(l =>l.Lessons).FirstOrDefault(c => c.Id == id);
         }
+
+
+        public void updateCourse(Course course) {
+            _context.Courses.Update(course);
+
+        }
+
     }
 }

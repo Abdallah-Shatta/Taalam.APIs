@@ -46,7 +46,7 @@ namespace E_Learning.BL.Managers.CourseManager
                     FName = course.User.FName,
                     LName = course.User.LName,
                     Description = course.User.Description,
-                    ProfilePicture = course.User.ProfilePicture!=null? course.User.ProfilePicture :null
+                    ProfilePicture = course.User.ProfilePicture != null ? course.User.ProfilePicture : null
 
                 },
 
@@ -148,7 +148,7 @@ namespace E_Learning.BL.Managers.CourseManager
             return _unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId);
         }
 
-        
+
 
         ////////////////////////////////////////////////////////////////////////////////
         public IEnumerable<ReadCourseDTO> GetAllCourses()
@@ -194,10 +194,10 @@ namespace E_Learning.BL.Managers.CourseManager
 
 
 
-        public  bool CompleteLesson(int userId, int courseId, int lessonId)
+        public bool CompleteLesson(int userId, int courseId, int lessonId)
         {
 
-            var enrollment =  _unitOfWork.EnrollmentRepository.GetEnrollment(userId, courseId);
+            var enrollment = _unitOfWork.EnrollmentRepository.GetEnrollment(userId, courseId);
             if (enrollment == null) return false;
 
             var completedLesson = new CompletedLesson
@@ -226,11 +226,11 @@ namespace E_Learning.BL.Managers.CourseManager
 
         public bool CreateCertificate(int userId, int courseId)
         {
-            if (_unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId,courseId)==false)
+            if (_unitOfWork.EnrollmentRepository.IsStudentEnrolled(userId, courseId) == false)
             {
                 return false;
             }
-            if (_unitOfWork.EnrollmentRepository.IsEnrollmentComplete(userId,courseId) == false)
+            if (_unitOfWork.EnrollmentRepository.IsEnrollmentComplete(userId, courseId) == false)
             {
                 return false;
             }
@@ -245,10 +245,11 @@ namespace E_Learning.BL.Managers.CourseManager
             return true;
         }
 
-        public bool IsEnrollmentComplete(int userId, int courseId) {
+        public bool IsEnrollmentComplete(int userId, int courseId)
+        {
             return _unitOfWork.EnrollmentRepository.IsEnrollmentComplete(userId, courseId);
-                
-       }
+
+        }
 
 
 
@@ -320,7 +321,7 @@ namespace E_Learning.BL.Managers.CourseManager
                         .FontSize(42)
                         .SemiBold()
                         .FontColor(Colors.Blue.Medium)
-                        .Underline(); 
+                        .Underline();
 
                     page.Content().PaddingVertical(40).Column(column =>
                     {
@@ -346,13 +347,13 @@ namespace E_Learning.BL.Managers.CourseManager
                             .Bold()
                             .FontColor(Colors.Green.Medium);
 
-                        
+
 
                         column.Item().AlignCenter().Text($"Date of Issuance: {certificateDto.IssuedAy.ToString("MMMM dd, yyyy")}")
                             .FontSize(20)
                             .FontColor(Colors.Black);
 
-                       
+
 
                         //var verificationUrl = $"http://localhost:4000/cert/ver/{certificateDto.Id}";
                         //column.Item().AlignCenter().Text($"Verify this certificate: {verificationUrl}")
@@ -404,7 +405,7 @@ namespace E_Learning.BL.Managers.CourseManager
                 });
         }
 
-        public (bool success , string message) UploadCourse(UploadCourseDTO uploadCourse)
+        public (bool success, string message) UploadCourse(UploadCourseDTO uploadCourse)
         {
             #region trying
             try
@@ -480,7 +481,7 @@ namespace E_Learning.BL.Managers.CourseManager
                 SectionsNo = courseFromDb.SectionsNo,
                 Sections = courseFromDb.Sections?.Select(s => new UploadSectionDto()
                 {
-                    
+
                     SectionTitle = s.Title,
                     NumberOfLessons = s.LessonsNo,
                     Lessons = s.Lessons?.Select(l => new UploadLessonDto()
@@ -562,5 +563,7 @@ namespace E_Learning.BL.Managers.CourseManager
             return (true, "Course Updated Successfully");
         }
 
+     
     }
+
 }

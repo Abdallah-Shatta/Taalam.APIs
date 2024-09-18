@@ -1,4 +1,5 @@
 ﻿using E_Learning.DAL.Data.Context;
+using E_Learning.DAL.Repositories.AnnouncementRepository;
 using E_Learning.DAL.Repositories.AnswerRepository;
 using E_Learning.DAL.Repositories.CartRepository;
 using E_Learning.DAL.Repositories.CategoryRepository;
@@ -32,6 +33,8 @@ namespace E_Learning.DAL.UnitOfWorkDP
         public IWishListRepository WishListRepository { get; }
 
         public IRatingRepository RatingRepository { get; }
+
+        public IAnnouncementRepository AnnouncementRepository { get; }
         /*------------------------------------------------------------------------*/
         public UnitOfWork
              (AppDbContext context)
@@ -49,6 +52,7 @@ namespace E_Learning.DAL.UnitOfWorkDP
             UserRepository = new UserRepository(_context);
             WishListRepository = new WishListRepository(_context);
             RatingRepository = new RatingRepository(_context);
+            AnnouncementRepository = new AnnouncementRepository(_context);
         }
         /*------------------------------------------------------------------------*/
         public void SaveChanges()
