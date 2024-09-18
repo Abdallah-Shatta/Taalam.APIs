@@ -12,6 +12,8 @@ namespace E_Learning.DAL.Data.Configurations
             builder.HasOne(c => c.Course).WithMany(c => c.Carts).HasForeignKey(c => c.CourseId).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(c => c.User).WithMany(c => c.CartItems).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
 
+            //soft delete
+            builder.HasQueryFilter(e => e.Course == null || !e.Course.IsDeleted);
             //Data Seeding
             builder.HasData(
                 new Cart { CourseId = 3, UserId = 3 },

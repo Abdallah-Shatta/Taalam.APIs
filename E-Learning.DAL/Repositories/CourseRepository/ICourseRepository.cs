@@ -27,6 +27,14 @@ namespace E_Learning.DAL.Repositories.CourseRepository
         public CertificateOfCompletion? GetCertOfComp(int userId, int courseId);
 
 
+        public void updateCourse(Course course);
+
+        public IEnumerable<Course> GetPaginatedCourses(string searchTerm, int page, int pageSize, string sortBy, string sortOrder, out int totalCourses);
+        public void DeleteCourse(int courseId);
+
+
+
+
 
     }
 }

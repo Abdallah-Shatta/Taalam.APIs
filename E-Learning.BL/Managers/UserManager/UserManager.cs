@@ -19,7 +19,6 @@ namespace E_Learning.BL.Managers.CategoryManager
 
         public InstructorDTO GetInstructorInfo(int id)
         {
-
             var userFromDb = _unitOfWork.UserRepository.GetInstructorInfo(id);
             if (userFromDb == null)
                 return null;
@@ -28,6 +27,18 @@ namespace E_Learning.BL.Managers.CategoryManager
             foreach (var course in totalCourses)
             {
                 totalStudents += _unitOfWork.UserRepository.CountEnrollment(course.Id);
+            }
+            if (!string.IsNullOrEmpty(userFromDb.ProfilePicture))
+            {
+                if (userFromDb.ProfilePicture.Contains("/uploads/"))
+                {
+                    var fileName = Path.GetFileName(new Uri(userFromDb.ProfilePicture).LocalPath);
+                    var filePath = Path.Combine(_env.WebRootPath, "uploads", fileName);
+                    if (!File.Exists(filePath))
+                    {
+                        userFromDb.ProfilePicture = null;
+                    }
+                }
             }
 
             InstructorDTO InstructorInfo = new InstructorDTO
@@ -49,7 +60,9 @@ namespace E_Learning.BL.Managers.CategoryManager
                     CoverPicture = c.CoverPicture,
                     Description = c.Description,
                     Price = c.Price,
-                    Rate = c.Rate
+                    Rate = c.Rate,
+                    Category=c.Category.Name
+                
                 }).ToList()
             };
             return InstructorInfo;
@@ -67,15 +80,30 @@ namespace E_Learning.BL.Managers.CategoryManager
             userFromDb.Facebook = editUserProfileDTO.Facebook;
             userFromDb.Linkedin = editUserProfileDTO.LinkedIn;
             userFromDb.Youtube = editUserProfileDTO.Youtube;
+
+            if (!string.IsNullOrEmpty(userFromDb.ProfilePicture) &&
+                userFromDb.ProfilePicture.Contains($"/uploads/"))
+            {
+                var oldFileName = Path.GetFileName(new Uri(userFromDb.ProfilePicture).LocalPath);
+                var oldFilePath = Path.Combine(_env.WebRootPath, "uploads", oldFileName);
+                if (File.Exists(oldFilePath))
+                {
+                    File.Delete(oldFilePath);
+                }
+            }
             if (editUserProfileDTO.ProfilePictureFile != null)
             {
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(editUserProfileDTO.ProfilePictureFile.FileName);
-                var filePath = Path.Combine(_env.WebRootPath, "uploads", fileName); // Save to wwwroot/uploads
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                var newFileName = Guid.NewGuid().ToString() + Path.GetExtension(editUserProfileDTO.ProfilePictureFile.FileName);
+                var newFilePath = Path.Combine(_env.WebRootPath, "uploads", newFileName);
+
+                // Save the new file
+                using (var stream = new FileStream(newFilePath, FileMode.Create))
                 {
-                    await editUserProfileDTO.ProfilePictureFile.CopyToAsync(stream); // Save the file to the server
+                    await editUserProfileDTO.ProfilePictureFile.CopyToAsync(stream);
                 }
-                userFromDb.ProfilePicture = $"{scheme}://{host}/uploads/{fileName}";
+
+                // Update the user's profile picture URL
+                userFromDb.ProfilePicture = $"{scheme}://{host}/uploads/{newFileName}";
             }
             _unitOfWork.SaveChanges();
             return true;

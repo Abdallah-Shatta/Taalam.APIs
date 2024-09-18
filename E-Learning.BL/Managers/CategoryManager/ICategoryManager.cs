@@ -7,12 +7,12 @@ namespace E_Learning.BL.Managers.CategoryManager
 {
     public interface ICategoryManager
     {
-        IEnumerable<ReadCategoryDto> GetAll();
+        IEnumerable<ReadCategoryDto> GetAll(string scheme, string host);
         ReadCategoryDto GetById(int id);
         CategoryWithCoursesDTO GetCategoryWithCourses(int id);
 
-        //void CreateCategory(CreateCategoryDto createCategoryDto);
-        //void UpdateCategory(int id, CreateCategoryDto createCategoryDto);
-        //void DeleteCategory(int id);
+        void UpdateCategory(int id, CreateCategoryDto createCategoryDto);
+        void CreateCategory(CreateCategoryDto createCategoryDto);
+        void DeleteCategory(int id);
     }
 }

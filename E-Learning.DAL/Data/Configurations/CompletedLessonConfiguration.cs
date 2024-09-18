@@ -32,6 +32,9 @@ namespace E_Learning.DAL.Data.Configurations
             builder.Property(cl => cl.CompletedDate)
                 .IsRequired()
                 .HasDefaultValueSql("GETDATE()");
+
+            //soft delete
+            builder.HasQueryFilter(cl => !cl.Course.IsDeleted);
         }
         
 

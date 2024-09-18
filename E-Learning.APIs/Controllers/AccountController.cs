@@ -286,6 +286,31 @@ namespace E_Learning.APIs.Controllers
 
         }
 
+        [HttpDelete("delete/{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            // Await the result of the async deleteuser method
+            var result = await _accountManager.deleteuser(id);
+
+            // Check if the deletion was successful
+            if (result.Succeeded)
+            {
+                return Ok(new
+                {
+                    Message = "Deleted successfully"
+                });
+            }
+            else
+            {
+                // Return a BadRequest with errors if deletion failed
+                return BadRequest(new
+                {
+                    Message = "Error in deleting user",
+                    Errors = result.Errors.Select(e => e.Description).ToList()
+                });
+            }
+        }
 
         [HttpGet("instructor-courses/{id}")]
         public ActionResult<IEnumerable<ReadCourseDTO>> GetInstructorCourses(int id)
