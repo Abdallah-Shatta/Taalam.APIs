@@ -19,10 +19,6 @@ namespace E_Learning.DAL.Repositories.CategoryRepository
         public int GetCategoryIdByName(string categoryName)
         {
             Category? category = _context.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
-            if(category == null)
-            {
-                _context.Categories.Add(new Category { Name = categoryName });
-            }
             return category.Id;
         }
 
