@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace E_Learning.APIs.Controllers
 {
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public class AnnouncementController : APIBaseController
     {
         private readonly AppDbContext _context;
