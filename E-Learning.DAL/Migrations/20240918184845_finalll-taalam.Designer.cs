@@ -4,6 +4,7 @@ using E_Learning.DAL.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918184845_finalll-taalam")]
+    partial class finallltaalam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,9 +92,6 @@ namespace E_Learning.DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -225,7 +225,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Courses");
-
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Enrollment", b =>
@@ -250,7 +249,6 @@ namespace E_Learning.DAL.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Enrollments");
-
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.Lesson", b =>
@@ -521,7 +519,6 @@ namespace E_Learning.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
                 });
 
             modelBuilder.Entity("E_Learning.DAL.Models.WishList", b =>
