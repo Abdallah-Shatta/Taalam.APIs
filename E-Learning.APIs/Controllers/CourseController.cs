@@ -302,6 +302,8 @@ namespace E_Learning.APIs.Controllers
 
 
 
+
+
         /////////////////////////////////////////////////////////////////////////////
         [AllowAnonymous]
 
@@ -410,5 +412,36 @@ namespace E_Learning.APIs.Controllers
             return Ok(new { url = "http://localhost:4200/paymentapprove?success=true" });
 
         }
+
+        [AllowAnonymous]
+        [HttpGet("IsEnrolled/{courseId}")]
+        public IActionResult CheckIsEnrolled(int courseId)
+        {
+            try
+            {
+                // Ensure user is authenticated
+                if (!User.Identity.IsAuthenticated)
+                {
+                    return Ok(new { isEnrolled = false });
+                }
+
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+                {
+                    return Ok(new { isEnrolled = false });
+                }
+
+
+                return Ok(new {isEnrolled= _courseManager.IsStudentEnrolled(userId, courseId)});
+                
+               
+                
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
     }
 }

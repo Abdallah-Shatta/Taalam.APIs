@@ -33,6 +33,7 @@ namespace E_Learning.APIs.Controllers
 
         // GET: api/Announcement
         [HttpGet]
+        [AllowAnonymous]
         public  ActionResult<IEnumerable<Announcement>> GetAnnouncements()
         {
           //  return await _context.Announcements.ToListAsync();
