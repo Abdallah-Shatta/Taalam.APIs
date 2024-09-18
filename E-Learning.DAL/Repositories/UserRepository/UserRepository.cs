@@ -13,7 +13,7 @@ namespace E_Learning.DAL.Repositories.UserRepository
 
         public User GetInstructorInfo(int id)
         {
-            return _context.Users.Include(c => c.OwnedCourses).Include(e=>e.UserEnrollments).FirstOrDefault(i => i.Id == id);
+            return _context.Users.Include(c => c.OwnedCourses).ThenInclude(c=>c.Category).Include(e=>e.UserEnrollments).FirstOrDefault(i => i.Id == id);
         }
 
         public int CountEnrollment(int id)

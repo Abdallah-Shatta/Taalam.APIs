@@ -1,4 +1,5 @@
 ﻿using E_Learning.BL.DTO.Course;
+using E_Learning.BL.DTO.CourseAdminDTO;
 using E_Learning.BL.DTO.CourseDTO.CertDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseContentDTO;
 using E_Learning.BL.DTO.CourseDTO.CourseUploadDTO;
@@ -36,7 +37,12 @@ namespace E_Learning.BL.Managers.CourseManager
 
         bool IsEnrollmentComplete(int userId, int courseId);
 
-        
+
+        PaginatedCourseResponseDTO GetPaginatedCourses(string searchTerm, int page, int pageSize, string sortBy, string sortOrder);
+        public void DeleteCourse(int courseId);
+
+
+
 
 
     }

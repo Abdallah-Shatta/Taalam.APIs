@@ -86,6 +86,72 @@ namespace E_Learning.DAL.Repositories.CourseRepository
             
         }
 
+        public IEnumerable<Course> GetPaginatedCourses(
+            string searchTerm,
+            int page,
+            int pageSize,
+            string sortBy,
+            string sortOrder,
+            out int totalCourses)
+        {
+            var query = _context.Courses
+                .Include(c => c.User)
+                .Include(c => c.Category)
+                .Include(c => c.Enrollments)
+                .AsQueryable();
+
+            // Apply search filter
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                query = query.Where(c => c.Title.Contains(searchTerm) ||( c.Description!=null&& c.Description.Contains(searchTerm)));
+            }
+
+            // Apply sorting
+            switch (sortBy.ToLower())
+            {
+                case "title":
+                    query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(c => c.Title) : query.OrderBy(c => c.Title);
+                    break;
+
+                case "createddate":
+                case "creationdate":
+                    query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(c => c.CreationDate) : query.OrderBy(c => c.CreationDate);
+                    break;
+
+                case "categoryname": // Sorting by Category
+                    query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(c => c.Category.Name) : query.OrderBy(c => c.Category.Name);
+                    break;
+
+                case "instructorname": // Sorting by Instructor Name (User's Full Name)
+                    query = sortOrder.ToLower() == "desc"
+                        ? query.OrderByDescending(c => c.User.FName + " " + c.User.LName)
+                        : query.OrderBy(c => c.User.FName + " " + c.User.LName);
+                    break;
+
+                default:
+                    query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(c => c.Id) : query.OrderBy(c => c.Id);
+                    break;
+            }
+
+            totalCourses = query.Count();
+
+            var paginatedCourses = query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return paginatedCourses;
+        }
+
+        public void DeleteCourse(int courseId)
+        {
+            var course = _context.Courses.Find(courseId);
+            if (course != null)
+            {
+                course.IsDeleted = true;
+                _context.SaveChanges();
+            }
+        }
 
 
 

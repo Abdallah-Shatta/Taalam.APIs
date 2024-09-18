@@ -11,6 +11,9 @@ using E_Learning.DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using EllipticCurve;
+using E_Learning.DAL.UnitOfWorkDP;
+using E_Learning.DAL.Migrations;
 
 namespace E_Learning.APIs.Controllers
 {
@@ -19,9 +22,12 @@ namespace E_Learning.APIs.Controllers
     public class CourseController : APIBaseController
     {
         private readonly ICourseManager _courseManager;
-        public CourseController(ICourseManager courseManager)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CourseController(ICourseManager courseManager, IUnitOfWork unitOfWork)
         {
             this._courseManager = courseManager;
+            _unitOfWork = unitOfWork;
         }
         [HttpGet]
         [AllowAnonymous]
@@ -253,10 +259,46 @@ namespace E_Learning.APIs.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("admin/GetPaginatedCourses")]
+        public IActionResult GetPaginatedCourses(
+         [FromQuery] string? searchTerm = null,
+         [FromQuery] int page = 1,
+         [FromQuery] int pageSize = 10,
+         [FromQuery] string sortBy = "title",
+         [FromQuery] string sortOrder = "asc")
+        {
+            try
+            {
+                var paginatedCourses = _courseManager.GetPaginatedCourses(searchTerm, page, pageSize, sortBy, sortOrder);
+                if (paginatedCourses == null)
+                {
+                    return NotFound();
+                }
+                return Ok(paginatedCourses);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
 
+        [HttpDelete("admin/DeleteCourse/{courseId}")]
+        [AllowAnonymous]
 
-
+        public IActionResult DeleteCourse(int courseId)
+        {
+            try
+            {
+                _courseManager.DeleteCourse(courseId);
+                return Ok(new { message = "Course deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
 
 
 
@@ -328,6 +370,45 @@ namespace E_Learning.APIs.Controllers
             {
                 return BadRequest(new { message = message });
             }
+        }
+
+
+        [HttpGet("enrollFree")]
+        public IActionResult EnrollFreeCourses()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized(); // Return 401 Unauthorized if the user is not logged in
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Unauthorized();
+            }
+            using (var unitOfWork = _unitOfWork)
+            {
+                var carts = unitOfWork.CartRepository.GetCartItemsByUserId(userId);
+                foreach (var cart in carts)
+                {
+                    var enrollment = new Enrollment
+                    {
+                        UserId = userId,
+                        CourseId = cart.CourseId,
+                        EnrollmentDate = DateTime.UtcNow,
+                        ProgressPercentage = 0,
+                        CompletedLessons = 0
+                    };
+
+                    unitOfWork.EnrollmentRepository.AddEnrollment(enrollment);
+                    unitOfWork.CartRepository.Delete(cart);
+                }
+
+                unitOfWork.SaveChanges();
+            }
+            return Ok(new { url = "http://localhost:4200/paymentapprove?success=true" });
+
         }
     }
 }
